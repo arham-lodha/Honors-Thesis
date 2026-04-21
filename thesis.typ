@@ -330,7 +330,7 @@ tilde(cal(W))(N; epsilon, tau) & := tilde(cal(W))(N) inter tilde(cal(W))(epsilon
 *Asymptotics*: For functions $f, g: D -> RR_(>0)$ and a limit point $p in D$, we write $f(x) = O(g(x))$ if there exists $C > 0$ such that $f(x) <= C g(x)$ in a punctured neighborhood of $p$. We write $f(x) = Omega(g(x))$ if there exists $c > 0$ such that $f(x) >= c g(x)$ in a punctured neighborhood of $p$. We write $f(x) = Theta(g(x))$ if $f(x) = O(g(x))$ and $f(x) = Omega(g(x))$.
 
 = The Extremal Problem
-Having developed the relavent machinery, we will state the problem this thesis addresses. Fix a simple graph $G$, and a pair of real numbers $(epsilon, tau) in "int"(R)$. We ask: among all graphons with edge density $epsilon$ and triangle density at most $tau$, what is the tightest upper bound we can get for the homomorphism density of $G$? That is, we study the quantity $ T^(G)_(max)(epsilon, tau) := sup {t(G, W) mid(|) W in tilde(cal(W))(epsilon, tau)} $ and how it behaves near the boundary of the Razborov Triangle. In this thesis, we will seek to understand the asymptotics of $T_(max)$ for $tau -> 0$ and $epsilon in (0, (1)/(2)]$.
+Having developed the relavent machinery, we will state the problem this thesis addresses. Fix a simple graph $G$, and a pair of real numbers $(epsilon, tau) in "int"(R)$. We ask: among all graphons with edge density $epsilon$ and triangle density at most $tau$, what is the tightest upper bound we can get for the homomorphism density of $G$? That is, we study the quantity $ T^(G)_(max)(epsilon, tau) := sup {t(G, W) mid(|) W in tilde(cal(W))(epsilon, tau)} $ and how it behaves near the boundary of the Razborov Triangle. In this thesis, we will seek to understand the asymptotics of $T_(max)^(G)$ for $tau -> 0$ and $epsilon in (0, (1)/(2)]$.
 
 Intuitively, this is an extremal question about how much subgraph structure $G$ can survive in a graphon with a few triangles. The regime $tau -> 0$ forces the graphon toward triangle-free behavior while holding the edge density, and the question is whether (and how quickly) $G$-density must also decay.
 
@@ -345,7 +345,7 @@ Before turning to the asymptotics, we note that $T^(G)_(epsilon, tau)$ is a genu
 
 So we can redefine $T_(max)^(G)(epsilon, tau)$ as $ T_(max)^(G)(epsilon, tau) := max {t(G, W) mid(|) W in tilde(cal(W))(epsilon, tau)}. $
 
-To show $T_(max)^(G)(epsilon, tau) = Theta(g(tau))$ for some function $g$, we have to show both $O(g(tau))$ and $Omega(g(tau))$. $Omega(g(tau))$ is a bit finicky but straight forward, for fixed $epsilon in (0, 0.5]$ we just have to exhibit a continuous function $W: (0, tau_(*)] -> tilde(cal(W))$ for some $tau_(*) > 0$ where $tau -> W_(tau) in tilde(cal(W))(epsilon, tau)$. We show that $t(G, W_(tau)) = g(tau)$ as $tau -> 0$. We do this in @GeneralConstructionLessHalf and @GeneralConstructionHalf for $epsilon in (0, 0.5)$ and $epsilon in 0.5$ respectively. $O(g(tau))$ requires a bit more work, which is why we look for simplifications to give us intuition, and hopefully reductions of the problem.
+To show $T_(max)^(G)(epsilon, tau) = Theta(g(tau))$ for some function $g$, we have to show both $O(g(tau))$ and $Omega(g(tau))$. $Omega(g(tau))$ is a bit finicky but straight forward, for fixed $epsilon in (0, 0.5]$ we just have to exhibit a continuous function $W: (0, tau_(*)] -> tilde(cal(W))$ for some $tau_(*) > 0$ where $tau -> W_(tau) in tilde(cal(W))(epsilon, tau)$. We show that $t(G, W_(tau)) = g(tau)$ as $tau -> 0$. We do this in @GeneralConstructionLessHalf and @GeneralConstructionHalf for $epsilon in (0, 0.5)$ and $epsilon = 0.5$ respectively. $O(g(tau))$ requires a bit more work, which is why we look for simplifications to give us intuition, and hopefully reductions of the problem.
 
 = Triangle Spanning Decomposition
 To establish the upper bound,we first prove the result for a simpler family of graphs: those where every edge belongs to a triangle (see @generalUpper). In this section, we demonstrate that any arbitrary graph can be decomposed into a set of these triangle-spanning subgraphs, denoted $cal(C)$, alongside a collection of isolated edges and vertices. Subsequently, in @GeneralSquared, we will show that these residual components do not asymptotically affect the homomorphism density, allowing us to cleanly reduce the general upper bound to the triangle-spanning case.
@@ -367,7 +367,7 @@ To establish the upper bound,we first prove the result for a simpler family of g
 ]
 
 #definition[
-  The $C_(i)$ are the *maximal triangle-spanning components* of $G$, note by assumption $V(C_(i))$ . The triple $(cal(C), B, L)$, where $cal(C) = {C_(i)}_(i = 1)^(n)$, is the *triangle spanning decomposition* of $G$. Let $V(cal(C)) := V(G) without V$ and $E(cal(C)) := E(G) without B$.
+  The $C_(i)$ are the *maximal triangle-spanning components* of $G$. The triple $(cal(C), B, L)$, where $cal(C) = {C_(i)}_(i = 1)^(n)$, is the *triangle spanning decomposition* of $G$. Let $V(cal(C)) := V(G) without L$ and $E(cal(C)) := E(G) without B$.
 ]
 
 Thus we will prove the desired upper bound for triangle spanning graphs first, then we will use the decomposition and reduce the general graph case to a finite number of triangle spanning subgraphs.
