@@ -21,6 +21,8 @@
 
 #let cut = $square.stroked$
 
+#outline()
+
 
 = Preliminaries
 == Graphons
@@ -479,172 +481,7 @@ do not appear in any constraints of the primal LP for $alpha(G)$
 ]
 
 
-// TODO ASK ABOUT THIS SECTION. I did want to use it to motivate but I don't think its needed.
-// = Finite Podal Case
-
-// #definition[
-//   For a simple graph $G$, let $ T_(max, N)^(G)(epsilon, tau) := max{t(G, W) mid(|) W "a N-podal graphon", e(W) = epsilon, t(W) <= tau} $
-// ]
-
-// #lemma(name: "Triangle Lemma")[
-//   For any $N$-podal graphon W with podes $A_(i)$ with measure $alpha_(i) in (0, 1)$ and edge weights $w_(i j) in [0, 1]$, if $t(W) <= tau$, then for all $i, j, k in [N]$ $w_(i j) w_(i k) w_(j k) alpha_(i) alpha_(j) alpha_(k) <= tau$
-// ]<TriangleLemma>
-// #proof[ Since
-//   $ t(W) = sum_(i, j, k in [N])^() w_(i j) w_(i k) w_(j k) alpha_(i) alpha_(j) alpha_(k) <= tau $ and all the terms in the expansion are non-negative, thus $ w_(i j) w_(i k) w_(j k) alpha_(i) alpha_(j) alpha_(k) <= tau $
-// ]
-
-
-// // #theorem[
-// //   Let $G$ be a triangle spanning graph with $cal(T)(G) != emptyset$. Let $V = abs(V(G))$. $ T_(max, N)^(G)(epsilon, tau) = Theta(tau^(alpha(G))) $ for fixed $epsilon in (0, 0.5)$ and $N >= V + 2$  as $tau -> 0$
-// // ]
-// // #proof[
-// //   @FiniteUpper gives the Upper bound and @finiteLowers gives the lower bound.
-// // ]
-
-// #proposition[
-//   Let $G$ be a triangle spanning graph and let $V = abs(V(G))$, then for all natural numbers $N >= V$ $ T_(max, N)^(G)(epsilon, tau) = O(tau^(alpha(G))) $
-//   for $e$ and $N$ fixed and $tau ->0$.
-// ]<FiniteUpper>
-// #proof[
-//   Let ${z_(tau)^(*)}_(tau in cal(T)(G))$ be optimal solution to the dual LP to $alpha$. By Strong Duality, $ alpha(G) = sum_(T in cal(T)(G))^() z_(T)^(*). $ Let $W$ be any $V$-podal graphon where $e(W) = e$ and $t(W) <= tau$. As a sum over all possible mappings $phi: V(G) -> [N]$
-
-//   $ t(G, W) = sum_(phi: V(G) -> [N])^() Pi_(phi) $ where $ Pi_(phi) := product_(v in V(G)) alpha_(phi(v)) product_(e in E(G)) w_(phi(e)). $ Fix an arbitary mapping $phi$. For each triangle $tau in cal(T)$ with vertices $(v_1, v_2, v_3)$ and edges $(e_(1), e_(2), e_(3))$ by @TriangleLemma:
-
-//   $ w_(phi(e_(1))) w_(phi(e_(2))) w_(phi(e_3)) alpha_(phi(v_1)) alpha_(phi(v_2)) alpha_(phi(v_3)) <= t $
-
-//   Thus,
-
-//   $
-//     product_(tau in cal(T))(product_(v in V(tau)) alpha_(phi(v)) product_(e in E(tau)) w_(phi(e)) )^(z_(tau)^(*)) <= product_(tau in cal(T)) t^(z_(tau)^(*)).
-//   $
-
-//   We can easily simplify the right hand side:
-
-//   $ product_(tau in cal(T)) tau^(z_(tau)^(*)) = tau^(sum_(tau in cal(T))^() z_(tau)^(*)) = t^(alpha(G)). $
-
-//   For the left hand side:
-
-//   $
-//     product_(tau in cal(T))(product_(v in V(tau)) alpha_(phi(v)) product_(e in E(tau)) w_(phi(e)) )^(z_(tau)^(*)) &= (product_(tau in cal(T)) product_(v in V(tau)) alpha_(phi(v))^(z_(tau)^(*)))(product_(tau in cal(T)) product_(e in E(tau)) w_(phi(e))^(*)).
-//   $
-
-//   $forall v in V(G)$, when you collect their corresponding terms, they appear with an exponent of $z_(tau)^(*)$ for every $tau in cal(T)$ where $v in tau$. Similarly for the edges. Thus,
-
-//   $
-//     product_(tau in cal(T))(product_(v in V(tau)) alpha_(phi(v)) product_(e in E(tau)) w_(phi(e)) )^(z_(tau)^(*)) &= (product_(v in V(G)) alpha_(phi(v))^(sum_(v in tau in cal(T))^() z_(tau)^(*)) )(product_(e in E(G)) w_(phi(v))^(sum_(e in tau in cal(T))^() z_(tau)^(*)))
-//   $
-
-//   By the constraints of the Dual LP, $sum_(v in tau in cal(T))^() z_(tau)^(*) <= 1$ and $sum_(e in tau in cal(T))^() z_(tau)^(*)$. Since $alpha_(i) <= 1$ and $w_(i j) <= 1$:
-
-//   $
-//     Pi_(phi) = product_(v in V(G)) alpha_(phi(v))product_(e in E(G)) w_(phi(v)) &<= (product_(v in V(G)) alpha_(phi(v))^(sum_(v in tau in cal(T))^() z_(tau)^(*)) )(product_(e in E(G)) w_(phi(v))^(sum_(e in tau in cal(T))^() z_(tau)^(*))) \ &<= t^(alpha(G))
-//   $
-
-//   Since this holds for all maps $phi$ and there are $N^(abs(V(G)))$ such maps (which is a constant with respect to $tau$):
-
-//   $ T_(max, N)^(G)(e, t) <= N^(abs(V(G))) t^(alpha(G)) => T_(max, N)^(G)(e, t) = O(t^(alpha(G))) $
-// ]
-
-// #theorem[
-//   Let $G$ be a triangle spanning graph where $cal(T)(G) != emptyset$ and let $V = abs(V(G))$, then for all natural numbers $N >= V + 2$
-
-//   $ T_(max, N )^(G)(epsilon, tau) = Omega(tau^(alpha(G))) $
-//   for $epsilon in (0, 0.5)$ and $N$ fixed and $tau ->0$.
-// ]<finiteLowers>
-// #proof[
-//   We will prove this is by constructing an $N$-podal graphon $W$ where $t(W) <= tau$, $e(W) = epsilon$, and $t(G, W) = c t^(alpha(G))$. Let $(x^*, y^(*))$ be the optimal vertex and edge functions which satisfies $alpha(G)$, so $ sum_(v in V(G))^() x^(*) + sum_(e in E(G))^() y^(*) = alpha(G). $ Fix any $a_(0) in (sqrt(epsilon \/ 2), 0.5 )$; this interval is nonempty because $epsilon < 0.5$ .
-
-//   Let $gamma = tau\/6abs(cal(T)(G))$ where $tau$ is the parameter in $T_(max, N)(epsilon, tau)$. $forall gamma > 0$, let $ sigma(gamma) := sum_(i = 1)^(V) gamma^(x_(i)^(*)). $
-
-//   Let ${S_(i)}_(i = 1)^(N)$ be pairwise disjoint measurable sets in $[0, 1]$ where:
-
-//   $ mu(S_i) = cases(gamma^(x^*_(v)) "if" i <= V, a(N) "if" i in {V + 1, V + 2}, b(gamma) "otherwise") $
-
-//   where $     a(N) & := cases(a_(0) + (1)/(2)(1 - 2a_(0) - sigma(gamma)) "if" N = V + 2, a_(0) "otherwise") \
-//   b(gamma) & := (1 - 2 a_(0) - sigma(gamma))/(N - V - 2) $
-
-//   Since $gamma -> 0 => sigma(gamma) -> 0$ and $1 - 2 a_(0) > 0$, there exists a $gamma_(0) > 0$ such that $b(gamma) > 0$ for all $gamma in (0, gamma_(0)]$, and thus a valid measure.
-//   Furthermore, by construction $ sum_(i = 1)^(N)mu(S_(i)) & = 1 $
-
-
-//   So ${S_(i)}_(i = 1)^(N)$ is a partition of $[0, 1]$.
-
-//   Let $w: [N]^(2) -> [0, 1]$ where $ w_(i j) = cases(
-//     gamma^(y_(i j)^(*)) "if" {i, j} in E(G),
-//     beta(gamma) "if" {i, j} = {V + 1, V + 2},
-//     0 "otherwise"
-//   ). $
-
-//   where $ beta(gamma) & = (epsilon - R(gamma))/(2 mu(S_(V + 1)) mu(S_(V+2))) \
-//      R(gamma) & = 2 sum_(i j in E(G))^() gamma^(x_(i)^(*) + x_(j)^(*) + y_(i j)^(*)) $
-
-//   As $gamma -> 0$, $mu(S_(V+1))mu(S_(V+2)) -> a_(0)^(2)$ and $R(gamma) -> 0$, so $beta(gamma) -> (e)/(2 a_(0)^2)$. Since $a_(0)^(2) > epsilon \/ 2$, the limit is less than 1. Hence there exists a $gamma_(1) in (0, gamma_(0)]$ such that $beta(gamma) in (0, 1)$ for all $gamma in (0, gamma_(1))$.
-
-//   Let $W$ be an N-podal graphon with parts ${S_(i)}_(i= 1)^(N)$ and edge weights $w_(i j)$.
-
-//   $
-//     e(W) & = sum_(i, j in [N])^() mu(S_(i)) mu(S_(j)) w_(i j) \
-//          & = 2 beta(gamma) mu(S_(V + 1)) mu(S_(V + 2)) + 2 sum_(i j in E(G))^() gamma^(x_(i)^(*) + x_(j)^(*) + y_(i j)^(*)) \
-//          & = 2 beta(gamma) mu(S_(V + 1)) mu(S_(V + 2)) + R(gamma) \
-//          & = e - R(gamma) + R(gamma) = epsilon
-//   $
-
-//   Thus $W$ has the correct edge density. For the triangle density,
-
-
-//   $ t(W_(0)) & = sum_(i, j, k in [N])^() mu(S_(i)) mu(S_(j)) mu(S_(k)) w_(i j) w_(i k) w_(j k). $
-
-//   The only way that $w_(i j), w_(i k), w_(j k)$ are all nonzero is if ${i, j, k} in cal(T)(G)$. Thus
-
-//   $
-//     t(W_(0)) & = 6 sum_({i, j, k} in cal(T)(G))^() mu(S_(i)) mu(S_(j)) mu(S_(k)) w_(i j) w_(i k) w_(j k) \
-//              & = 6 sum_({i, j, k} in cal(T)(G))^() gamma^(x_(i) + x_(j) + x_(k)) gamma^(y_(i j) + y_(j k) + y_(i k)) \
-//              & = 6 sum_(T in cal(T)(G))^() gamma^(sum_(i in V(T))^() x_(i) + sum_(e in E(T))^() y_(e)) \
-//              & = 6 sum_(T in cal(T)(G))^() gamma^(sum_(i in V(T))^() x_(i) + sum_(e in E(T))^() y_(e)) \
-//   $
-
-//   By the feasibility constraint on $alpha(G)$, $forall T in cal(T)$ $ sum_(i in V(T))^() x_(i)^(*) + sum_(e in E(T))^() y_(e)^(*) >= 1. $ Since $gamma -> 0 => gamma < 1$, that means for all $T in cal(T)$, $ gamma^(sum_(i in V(T))^() x_(i) + sum_(e in E(T))^() y_(e)) <= gamma^(1) $
-
-//   Thus $ t(W_(0)) <= 6 abs(cal(T)(G)) gamma = tau. $
-//   Furthermore by @TriangleTightness, there exists a $T_(0) in cal(T)(G)$ such that $ sum_(v in V(T_(0)))^() x_(v) + sum_(e in E(T_(0)))^() y_(e) = 1. $ Since all terms in the sum of $t(W)$ are positive, $t(W) >= 6 gamma = abs(cal(T)(G))^(-1) tau$. Thus $t(W) = Theta(tau)$.
-
-//   Now for $t(G, W)$:
-
-// $
-//    t(G, W) & = sum_(phi: V(G) -> [N])^() Pi_(phi) \
-//   Pi_(phi) & = (product_(v in V(G))^() mu(S_(phi(v))))(product_(e in E(G)) w_(phi(e)))
-// $
-
-// For $Pi_(phi)$ to be nonzero, every edge $e in E(G)$ must satisfy $w_(phi(e)) != 0$, meaning $phi(e) in E(G)$ or $phi(e) in {V + 1, V+ 2}$.
-
-// Suppose for contradiction some $e = {u, v} in E(G)$ has $phi(e) = {V + 1, V+ 2}$. Without loss of generality, $phi(u) = V + 1$. Since $G$ is triangle spanning, $u$ lies in some triangle $T = {u, v, w} in cal(T)(G)$ with edges $e$, $f = {u, w}$, and $g = {v, w}$ in $E(G)$. For $Pi_(phi) != 0$, we need $w_(phi(f)) != 0$. Since $phi(u) = V + 1$ and the only $k$ such that $w_(V + 1, k) != 0$ is $k = V + 2$, we must have $phi(w) = V + 2$. Symmetrically, $w_(phi(g)) != 0$ forces $phi(w) = V + 1$. These are incompatible, so $Pi_(phi) != 0$.
-
-// Hence every $phi$ where $Pi_(phi)$ satisfies $phi(E(G)) subset E(G)$, and therefore $phi(V(G)) subset [V]$. So,
-
-// $
-//   t(G, W_(0)) & = sum_(phi: V(G) -> [V])^() Pi_(phi)
-// $
-
-// Take $phi = id$: The identity map satisfies $id(E(G)) subset E(G)$ so it contributes a nonzero term.
-
-// $
-//   Pi_(id) & = (product_(v in V(G)) mu(S_(v))) (product_(e in E(G)) w_(e)) \
-//           & = (product_(v in V(G)) gamma^(x^(*)_(v))) (product_(e in E(G)) gamma^(y_(e)^(*))) \
-//           & = gamma^(sum_(v in V(G))^() x^(*)_(v) + sum_(e in E(G))^() y^(*)_(e)) = gamma^(alpha(G))
-// $
-
-
-// Since all $Pi_(phi) >= 0$, $ t(G, W) >= Pi_(id) = gamma^(alpha(G)) = ((tau)/(6 abs(cal(T)(G)) ))^(alpha(G)) = (1)/((6abs(cal(T)(G)))^(alpha(G)) ) tau^(alpha(G)) $
-
-//   Since $W$ is a valid $N$-podal graphon with $e(W) = epsilon$ and $t(W) <= tau$, so $W$ is feasible in the definition of $T^(G)_(max, N)(epsilon, tau)$. Therefore,
-//   $
-//     T_(max, N)^(G)(e, tau) >= t(G, W) >= (1)/((6abs(cal(T)(G)))^(alpha(G)) ) tau^(alpha(G)),
-//   $
-
-//   giving $T^(G)_(max, N)(epsilon, tau) = Omega(tau^(alpha(G)))$ as $tau -> 0$.
-// ]
-
-= Upper Bound for Triangle Spanning
+= Upper Bound for Triangle Spanning Graphs
 <TriangleSpanningGeneral>
 
 In this section, we will prove the upper bound holds for triangle spanning graphs.
@@ -683,16 +520,8 @@ In this section, we will prove the upper bound holds for triangle spanning graph
   This implies, by definition, $T_(max)^(G)(epsilon, tau) = O(tau^(alpha(G)))$ for fixed $epsilon in (0, (1)/(2)]$ and $tau -> 0$.
 ]
 
-// #theorem[
-//   $G$ is a triangle spanning graph where $cal(T)(G) != 0$. $ T_(max)^(G)(e, tau) = Theta(tau^(alpha(G))) $
-// ]
-// #proof[
-//   By @finiteLowers, $forall N >= abs(V(G)) + 2$: $ T^(G)_(max, N)(e, tau) >= c_(1) tau^(alpha(G)). $ Since $ T^(G)_(max, N)(e, tau) <= T_(max)^(G)(e, tau) => c_(1) tau^(alpha(G)) <= T_(max)^(G)(e, tau). $
 
-//   Combining this with @infiniteUpper, we have $ T_(max)^(G)(e, tau) = Theta(tau^(alpha(G))) $
-// ]
-
-= General Graphs
+= Main Result
 <GeneralSquared>
 
 Putting all the results together of the last few sections, we can finally prove that the upper bound holds for all simple graphs.
