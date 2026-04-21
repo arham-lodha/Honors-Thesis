@@ -347,6 +347,32 @@ So we can redefine $T_(max)^(G)(epsilon, tau)$ as $ T_(max)^(G)(epsilon, tau) :=
 
 To show $T_(max)^(G)(epsilon, tau) = Theta(g(tau))$ for some function $g$, we have to show both $O(g(tau))$ and $Omega(g(tau))$. $Omega(g(tau))$ is a bit finicky but straight forward, for fixed $epsilon in (0, 0.5]$ we just have to exhibit a continuous function $W: (0, tau_(*)] -> tilde(cal(W))$ for some $tau_(*) > 0$ where $tau -> W_(tau) in tilde(cal(W))(epsilon, tau)$. We show that $t(G, W_(tau)) = g(tau)$ as $tau -> 0$. We do this in @GeneralConstructionLessHalf and @GeneralConstructionHalf for $epsilon in (0, 0.5)$ and $epsilon in 0.5$ respectively. $O(g(tau))$ requires a bit more work, which is why we look for simplifications to give us intuition, and hopefully reductions of the problem.
 
+= Triangle Spanning Decomposition
+To establish the upper bound,we first prove the result for a simpler family of graphs: those where every edge belongs to a triangle (see @generalUpper). In this section, we demonstrate that any arbitrary graph can be decomposed into a set of these triangle-spanning subgraphs, denoted $cal(C)$, alongside a collection of isolated edges and vertices. Subsequently, in @GeneralSquared, we will show that these residual components do not asymptotically affect the homomorphism density, allowing us to cleanly reduce the general upper bound to the triangle-spanning case.
+
+#definition[
+  A simple graph $G$ is triangle spanning if every edge of $G$ lies in a triangle of $G$.
+]
+
+#definition[
+  Let $G$ be a simple graph. For triangles $S, T in cal(T)(G)$, $S <-> T$ if theres a sequence $S = T_(0), T_(1), #sym.dots.h, T_(k) = T$ of triangles in $G$ where $V(T_(i)) inter V(T_(i + 1)) != emptyset$ for all $i$. Let $cal(T)_1, #sym.dots.h, cal(T)_n$ be the equivalence classes under $<->$. Define $C_(i)$ a subgraph of $G$ with vertex set $ V(C_i) := union.big_(T in cal(T)_i) V(T) $ and edge set $ E(C_i) := union.big_(T in cal(T)_(i))E(T). $ Define the *bridge edges* $B := E(G) without union.big_(i) E(C_(i))$, and the *leftover vertices* $L := V(G) without union.big_(i) V(C_(i))$.
+]
+
+#lemma[ The $C_(i)$ are vertex disjoint and edge disjoint triangle spanning subgraphs of $G$, $B$ consists of edges not lying in any triangle of $G$, and $L$ be the vertices in no triangles,${E(C_(i))}_(i = 1)^(n) union B$ is a partition of $E(G)$, and ${V(C_(i))}_(i = 1)^(n) union L$ is a partition of $V(G)$.
+]<trispandecomp>
+#proof[
+  1. *$B$ consists of edges not in any triangle of $G$*: Let $e in E(G)$. If $e$ lies in some triangle $T in cal(T)(G)$, then $T in cal(T)_(i)$ for some $i$, so $e in E(T) subset E(C_(i))$. Hence $e in.not B$. Conversely, if $e in C_(i)$, then by definition $e in E(T)$ for some triangle $T in cal(T)_(i) subset cal(T)(G)$, so $e$ lies in some triangle of $G$. Thus $e in B$ if and only if $e$ lies in no triangle of $G$. The same argument with vertices in place of edges shows $v in L$ if and only if $v$ lies in no triangle.
+  2. *${E(C_(i))}$ and ${V(C_(i))}$ are pairwise disjoint*: Suppose there exists $e in C_(i) inter C_(j)$ for some $i, j in [n]$. Then $e in E(A)$ for some $A in cal(T)_(i)$ and $B in cal(T)_(j)$. Since $A$ and $B$ share an edge $e$, hence share two vertices, so $A <-> B$ directly (chain of length 1). So $i = j$. There for $E(C_(i))$ are pairwise disjoint. The same argument works for the vertices. Combining with the definitions for $B$ and $L$, this gives us the partitions $E(G) = union.sq_(i) E(C_(i)) union.sq B$ and $V(G) = union.sq_(i) V(C_(i)) union L$.
+  3. *Each $C_(i)$ is triangle spanning*: By construction, $forall e in E(C_(i))$ there exists $T in cal(T_(i))$ such that $e in E(T)$. We must show $T$ is a triangle in $C_(i)$, but this is trivial. By construction, $V(T) subset V(C_(i))$ and $E(T) subset E(C_(i))$. So $e$ is contained in a triangle $T$ in $C_(i)$.
+]
+
+#definition[
+  The $C_(i)$ are the *maximal triangle-spanning components* of $G$, note by assumption $V(C_(i))$ . The triple $(cal(C), B, L)$, where $cal(C) = {C_(i)}_(i = 1)^(n)$, is the *triangle spanning decomposition* of $G$. Let $V(cal(C)) := V(G) without V$ and $E(cal(C)) := E(G) without B$.
+]
+
+Thus we will prove the desired upper bound for triangle spanning graphs first, then we will use the decomposition and reduce the general graph case to a finite number of triangle spanning subgraphs.
+
+
 = The Graph Parameter $alpha(G)$
 <alphaG>
 Let $alpha: cal(G) -> RR_(>0)$ where $ alpha(G) := min{sum_(v in V(G))^() x_(v) + sum_(e in E)^() y_(e)} \ $ where $x: V(G) -> [0, oo)$, $y: E(G) -> [0, oo)$ and for all triangles $tau$ in $G$, $ sum_(v in V(tau))^() x_(v) + sum_(e in E(tau))^() y_(e) >= 1. $
@@ -381,12 +407,31 @@ Let $alpha: cal(G) -> RR_(>0)$ where $ alpha(G) := min{sum_(v in V(G))^() x_(v) 
   contradicting optimality.
 ]
 
+#proposition[
+  Let $G$ be a simple graph. Let $(cal(C), B, L)$ be its triangle spanning decomposition. Then
+  $ alpha(G) = sum_(C in cal(C)) alpha(C) $
+]<DecomposeLP>
+#proof[
+  Recall $alpha(G)$ is the optimal value of
+
+  $ sum_(v in V(G))^() x_(v) + sum_(e in E)^() y_(e) $ subject to $x_(v), y_(e) >= 0$ and for all triangles $T in cal(T)(G),$ $ sum_(v in V(T))^() x_(v) + sum_(e in E(T))^() y_(e) >= 1. $
+  By @trispandecomp, no vertex of $L$ lies in triangle, so for every $v in L$, $x_(v)$ appears in no constraint. Hence at the optimum we may take $x_(v) = 0$. By a symmetric argument, $y_(e) = 0$ for all $e in B$ at the optimum. Thus $alpha(G)$ equals the optimal value of
+
+  $ sum_(v in V(cal(C)))^() x_(v) + sum_(e in E(cal(C)))^() y_(e) $
+
+  subject to the same constraints. By @trispandecomp, because $V(cal(C))$ and $E(cal(C))$ can be partitioned into ${V(C)}_(C in cal(C))$ and ${E(C)}_(C in cal(C))$,
+
+  $
+    sum_(v in V(cal(C)))^() x_(v) + sum_(e in E(cal(C)))^() y_(e) = sum_(C in cal(C))(sum_(v in V(C))^() x_(v) + sum_(e in E(C))^() y_(e)).
+  $
+
+  Moreover, every triangle $T in cal(T)(G)$ lives entirely within a unique $C in cal(C)$. Conversely for all $C in cal(C)$, every triangle in $C$ is a triangle in $G$. So the constraint set decouples: the constraints involving variables from a fixed $C in cal(C)$ are exactly the triangle constraints of $cal(T)(C)$, and no constraint mixes variables from different components. Hence the LP seperates into a sum of $n$ independent sub-LPs, one per component, and $ alpha(G) &= sum_(C in cal(C)) min{sum_(v in V(C))^() x_(v) + sum_(e in E(C))^() y_(e) mid(|) x, y >= 0, (x, y) "feasible for" cal(T)(C)}\
+  &= sum_(C in cal(C)) alpha(C) $
+]
+
+
 
 = Finite Podal Case
-
-#definition[
-  A simple graph $G = (V, E)$ is triangle spanning if every edge of $G$ lies in a triangle of $G$.
-]
 
 #definition[
   For a simple graph $G$, let $ T_(max, N)^(G)(epsilon, tau) := max{t(G, W) mid(|) W "a N-podal graphon", e(W) = epsilon, t(W) <= tau} $
@@ -551,6 +596,7 @@ Let $alpha: cal(G) -> RR_(>0)$ where $ alpha(G) := min{sum_(v in V(G))^() x_(v) 
 // ]
 
 = General Graphons with Edge Density in $(0, 1/2]$
+<TriangleSpanningGeneral>
 
 
 #proposition[
@@ -592,41 +638,8 @@ Let $alpha: cal(G) -> RR_(>0)$ where $ alpha(G) := min{sum_(v in V(G))^() x_(v) 
 // ]
 
 = General Graphs
-#definition[
-  Let $G$ be a simple graph. For triangles $S, T in cal(T)(G)$, $S <-> T$ if theres a sequence $S = T_(0), T_(1), #sym.dots.h, T_(k) = T$ of triangles in $G$ where $V(T_(i)) inter V(T_(i + 1)) != emptyset$ for all $i$. Let $cal(T)_1, #sym.dots.h, cal(T)_n$ be the equivalence classes under $<->$. Define $C_(i)$ a subgraph of $G$ with vertex set $ V(C_i) := union.big_(T in cal(T)_i) V(T) $ and edge set $ E(C_i) := union.big_(T in cal(T)_(i))E(T). $ Define the *bridge edges* $B := E(G) without union.big_(i) E(C_(i))$, and the *leftover vertices* $L := V(G) without union.big_(i) V(C_(i))$.
-]
+<GeneralSquared>
 
-#lemma[ The $C_(i)$ are vertex disjoint and edge disjoint triangle spanning subgraphs of $G$, $B$ consists of edges not lying in any triangle of $G$, and $L$ be the vertices in no triangles,${E(C_(i))}_(i = 1)^(n) union B$ is a partition of $E(G)$, and ${V(C_(i))}_(i = 1)^(n) union L$ is a partition of $V(G)$.
-]<trispandecomp>
-#proof[
-  1. *$B$ consists of edges not in any triangle of $G$*: Let $e in E(G)$. If $e$ lies in some triangle $T in cal(T)(G)$, then $T in cal(T)_(i)$ for some $i$, so $e in E(T) subset E(C_(i))$. Hence $e in.not B$. Conversely, if $e in C_(i)$, then by definition $e in E(T)$ for some triangle $T in cal(T)_(i) subset cal(T)(G)$, so $e$ lies in some triangle of $G$. Thus $e in B$ if and only if $e$ lies in no triangle of $G$. The same argument with vertices in place of edges shows $v in L$ if and only if $v$ lies in no triangle.
-  2. *${E(C_(i))}$ and ${V(C_(i))}$ are pairwise disjoint*: Suppose there exists $e in C_(i) inter C_(j)$ for some $i, j in [n]$. Then $e in E(A)$ for some $A in cal(T)_(i)$ and $B in cal(T)_(j)$. Since $A$ and $B$ share an edge $e$, hence share two vertices, so $A <-> B$ directly (chain of length 1). So $i = j$. There for $E(C_(i))$ are pairwise disjoint. The same argument works for the vertices. Combining with the definitions for $B$ and $L$, this gives us the partitions $E(G) = union.sq_(i) E(C_(i)) union.sq B$ and $V(G) = union.sq_(i) V(C_(i)) union L$.
-  3. *Each $C_(i)$ is triangle spanning*: By construction, $forall e in E(C_(i))$ there exists $T in cal(T_(i))$ such that $e in E(T)$. We must show $T$ is a triangle in $C_(i)$, but this is trivial. By construction, $V(T) subset V(C_(i))$ and $E(T) subset E(C_(i))$. So $e$ is contained in a triangle $T$ in $C_(i)$.
-]
-
-*Terminology:* The $C_(i)$ are the *maximal triangle-spanning components* of $G$, note by assumption $V(C_(i))$ . The triple $(cal(C), B, L)$, where $cal(C) = {C_(i)}_(i = 1)^(n)$, is the *triangle spanning decomposition* of $G$. Let $V(cal(C)) := V(G) without V$ and $E(cal(C)) := E(G) without B$.
-
-#proposition[
-  Let $G$ be a simple graph. Let $(cal(C), B, L)$ be its triangle spanning decomposition. Then
-  $ alpha(G) = sum_(C in cal(C)) alpha(C) $
-]<DecomposeLP>
-#proof[
-  Recall $alpha(G)$ is the optimal value of
-
-  $ sum_(v in V(G))^() x_(v) + sum_(e in E)^() y_(e) $ subject to $x_(v), y_(e) >= 0$ and for all triangles $T in cal(T)(G),$ $ sum_(v in V(T))^() x_(v) + sum_(e in E(T))^() y_(e) >= 1. $
-  By @trispandecomp, no vertex of $L$ lies in triangle, so for every $v in L$, $x_(v)$ appears in no constraint. Hence at the optimum we may take $x_(v) = 0$. By a symmetric argument, $y_(e) = 0$ for all $e in B$ at the optimum. Thus $alpha(G)$ equals the optimal value of
-
-  $ sum_(v in V(cal(C)))^() x_(v) + sum_(e in E(cal(C)))^() y_(e) $
-
-  subject to the same constraints. By @trispandecomp, because $V(cal(C))$ and $E(cal(C))$ can be partitioned into ${V(C)}_(C in cal(C))$ and ${E(C)}_(C in cal(C))$,
-
-  $
-    sum_(v in V(cal(C)))^() x_(v) + sum_(e in E(cal(C)))^() y_(e) = sum_(C in cal(C))(sum_(v in V(C))^() x_(v) + sum_(e in E(C))^() y_(e)).
-  $
-
-  Moreover, every triangle $T in cal(T)(G)$ lives entirely within a unique $C in cal(C)$. Conversely for all $C in cal(C)$, every triangle in $C$ is a triangle in $G$. So the constraint set decouples: the constraints involving variables from a fixed $C in cal(C)$ are exactly the triangle constraints of $cal(T)(C)$, and no constraint mixes variables from different components. Hence the LP seperates into a sum of $n$ independent sub-LPs, one per component, and $ alpha(G) &= sum_(C in cal(C)) min{sum_(v in V(C))^() x_(v) + sum_(e in E(C))^() y_(e) mid(|) x, y >= 0, (x, y) "feasible for" cal(T)(C)}\
-  &= sum_(C in cal(C)) alpha(C) $
-]
 
 #proposition[
   Let $G$ be simple graph, where $V = abs(V(G))$, and $(cal(C), B, L)$ is its triangle spanning decomposition. Then $ T_(max)^(G)(epsilon, tau) = O(tau^(alpha(G))) $
