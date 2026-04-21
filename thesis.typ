@@ -143,7 +143,7 @@ Specializing the reduction lemma to $G = K_(2)$ and $G = K_(3)$, for which $phi:
 t(W) & = sum_(i, j, k = 1)^(N) mu(S_(i)) mu(S_(j)) mu(S_(k)) w_(i j) w_(i k) w_(j k) $
 
 === Razborov Triangle
-The image of the function $(e, t): tilde(cal(W)) -> [0, 1]^(2)$ where $W -> (e(W), t(W))$ is called the *Razborov Triangle $R$*, after Razborov found the minimal triangle density for a given edge density in his seminal paper @razborov2008minimal.
+The image of the function $(e, t): tilde(cal(W)) -> [0, 1]^(2)$ where $W -> (e(W), t(W))$ is called the *Razborov Triangle $cal(R)$*, after Razborov found the minimal triangle density for a given edge density in his seminal paper @razborov2008minimal.
 
 #theorem(name: [Maximum Triangle Density])[
   For a graphon $W$ with edge density $epsilon$ $ t(W) <= epsilon^((3)/(2)). $ The bound is uniquely satisfied by $W = bb(1)_([0, sqrt(epsilon)]^(2))$.
@@ -169,15 +169,15 @@ The image of the function $(e, t): tilde(cal(W)) -> [0, 1]^(2)$ where $W -> (e(W
   This strategy, partitioning the graphon such that one localized region exhausts the allowed triangle density while the remainder contributes to the edge density without forming triangles, will be directly reflected in the constructions later in this thesis.
 ]
 
-Putting the results of @TriangleMax, @TriangleMin1, @TriangleMin2, and @MinTriangle3 together, we see $R$ looks like the region below in @RazbTriangleVis.
+Putting the results of @TriangleMax, @TriangleMin1, @TriangleMin2, and @MinTriangle3 together, we see $cal(R)$ looks like the region below in @RazbTriangleVis.
 
 #figure(
   RazbTriangle,
-  caption: [    The Razborov Triangle $R$: The shaded interior represents the achievable triangle densities $t$ for a given edge density $e$.
+  caption: [    The Razborov Triangle $cal(R)$: The shaded interior represents the achievable triangle densities $t$ for a given edge density $e$.
   ],
 )<RazbTriangleVis>
 
-Our region of interest is studying the behavior $T_(max)$ infinitesimally close to $(0, 0.5] times {0} in R$.
+Our region of interest in this thesis is looking infinitesimally close to $(0, 0.5] times {0} in R$.
 
 == Linear Programming
 Lets switch gears a bit, and discuss Linear Programming. We will follow the notation and terminology of #cite(<vanderbei1998linear>, form: "prose").
@@ -334,17 +334,17 @@ tilde(cal(W))(N; epsilon, tau) & := tilde(cal(W))(N) inter tilde(cal(W))(epsilon
 *Asymptotics*: For functions $f, g: D -> RR_(>0)$ and a limit point $p in D$, we write $f(x) = O(g(x))$ if there exists $C > 0$ such that $f(x) <= C g(x)$ in a punctured neighborhood of $p$. We write $f(x) = Omega(g(x))$ if there exists $c > 0$ such that $f(x) >= c g(x)$ in a punctured neighborhood of $p$. We write $f(x) = Theta(g(x))$ if $f(x) = O(g(x))$ and $f(x) = Omega(g(x))$.
 
 = The Extremal Problem
-Having developed the relavent machinery, we will state the problem this thesis addresses. Fix a simple graph $G$, and a pair of real numbers $(epsilon, tau) in "int"(R)$. We ask: among all graphons with edge density $epsilon$ and triangle density at most $tau$, what is the tightest upper bound we can get for the homomorphism density of $G$? That is, we study the quantity $ T^(G)_(max)(epsilon, tau) := sup {t(G, W) mid(|) W in tilde(cal(W))(epsilon, tau)} $ and how it behaves near the boundary of the Razborov Triangle. In this thesis, we will seek to understand the asymptotics of $T_(max)^(G)$ for $tau -> 0$ and $epsilon in (0, (1)/(2)]$.
+Having developed the relavent machinery, we will state the problem this thesis addresses. Fix a simple graph $G$, and a pair of edge and triangle densities in the Razborov triangle $(epsilon, tau) in "int"(cal(R))$. We ask: among all graphons with edge density $epsilon$ and triangle density at most $tau$, what is the tightest upper bound we can get for the homomorphism density of $G$? That is, we study the quantity $ T^(G)_(max)(epsilon, tau) := sup {t(G, W) mid(|) W in tilde(cal(W))(epsilon, tau)} $ and how it behaves near the boundary of the Razborov Triangle. In this thesis, we will seek to understand the asymptotics of $T_(max)^(G)$ for $tau -> 0$ and $epsilon in (0, (1)/(2)]$.
 
 Intuitively, this is an extremal question about how much subgraph structure $G$ can survive in a graphon with a few triangles. The regime $tau -> 0$ forces the graphon toward triangle-free behavior while holding the edge density, and the question is whether (and how quickly) $G$-density must also decay.
 
-Before turning to the asymptotics, we note that $T^(G)_(epsilon, tau)$ is a genuine maximum, and not just a supremum.
+Before turning to the asymptotics, we note that $T^(G)_(max)(epsilon, tau)$ is a genuine maximum, and not just a supremum.
 
 #proposition[
-  For every simple graph $G$, every $(epsilon, tau) in R$, there exists a graphon $W in tilde(cal(W))(epsilon, tau)$ such that $t(G, W) = T_(max)^(G)(epsilon, tau)$.
+  For every simple graph $G$, every $(epsilon, tau) in cal(R)$, there exists a graphon $W in tilde(cal(W))(epsilon, tau)$ such that $t(G, W) = T_(max)^(G)(epsilon, tau)$.
 ]
 #proof[
-  Let $F: tilde(cal(W)) -> R subset [0, 1]^(2)$ where $F(W) = (e(W), t(W))$. By @ContinuityHomomorphismDensity, $e$ and $t$ are continuous, meaning $F$ is continuous. By definition, $tilde(cal(W))(epsilon, tau) = F^(-1)(epsilon times [0, tau])$. $epsilon times [0, tau]$ is closed, and as the preimage of a closed set $tilde(cal(W))(epsilon, tau)$ is closed. Since $(tilde(cal(W)), delta_(cut))$ is compact and all closed sets of a compact set are compact, $tilde(cal(W))(epsilon, tau)$ is compact. Finally, the map $t(G, dot)$ is continuous by @ContinuityHomomorphismDensity, and a continuous real-valued function on a nonempty compact set attains its supremum. Therefore, $T_(max)^(G)(epsilon, tau)$ is attained by some $W in tilde(cal(W))(epsilon, tau)$.
+  Let $F: tilde(cal(W)) -> cal(R) subset [0, 1]^(2)$ where $F(W) = (e(W), t(W))$. By @ContinuityHomomorphismDensity, $e$ and $t$ are continuous, meaning $F$ is continuous. By definition, $tilde(cal(W))(epsilon, tau) = F^(-1)(epsilon times [0, tau])$. $epsilon times [0, tau]$ is closed, and as the preimage of a closed set $tilde(cal(W))(epsilon, tau)$ is closed. Since $(tilde(cal(W)), delta_(cut))$ is compact and all closed sets of a compact set are compact, $tilde(cal(W))(epsilon, tau)$ is compact. Finally, the map $t(G, dot)$ is continuous by @ContinuityHomomorphismDensity, and a continuous real-valued function on a nonempty compact set attains its supremum. Therefore, $T_(max)^(G)(epsilon, tau)$ is attained by some $W in tilde(cal(W))(epsilon, tau)$.
 ]
 
 So we can redefine $T_(max)^(G)(epsilon, tau)$ as $ T_(max)^(G)(epsilon, tau) := max {t(G, W) mid(|) W in tilde(cal(W))(epsilon, tau)}. $
@@ -644,18 +644,20 @@ do not appear in any constraints of the primal LP for $alpha(G)$
 //   giving $T^(G)_(max, N)(epsilon, tau) = Omega(tau^(alpha(G)))$ as $tau -> 0$.
 // ]
 
-= General Graphons with Edge Density in $(0, 1/2]$
+= Upper Bound for Triangle Spanning
 <TriangleSpanningGeneral>
 
 In this section, we will prove the upper bound holds for triangle spanning graphs.
 
 #proposition[
-  Let $G$ be a triangle spanning graph. $T_(max)^(G)(e, tau) = O(tau^(alpha(G)))$
+  Let $G$ be a triangle spanning graph, and let $V = abs(V(G))$. Then for all $(e, tau) in cal(R)$, $ T_(max)^(G)(epsilon, tau) <= tau^(alpha(G)). $
+  Furthermore, for $T_(max)^(G)(epsilon, tau) = O(tau^(alpha(G)))$ for fixed $epsilon in (0, (1)/(2)]$ and $tau -> 0$.
 ]<infiniteUpper>
 #proof[
-  Let ${z_(tau)^(*)}_(tau in cal(T)(G))$ be optimal solution to the dual LP to $alpha$. By Strong Duality, $alpha(G) = sum_(tau in cal(T)(G))^() z_(tau)^(*).$ For $x in [0, 1]^(V)$ and for all $T = {i, j, k} in cal(T)(G)$, let $ x_(T) := vec(x_(i), x_(j), x_(j)). $
+  Fix any $W in tilde(cal(W))(epsilon, tau)$ where $(epsilon, tau) in R$.
+  Let ${z_(tau)^(*)}_(tau in cal(T)(G))$ be optimal solution to the dual LP to $alpha(G)$. By Strong Duality, $alpha(G) = sum_(tau in cal(T)(G))^() z_(tau)^(*).$ For $x in [0, 1]^(V)$ and for all $T = {i, j, k} in cal(T)(G)$, let $ x_(T) := vec(x_(i), x_(j), x_(j)). $
 
-  Let $W_(triangle): [0, 1]^(3) -> [0, 1]$ where $ W_(triangle)(x_(1), x_(2), x_(3)) = W(x_(1), x_(2)) W(x_(2), x_(3)) W(x_(1), x_(3)). $ By the Dual LP,$forall e in E(G)$ $sum_(T in.rev e)^() z_(e)^(*) <= 1$. Since $W <= 1$, raising $W$ to a power $n in [0, 1]$ can only increase the value. Thus $ product_(i j in E(G)) W(x_(i), x_(j)) <= product_(i j in E(G)) W(x_(i), x_(j))^(sum_(T in.rev i j) z_(T)^(*)) = product_(T in cal(T)(G)) W_(triangle)(x_(T))^(z_(T)^(*)), $
+  Let $W_(triangle): [0, 1]^(3) -> [0, 1]$ where $ W_(triangle)(x_(1), x_(2), x_(3)) = W(x_(1), x_(2)) W(x_(2), x_(3)) W(x_(1), x_(3)). $ By the Dual LP, $sum_(T in.rev e)^() z_(e)^(*) in [0, 1]$ for all edges $e in E(G)$. Since $W <= 1$, raising $W$ to a exponent in $[0, 1]$ can only increase the value. Thus $ product_(i j in E(G)) W(x_(i), x_(j)) <= product_(i j in E(G)) W(x_(i), x_(j))^(sum_(T in.rev i j) z_(T)^(*)) = product_(T in cal(T)(G)) W_(triangle)(x_(T))^(z_(T)^(*)), $
 
   where the last equality comes from grouping all the edges into their respective triangles. Thus,
 
@@ -675,7 +677,10 @@ In this section, we will prove the upper bound holds for triangle spanning graph
     & = t(W)^(alpha(G)) <= tau^(alpha(G))
   $
 
-  Thus $ t(G, W) = O(tau^(alpha(G))) $
+
+  Since $t(G, W) <= tau^(alpha(G))$ is true for all $W in tilde(cal(W))(epsilon, tau)$, $ T_(max)^(G)(epsilon, tau) <= tau^(alpha(G)). $
+
+  This implies, by definition, $T_(max)^(G)(epsilon, tau) = O(tau^(alpha(G)))$ for fixed $epsilon in (0, (1)/(2)]$ and $tau -> 0$.
 ]
 
 // #theorem[
@@ -693,7 +698,8 @@ In this section, we will prove the upper bound holds for triangle spanning graph
 Putting all the results together of the last few sections, we can finally prove that the upper bound holds for all simple graphs.
 
 #proposition[
-  Let $G$ be simple graph, where $V = abs(V(G))$, and $(cal(C), B, L)$ is its triangle spanning decomposition. Then $ T_(max)^(G)(epsilon, tau) = O(tau^(alpha(G))) $
+  Let $G$ be simple graph, where $V = abs(V(G))$, and $(cal(C), B, L)$ is its triangle spanning decomposition. Then for all $(e, tau) in cal(R)$, $ T_(max)^(G)(epsilon, tau) <= tau^(alpha(G)). $
+  Furthermore, for $T_(max)^(G)(epsilon, tau) = O(tau^(alpha(G)))$ for fixed $epsilon in (0, (1)/(2)]$ and $tau -> 0$.
 ]<generalUpper>
 #proof[
   Let $W$ be a graphon where $e(W) = e$ and $t(W) = tau$. By definition $W <= 1$, so we have the following for $arrow(x) in [0, 1]^(V)$
@@ -714,7 +720,13 @@ Putting all the results together of the last few sections, we can finally prove 
   $ t(G, W) <= tau^(sum_(C in cal(C))^() alpha(C)) = tau^(alpha(G)) $
   where the equality $alpha(G) = sum_(C in cal(C))^() alpha(C)$  comes from @DecomposeLP. Thus, if for all valid graphons $W$, $t(G, W) <= tau^(alpha(G))$ then $ T_(max)^(G)(epsilon, tau) <= tau^(alpha(G)) $
   and $ T_(max)^(G)(epsilon, tau) = O(tau^(alpha(G))) $
-  for fixed $epsilon in (0, (1)/(2))$ and $tau -> 0$.
+  for fixed $epsilon in (0, (1)/(2)]$ and $tau -> 0$.
+]
+
+Having established the upper bound, it remains to show that this bound is tight. We demonstrate this by explicitly constructing a family of graphons $W_(tau) in tilde(cal(W))(epsilon, tau)$ that saturates the upper bound as $tau -> 0$. We achieve this through a finite podal graphon construction  parameterized by the optimal primal LP solutions. @GeneralConstructionLessHalf does it for $epsilon in (0, (1)/(2))$, while @GeneralConstructionHalf addresses the boundary case $epsilon = (1)/(2)$.
+
+#definition[
+  $ T_(max, N)^(G) := max{t(G, W) mid(|) W in tilde(cal(W))(N; epsilon, tau)} $
 ]
 
 #proposition[
@@ -904,6 +916,10 @@ Putting all the results together of the last few sections, we can finally prove 
 
   Combining this with @generalUpper, we have $ T_(max)^(G)(epsilon, tau) = Theta(tau^(alpha(G))) $
 ]
+
+= Examples
+
+= Next Steps
 
 
 #bibliography("refs.bib", style: { "springer-mathphys" }, title: "References")
