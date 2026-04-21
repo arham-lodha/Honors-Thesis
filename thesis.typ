@@ -561,31 +561,31 @@ Let $alpha: cal(G) -> RR_(>0)$ where $ alpha(G) := min{sum_(v in V(G))^() x_(v) 
 
 //   Now for $t(G, W)$:
 
-//   $
-//      t(G, W) & = sum_(phi: V(G) -> [N])^() Pi_(phi) \
-//     Pi_(phi) & = (product_(v in V(G))^() mu(S_(phi(v))))(product_(e in E(G)) w_(phi(e)))
-//   $
+// $
+//    t(G, W) & = sum_(phi: V(G) -> [N])^() Pi_(phi) \
+//   Pi_(phi) & = (product_(v in V(G))^() mu(S_(phi(v))))(product_(e in E(G)) w_(phi(e)))
+// $
 
-//   For $Pi_(phi)$ to be nonzero, every edge $e in E(G)$ must satisfy $w_(phi(e)) != 0$, meaning $phi(e) in E(G)$ or $phi(e) in {V + 1, V+ 2}$.
+// For $Pi_(phi)$ to be nonzero, every edge $e in E(G)$ must satisfy $w_(phi(e)) != 0$, meaning $phi(e) in E(G)$ or $phi(e) in {V + 1, V+ 2}$.
 
-//   Suppose for contradiction some $e = {u, v} in E(G)$ has $phi(e) = {V + 1, V+ 2}$. Without loss of generality, $phi(u) = V + 1$. Since $G$ is triangle spanning, $u$ lies in some triangle $T = {u, v, w} in cal(T)(G)$ with edges $e$, $f = {u, w}$, and $g = {v, w}$ in $E(G)$. For $Pi_(phi) != 0$, we need $w_(phi(f)) != 0$. Since $phi(u) = V + 1$ and the only $k$ such that $w_(V + 1, k) != 0$ is $k = V + 2$, we must have $phi(w) = V + 2$. Symmetrically, $w_(phi(g)) != 0$ forces $phi(w) = V + 1$. These are incompatible, so $Pi_(phi) != 0$.
+// Suppose for contradiction some $e = {u, v} in E(G)$ has $phi(e) = {V + 1, V+ 2}$. Without loss of generality, $phi(u) = V + 1$. Since $G$ is triangle spanning, $u$ lies in some triangle $T = {u, v, w} in cal(T)(G)$ with edges $e$, $f = {u, w}$, and $g = {v, w}$ in $E(G)$. For $Pi_(phi) != 0$, we need $w_(phi(f)) != 0$. Since $phi(u) = V + 1$ and the only $k$ such that $w_(V + 1, k) != 0$ is $k = V + 2$, we must have $phi(w) = V + 2$. Symmetrically, $w_(phi(g)) != 0$ forces $phi(w) = V + 1$. These are incompatible, so $Pi_(phi) != 0$.
 
-//   Hence every $phi$ where $Pi_(phi)$ satisfies $phi(E(G)) subset E(G)$, and therefore $phi(V(G)) subset [V]$. So,
+// Hence every $phi$ where $Pi_(phi)$ satisfies $phi(E(G)) subset E(G)$, and therefore $phi(V(G)) subset [V]$. So,
 
-//   $
-//     t(G, W_(0)) & = sum_(phi: V(G) -> [V])^() Pi_(phi)
-//   $
+// $
+//   t(G, W_(0)) & = sum_(phi: V(G) -> [V])^() Pi_(phi)
+// $
 
-//   Take $phi = id$: The identity map satisfies $id(E(G)) subset E(G)$ so it contributes a nonzero term.
+// Take $phi = id$: The identity map satisfies $id(E(G)) subset E(G)$ so it contributes a nonzero term.
 
-//   $
-//     Pi_(id) & = (product_(v in V(G)) mu(S_(v))) (product_(e in E(G)) w_(e)) \
-//             & = (product_(v in V(G)) gamma^(x^(*)_(v))) (product_(e in E(G)) gamma^(y_(e)^(*))) \
-//             & = gamma^(sum_(v in V(G))^() x^(*)_(v) + sum_(e in E(G))^() y^(*)_(e)) = gamma^(alpha(G))
-//   $
+// $
+//   Pi_(id) & = (product_(v in V(G)) mu(S_(v))) (product_(e in E(G)) w_(e)) \
+//           & = (product_(v in V(G)) gamma^(x^(*)_(v))) (product_(e in E(G)) gamma^(y_(e)^(*))) \
+//           & = gamma^(sum_(v in V(G))^() x^(*)_(v) + sum_(e in E(G))^() y^(*)_(e)) = gamma^(alpha(G))
+// $
 
 
-//   Since all $Pi_(phi) >= 0$, $ t(G, W) >= Pi_(id) = gamma^(alpha(G)) = ((tau)/(6 abs(cal(T)(G)) ))^(alpha(G)) = (1)/((6abs(cal(T)(G)))^(alpha(G)) ) tau^(alpha(G)) $
+// Since all $Pi_(phi) >= 0$, $ t(G, W) >= Pi_(id) = gamma^(alpha(G)) = ((tau)/(6 abs(cal(T)(G)) ))^(alpha(G)) = (1)/((6abs(cal(T)(G)))^(alpha(G)) ) tau^(alpha(G)) $
 
 //   Since $W$ is a valid $N$-podal graphon with $e(W) = epsilon$ and $t(W) <= tau$, so $W$ is feasible in the definition of $T^(G)_(max, N)(epsilon, tau)$. Therefore,
 //   $
@@ -744,12 +744,35 @@ Let $alpha: cal(G) -> RR_(>0)$ where $ alpha(G) := min{sum_(v in V(G))^() x_(v) 
   Thus $ t(W_(0)) <= 6 abs(cal(T)(G)) gamma = tau. $
   Furthermore by @TriangleTightness, there exists a $T_(0) in cal(T)(G)$ such that $ sum_(v in V(T_(0)))^() x_(v) + sum_(e in E(T_(0)))^() y_(e) = 1. $ Since all terms in the sum of $t(W)$ are positive, $t(W) >= 6 tau = abs(cal(T)(G))^(-1) tau$. Thus $t(W) = Theta(tau)$.
 
-  Now for $t(G, W)$, the proof follows identically to @FiniteUpper.
-
+  Now for $t(G, W)$:
 
   $
-    t(G, W) >= gamma^(alpha(G)) = ((tau)/(6 abs(cal(T)(G)) ))^(alpha(G)) = (1)/((6abs(cal(T)(G)))^(alpha(G)) ) tau^(alpha(G))
+     t(G, W) & = sum_(phi: V(G) -> [N])^() Pi_(phi) \
+    Pi_(phi) & = (product_(v in V(G))^() mu(S_(phi(v))))(product_(e in E(G)) w_(phi(e)))
   $
+
+  For $Pi_(phi)$ to be nonzero, every edge $e in E(G)$ must satisfy $w_(phi(e)) != 0$, meaning $phi(e) in E(G)$ or $phi(e) in {V + 1, V+ 2}$.
+
+  Suppose for contradiction some $e = {u, v} in E(G)$ has $phi(e) = {V + 1, V+ 2}$. Without loss of generality, $phi(u) = V + 1$. Since $G$ is triangle spanning, $u$ lies in some triangle $T = {u, v, w} in cal(T)(G)$ with edges $e$, $f = {u, w}$, and $g = {v, w}$ in $E(G)$. For $Pi_(phi) != 0$, we need $w_(phi(f)) != 0$. Since $phi(u) = V + 1$ and the only $k$ such that $w_(V + 1, k) != 0$ is $k = V + 2$, we must have $phi(w) = V + 2$. Symmetrically, $w_(phi(g)) != 0$ forces $phi(w) = V + 1$. These are incompatible, so $Pi_(phi) != 0$.
+
+  Hence every $phi$ where $Pi_(phi)$ satisfies $phi(E(G)) subset E(G)$, $phi(V(G)) subset [V]$. So,
+
+  $
+    t(G, W_(0)) & = sum_(phi: V(G) -> [V])^() Pi_(phi)
+  $
+
+  Take $phi = id$: The identity map satisfies $id(E(G)) subset E(G)$ so it contributes a nonzero term.
+
+  $
+    Pi_(id) & = (product_(v in V(G)) mu(S_(v))) (product_(e in E(G)) w_(e)) \
+            & = (product_(v in V(G)) gamma^(x^(*)_(v))) (product_(e in E(G)) gamma^(y_(e)^(*))) \
+            & = gamma^(sum_(v in V(G))^() x^(*)_(v) + sum_(e in E(G))^() y^(*)_(e)) = gamma^(alpha(G))
+  $
+
+
+  Since all $Pi_(phi) >= 0$, $ t(G, W) >= Pi_(id) = gamma^(alpha(G)) = ((tau)/(6 abs(cal(T)(G)) ))^(alpha(G)) = (1)/((6abs(cal(T)(G)))^(alpha(G)) ) tau^(alpha(G)) $
+
+
 
   Since $W$ is a valid $N$-podal graphon with $e(W) = epsilon$ and $t(W) <= tau$, so $W$ is feasible in the definition of $T^(G)_(max, N)(epsilon, tau)$. Therefore,
   $
