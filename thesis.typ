@@ -219,28 +219,29 @@ The second part of the theorem gives the intuition on why the first part holds. 
 The LPs that occur in the thesis are of a particularly nice form. Their feasible regions are nonempty. Every LP we will consider has a feasible point obtained by setting all the variables sufficiently large. Furthermore, their objectives are bounded below by 0, since all the variables are nonnegative and the objective coefficients are nonnegative. Hence every LP we consider has an optimal solution.
 
 === Dual Linear Programs
-Before defining the dual, we will motivate the definition a bit. Given an LP (which we will call the original LP)
+For linear programs, there is a natural notion duality, which we will define below. Dual Linear Programs and the theorems relating a LP and its dual, will be a vital tool in this thesis.
+// Before defining the dual, we will motivate the definition a bit. Given an LP (which we will call the original LP)
 
-$ min c^(T) x & "subject to" A x >= b, x>= 0, $
+// $ min c^(T) x & "subject to" A x >= b, x>= 0, $
 
-we can ask for a bound on the optimal value? In other words, how do we prove that the optimal value is at least some number $L$.
+// we can ask for a bound on the optimal value? In other words, how do we prove that the optimal value is at least some number $L$.
 
-Consider our earlier example. Can we prove the lower bound algebraically, rather than graphically? Here is a way: if we add the two constraints, we see that $3 x + 3y >= 4$ which gives $x + y >= (4)/(3)$. Since $x + y$ is the objective function, we have shown that every feasible point has an objective value of at least 4/3, which matches our optimal value.
+// Consider our earlier example. Can we prove the lower bound algebraically, rather than graphically? Here is a way: if we add the two constraints, we see that $3 x + 3y >= 4$ which gives $x + y >= (4)/(3)$. Since $x + y$ is the objective function, we have shown that every feasible point has an objective value of at least 4/3, which matches our optimal value.
 
-The move here was to take a *non-negative linear combination of the constraints* and then observe that the resulting inequality had the objective function on one side and a number on the other side. Whenever such a combination can be arranged, the right-hand side is a valid lower bound on the primal optimum. The dual LP formalizes and generalizes this idea.
+// The move here was to take a *non-negative linear combination of the constraints* and then observe that the resulting inequality had the objective function on one side and a number on the other side. Whenever such a combination can be arranged, the right-hand side is a valid lower bound on the primal optimum. The dual LP formalizes and generalizes this idea.
 
-Going back to our general LP, suppose $y in RR^(m)_(>=0)$ is a vector. Multiplying the $k$-th constraint $sum_(k) A_(k i) x_(i) >= b_(k)$ by $y_(k)$ and summing gives us $ y^(T) A x >= y^(T) b. $ This inequality holds for every feasible $x$. Now, suppose further we choose $y$ such that $A^(T) y <= c$ componentwise. Then for all feasible $x >= 0$:
+// Going back to our general LP, suppose $y in RR^(m)_(>=0)$ is a vector. Multiplying the $k$-th constraint $sum_(k) A_(k i) x_(i) >= b_(k)$ by $y_(k)$ and summing gives us $ y^(T) A x >= y^(T) b. $ This inequality holds for every feasible $x$. Now, suppose further we choose $y$ such that $A^(T) y <= c$ componentwise. Then for all feasible $x >= 0$:
 
-$ c^(T) x >= (A^(T) y)^(T) x = y^(T) A x >= y^(T) b = b^(T) y $
+// $ c^(T) x >= (A^(T) y)^(T) x = y^(T) A x >= y^(T) b = b^(T) y $
 
-so $b^(T) y$ is a lower bound on the primal optimum. To get the best lower bound this way, we should maximize over all $y$ where $A^(T) y <= c$. So we get
+// so $b^(T) y$ is a lower bound on the primal optimum. To get the best lower bound this way, we should maximize over all $y$ where $A^(T) y <= c$. So we get
 
-$ max b^(T) y & "subject to" A^(T) y <= c, y>= 0, $
+// $ max b^(T) y & "subject to" A^(T) y <= c, y>= 0, $
 
-This LP is called the *dual* to the original, which we will now call *primal*.
+// This LP is called the *dual* to the original, which we will now call *primal*.
 
 #definition[
-  Given the primal LP,
+  Given the *primal* LP,
 
   $ min c^(T) x & "subject to" A x >= b, x>= 0, $
 
@@ -255,6 +256,9 @@ The dual of the dual, formed by applying this transformation again (after conver
 
 #theorem(name: "Weak Duality")[
   Let $x$ be a feasible point of the primal LP and $y$ be a feasible point of the dual LP. Then $ c^(T)x >= b^(T) y. $ In particular, the optimal value of the dual is at most the optimal value of the primal.
+]
+#proof[
+  $b^(T) y = y^T b <= y^(T) A x = (A^(T) y)^(T) x <= c^(T) x$, where we are using the constraints of $x$ and $y$.
 ]
 
 Weak duality tells us the dual gives a lower bound on the primal. The fundamental theorem of LP duality says that this bound is in fact tight.
@@ -375,10 +379,51 @@ Thus we will prove the desired upper bound for triangle spanning graphs first, t
 
 = The Graph Parameter $alpha(G)$
 <alphaG>
-Let $alpha: cal(G) -> RR_(>0)$ where $ alpha(G) := min{sum_(v in V(G))^() x_(v) + sum_(e in E)^() y_(e)} \ $ where $x: V(G) -> [0, oo)$, $y: E(G) -> [0, oo)$ and for all triangles $tau$ in $G$, $ sum_(v in V(tau))^() x_(v) + sum_(e in E(tau))^() y_(e) >= 1. $
+
+In this section, we will introduce the graph parameter $alpha(G)$ that will control the asymptotics of $T_(max)^(G)(epsilon, tau)$. Before the formal definition, we will motivate it through a heuristic computation. Suppose, for a moment, that $T_(max)^(G)(epsilon, tau) = Theta(tau^(alpha))$ for some $alpha = alpha(G) >= 0$, possibly depending on $G$.
+
+This assumption is a guess. A priori, $T_(max)^(G)$ could decay faster than any power of $tau$, slower than any power, or may not have any clean scaling. But the guess is motivated by the fact the relavent functionals are all polynomials: on a finite podal graphon with pode measure $alpha_(i)$ and edge weights $w_(i j)$, both $t(W)$ and $t(G, W)$ are polynomial in $alpha_(i)$ and edge weights $w_(i j)$. So a question about one polynomial functional constrained by other has the chance of admitting a clean power-law scaling. Not automatic, but plausible enough to pursue.
+
+Taking logarithms and passing to the limit we see the exponent would be $ alpha = lim_(tau -> 0) (log(T^(G)_(max)(epsilon, tau)))/(log(tau)), $ if the limit exists.
+
+Since $T_(max)^(G)$ is the maxiumum of $t(G, W)$ over $tilde(cal(W))(epsilon, tau)$, we can approximate $alpha$ by exhibiting a graphon $W_(tau) in tilde(cal(W))(epsilon, tau)$ which depends on $tau$ whose $t(G, W_(tau))$ exhibits a clean scaling. Any such construction gives a bound on the exponent; the right construction should give its value.
+
+*Candidate Construction*: Assume $G$ is a triangle spanning graph and has a triangle. We can technically do this for all $G$, but the triangle spanning case is a lot more illuminating. Our guiding intuition is to avoid "wasted" triangles: any triangle formed in our graphon should ideally correspond to a triangle actually present in $G$. the graphon generates extraneous triangles, it exhausts our tightly constrained $tau$-budget without increasing the density of $G$.
+
+To realize this, consider constructing a finite podal graphon with $V = abs(V(G))$ podes, where each pode cooresponds to a vertex of $G$. We scale the sizes of these podes and the weights of the edges between them as powers of $tau$. Let the measure of the $v$-th pode be $tau^(x_(v))$ for some $x_(v) >= 0$, let the edge weight between pode $u$ and $v$ be roughly $tau^(y_(u v))$ (for non edges in $G$, set the edge weight to 0).
+
+With this construction, the homomorphism density of $G$ generated by mapping each vertex of $G$ to its cooresponding pode is proportional to the product product of the pode measures and edge weights:
+
+$
+  t(G, W) approx product_(v in V(G)) tau^(x_(v)) product_(e in E(G)) tau^(y_(e)) = tau^(sum_(v in V(G))^() x_(v) + sum_(e in E(G))^() y_(e))
+$
+
+Because $tau$ is small ($tau -> 0$), to _maximize_ this density, we must minimize the exponent $sum_(v in V(G))^() x_(v) + sum_(e in E(G))^() y_(e)$. However, we have a restricted total triangle budget. In this $V$-podal graphon, the triangles formed coorespond exactly to $T in cal(T)(G)$. The density of any specific triangle $T$ in the graphon scales as:
+$ tau^(sum_(v in V(T))^() x_(v)^(*) + sum_(e in E(T))^() y_(e)^(*)). $
+
+To satisfy the constraint that $t(W) <= tau = tau^(1)$, every individual triangle formed in the graphon must have a density of $O(tau)$. Therefore, the exponent for each triangle must be at least 1. While this ansatz is not wholly correct, one can notice that $e(W) -> 0$ as $tau -> 0$. But there is quite an easy fix to this situation, inspired by @MinTriangle3, by adding some podes which soak up the remaining edge density while creating no triangles.
+
+This heuristic directly translates our structural embedding problem into a Linear Program. To find the optimal power-law exponent for $T_(max)^(G)$, we must minimize the exponent of the $G$-density subject to the constraint that no triangle exceeds the $tau^(1)$ budget. This optimal exponent is exactly the graph parameter $alpha(G)$.
+
+#definition[
+  Let $alpha: cal(G) -> RR_(>0)$ where $ alpha(G) := min{sum_(v in V(G))^() x_(v) + sum_(e in E)^() y_(e)} \ $ where $x: V(G) -> RR_(>=0)$, $y: E(G) -> RR_(>=0)$ and for all triangles $tau$ in $G$, $ sum_(v in V(tau))^() x_(v) + sum_(e in E(tau))^() y_(e) >= 1. $
+]
+
+The heuristic above motivates $alpha(G)$ as the smallest exponent attainable by a construction of this type; it is not a priori clear that no other construction achieves a smaller exponent, or indeed that the scaling $Theta(tau^(alpha(G)))$ is achieved at all. Establishing both, that $alpha(G)$ is the exponent, not merely a candidate, is the the content of the main theorem of this thesis, proved in the sections that follow.
+
+#definition[
+  The dual LP to $alpha(G)$ is defined as follows:
+
+  $ alpha^(*)(G) := max{sum_(T in cal(T)(G))^() z_(T)} $ where $z: cal(T)(G) -> RR_(>=0)$ and for all vertices $v in V(G)$ and for all $e in E(G)$ $ sum_(T in cal(T)(G) \
+  T in.rev v)^() z_(T) & <= 1 \
+  sum_(T in cal(T)(G) \
+  T in.rev e)^() z_(T) & <= 1 \ $
+]
+
+With the primal and dual linear programs established, we prove a brief but essential structural property of the optimal primal solution $(x^(*), y^(*))$. In our lower bound, constructions later in the thesis, we will build graphons parameterized exactly by these optimal LP variables. To ensure our constructed graphon utilizes the full triangle budget, meaning it achieves a triangle density of exactly $Theta(tau)$ rather than something asymptotically smaller, we must guarantee that the primal optimal solution doesn't loosely over-satisfy all of its constraints. The following lemma guarantees that at least one triangle constraint is strictly tight, effectively anchoring our construction to the $tau$ boundary.
 
 #lemma[
-  Let $G$ be a finite simple graph where $cal(T)(G) != emptyset$. Let $x^*$ and $y^*$ be the vertex and edge weight functions which are the solutions to $alpha(G)$. There exists a $T in cal(T)(G)$ such that $ sum_(v in V(T))^() x_(v)^(*) + sum_(e in E(T))^() y_(e)^(*) = 1 $
+  Let $G$ be a simple graph where $cal(T)(G) != emptyset$. Let $x^*$ and $y^*$ be the vertex and edge weight functions which are the solutions to $alpha(G)$. There exists a $T in cal(T)(G)$ such that $ sum_(v in V(T))^() x_(v)^(*) + sum_(e in E(T))^() y_(e)^(*) = 1 $
 ]<TriangleTightness>
 #proof[
   Assume the contrary that for all $T in cal(T)(G)$
@@ -407,6 +452,10 @@ Let $alpha: cal(G) -> RR_(>0)$ where $ alpha(G) := min{sum_(v in V(G))^() x_(v) 
   contradicting optimality.
 ]
 
+We conclude this section by bridging our algebraic parameter with our graph-theoretic decomposition. Because the bridge edges $B$  and leftover vertices $L$  of our triangle-spanning decomposition do not participate in any triangles of G, their corresponding variables $x_(v)$
+and $y_(e)$
+do not appear in any constraints of the primal LP for $alpha(G)$
+
 #proposition[
   Let $G$ be a simple graph. Let $(cal(C), B, L)$ be its triangle spanning decomposition. Then
   $ alpha(G) = sum_(C in cal(C)) alpha(C) $
@@ -425,76 +474,76 @@ Let $alpha: cal(G) -> RR_(>0)$ where $ alpha(G) := min{sum_(v in V(G))^() x_(v) 
     sum_(v in V(cal(C)))^() x_(v) + sum_(e in E(cal(C)))^() y_(e) = sum_(C in cal(C))(sum_(v in V(C))^() x_(v) + sum_(e in E(C))^() y_(e)).
   $
 
-  Moreover, every triangle $T in cal(T)(G)$ lives entirely within a unique $C in cal(C)$. Conversely for all $C in cal(C)$, every triangle in $C$ is a triangle in $G$. So the constraint set decouples: the constraints involving variables from a fixed $C in cal(C)$ are exactly the triangle constraints of $cal(T)(C)$, and no constraint mixes variables from different components. Hence the LP seperates into a sum of $n$ independent sub-LPs, one per component, and $ alpha(G) &= sum_(C in cal(C)) min{sum_(v in V(C))^() x_(v) + sum_(e in E(C))^() y_(e) mid(|) x, y >= 0, (x, y) "feasible for" cal(T)(C)}\
+  Moreover, every triangle $T in cal(T)(G)$ lives entirely within a unique $C in cal(C)$. Conversely for all $C in cal(C)$, every triangle in $C$ is a triangle in $G$. So the constraint set decouples: the constraints involving variables from a fixed $C in cal(C)$ are exactly the triangle constraints of $cal(T)(C)$, and no constraint mixes variables from different components. Hence the LP seperates into a sum of $n$ independent sub-LPs, one per component, and $ alpha(G) &= sum_(C in cal(C)) min{sum_(v in V(C))^() x_(v) + sum_(e in E(C))^() y_(e) mid(|) x, y >= 0, (x, y) "feasible"}\
   &= sum_(C in cal(C)) alpha(C) $
 ]
 
 
+// TODO ASK ABOUT THIS SECTION. I did want to use it to motivate but I don't think its needed.
+// = Finite Podal Case
 
-= Finite Podal Case
-
-#definition[
-  For a simple graph $G$, let $ T_(max, N)^(G)(epsilon, tau) := max{t(G, W) mid(|) W "a N-podal graphon", e(W) = epsilon, t(W) <= tau} $
-]
-
-#lemma(name: "Triangle Lemma")[
-  For any $N$-podal graphon W with podes $A_(i)$ with measure $alpha_(i) in (0, 1)$ and edge weights $w_(i j) in [0, 1]$, if $t(W) <= tau$, then for all $i, j, k in [N]$ $w_(i j) w_(i k) w_(j k) alpha_(i) alpha_(j) alpha_(k) <= tau$
-]<TriangleLemma>
-#proof[ Since
-  $ t(W) = sum_(i, j, k in [N])^() w_(i j) w_(i k) w_(j k) alpha_(i) alpha_(j) alpha_(k) <= tau $ and all the terms in the expansion are non-negative, thus $ w_(i j) w_(i k) w_(j k) alpha_(i) alpha_(j) alpha_(k) <= tau $
-]
-
-
-// #theorem[
-//   Let $G$ be a triangle spanning graph with $cal(T)(G) != emptyset$. Let $V = abs(V(G))$. $ T_(max, N)^(G)(epsilon, tau) = Theta(tau^(alpha(G))) $ for fixed $epsilon in (0, 0.5)$ and $N >= V + 2$  as $tau -> 0$
+// #definition[
+//   For a simple graph $G$, let $ T_(max, N)^(G)(epsilon, tau) := max{t(G, W) mid(|) W "a N-podal graphon", e(W) = epsilon, t(W) <= tau} $
 // ]
+
+// #lemma(name: "Triangle Lemma")[
+//   For any $N$-podal graphon W with podes $A_(i)$ with measure $alpha_(i) in (0, 1)$ and edge weights $w_(i j) in [0, 1]$, if $t(W) <= tau$, then for all $i, j, k in [N]$ $w_(i j) w_(i k) w_(j k) alpha_(i) alpha_(j) alpha_(k) <= tau$
+// ]<TriangleLemma>
+// #proof[ Since
+//   $ t(W) = sum_(i, j, k in [N])^() w_(i j) w_(i k) w_(j k) alpha_(i) alpha_(j) alpha_(k) <= tau $ and all the terms in the expansion are non-negative, thus $ w_(i j) w_(i k) w_(j k) alpha_(i) alpha_(j) alpha_(k) <= tau $
+// ]
+
+
+// // #theorem[
+// //   Let $G$ be a triangle spanning graph with $cal(T)(G) != emptyset$. Let $V = abs(V(G))$. $ T_(max, N)^(G)(epsilon, tau) = Theta(tau^(alpha(G))) $ for fixed $epsilon in (0, 0.5)$ and $N >= V + 2$  as $tau -> 0$
+// // ]
+// // #proof[
+// //   @FiniteUpper gives the Upper bound and @finiteLowers gives the lower bound.
+// // ]
+
+// #proposition[
+//   Let $G$ be a triangle spanning graph and let $V = abs(V(G))$, then for all natural numbers $N >= V$ $ T_(max, N)^(G)(epsilon, tau) = O(tau^(alpha(G))) $
+//   for $e$ and $N$ fixed and $tau ->0$.
+// ]<FiniteUpper>
 // #proof[
-//   @FiniteUpper gives the Upper bound and @finiteLowers gives the lower bound.
+//   Let ${z_(tau)^(*)}_(tau in cal(T)(G))$ be optimal solution to the dual LP to $alpha$. By Strong Duality, $ alpha(G) = sum_(T in cal(T)(G))^() z_(T)^(*). $ Let $W$ be any $V$-podal graphon where $e(W) = e$ and $t(W) <= tau$. As a sum over all possible mappings $phi: V(G) -> [N]$
+
+//   $ t(G, W) = sum_(phi: V(G) -> [N])^() Pi_(phi) $ where $ Pi_(phi) := product_(v in V(G)) alpha_(phi(v)) product_(e in E(G)) w_(phi(e)). $ Fix an arbitary mapping $phi$. For each triangle $tau in cal(T)$ with vertices $(v_1, v_2, v_3)$ and edges $(e_(1), e_(2), e_(3))$ by @TriangleLemma:
+
+//   $ w_(phi(e_(1))) w_(phi(e_(2))) w_(phi(e_3)) alpha_(phi(v_1)) alpha_(phi(v_2)) alpha_(phi(v_3)) <= t $
+
+//   Thus,
+
+//   $
+//     product_(tau in cal(T))(product_(v in V(tau)) alpha_(phi(v)) product_(e in E(tau)) w_(phi(e)) )^(z_(tau)^(*)) <= product_(tau in cal(T)) t^(z_(tau)^(*)).
+//   $
+
+//   We can easily simplify the right hand side:
+
+//   $ product_(tau in cal(T)) tau^(z_(tau)^(*)) = tau^(sum_(tau in cal(T))^() z_(tau)^(*)) = t^(alpha(G)). $
+
+//   For the left hand side:
+
+//   $
+//     product_(tau in cal(T))(product_(v in V(tau)) alpha_(phi(v)) product_(e in E(tau)) w_(phi(e)) )^(z_(tau)^(*)) &= (product_(tau in cal(T)) product_(v in V(tau)) alpha_(phi(v))^(z_(tau)^(*)))(product_(tau in cal(T)) product_(e in E(tau)) w_(phi(e))^(*)).
+//   $
+
+//   $forall v in V(G)$, when you collect their corresponding terms, they appear with an exponent of $z_(tau)^(*)$ for every $tau in cal(T)$ where $v in tau$. Similarly for the edges. Thus,
+
+//   $
+//     product_(tau in cal(T))(product_(v in V(tau)) alpha_(phi(v)) product_(e in E(tau)) w_(phi(e)) )^(z_(tau)^(*)) &= (product_(v in V(G)) alpha_(phi(v))^(sum_(v in tau in cal(T))^() z_(tau)^(*)) )(product_(e in E(G)) w_(phi(v))^(sum_(e in tau in cal(T))^() z_(tau)^(*)))
+//   $
+
+//   By the constraints of the Dual LP, $sum_(v in tau in cal(T))^() z_(tau)^(*) <= 1$ and $sum_(e in tau in cal(T))^() z_(tau)^(*)$. Since $alpha_(i) <= 1$ and $w_(i j) <= 1$:
+
+//   $
+//     Pi_(phi) = product_(v in V(G)) alpha_(phi(v))product_(e in E(G)) w_(phi(v)) &<= (product_(v in V(G)) alpha_(phi(v))^(sum_(v in tau in cal(T))^() z_(tau)^(*)) )(product_(e in E(G)) w_(phi(v))^(sum_(e in tau in cal(T))^() z_(tau)^(*))) \ &<= t^(alpha(G))
+//   $
+
+//   Since this holds for all maps $phi$ and there are $N^(abs(V(G)))$ such maps (which is a constant with respect to $tau$):
+
+//   $ T_(max, N)^(G)(e, t) <= N^(abs(V(G))) t^(alpha(G)) => T_(max, N)^(G)(e, t) = O(t^(alpha(G))) $
 // ]
-
-#proposition[
-  Let $G$ be a triangle spanning graph and let $V = abs(V(G))$, then for all natural numbers $N >= V$ $ T_(max, N)^(G)(epsilon, tau) = O(tau^(alpha(G))) $
-  for $e$ and $N$ fixed and $tau ->0$.
-]<FiniteUpper>
-#proof[
-  Let ${z_(tau)^(*)}_(tau in cal(T)(G))$ be optimal solution to the dual LP to $alpha$. By Strong Duality, $ alpha(G) = sum_(T in cal(T)(G))^() z_(T)^(*). $ Let $W$ be any $V$-podal graphon where $e(W) = e$ and $t(W) <= tau$. As a sum over all possible mappings $phi: V(G) -> [N]$
-
-  $ t(G, W) = sum_(phi: V(G) -> [N])^() Pi_(phi) $ where $ Pi_(phi) := product_(v in V(G)) alpha_(phi(v)) product_(e in E(G)) w_(phi(e)). $ Fix an arbitary mapping $phi$. For each triangle $tau in cal(T)$ with vertices $(v_1, v_2, v_3)$ and edges $(e_(1), e_(2), e_(3))$ by @TriangleLemma:
-
-  $ w_(phi(e_(1))) w_(phi(e_(2))) w_(phi(e_3)) alpha_(phi(v_1)) alpha_(phi(v_2)) alpha_(phi(v_3)) <= t $
-
-  Thus,
-
-  $
-    product_(tau in cal(T))(product_(v in V(tau)) alpha_(phi(v)) product_(e in E(tau)) w_(phi(e)) )^(z_(tau)^(*)) <= product_(tau in cal(T)) t^(z_(tau)^(*)).
-  $
-
-  We can easily simplify the right hand side:
-
-  $ product_(tau in cal(T)) tau^(z_(tau)^(*)) = tau^(sum_(tau in cal(T))^() z_(tau)^(*)) = t^(alpha(G)). $
-
-  For the left hand side:
-
-  $
-    product_(tau in cal(T))(product_(v in V(tau)) alpha_(phi(v)) product_(e in E(tau)) w_(phi(e)) )^(z_(tau)^(*)) &= (product_(tau in cal(T)) product_(v in V(tau)) alpha_(phi(v))^(z_(tau)^(*)))(product_(tau in cal(T)) product_(e in E(tau)) w_(phi(e))^(*)).
-  $
-
-  $forall v in V(G)$, when you collect their corresponding terms, they appear with an exponent of $z_(tau)^(*)$ for every $tau in cal(T)$ where $v in tau$. Similarly for the edges. Thus,
-
-  $
-    product_(tau in cal(T))(product_(v in V(tau)) alpha_(phi(v)) product_(e in E(tau)) w_(phi(e)) )^(z_(tau)^(*)) &= (product_(v in V(G)) alpha_(phi(v))^(sum_(v in tau in cal(T))^() z_(tau)^(*)) )(product_(e in E(G)) w_(phi(v))^(sum_(e in tau in cal(T))^() z_(tau)^(*)))
-  $
-
-  By the constraints of the Dual LP, $sum_(v in tau in cal(T))^() z_(tau)^(*) <= 1$ and $sum_(e in tau in cal(T))^() z_(tau)^(*)$. Since $alpha_(i) <= 1$ and $w_(i j) <= 1$:
-
-  $
-    Pi_(phi) = product_(v in V(G)) alpha_(phi(v))product_(e in E(G)) w_(phi(v)) &<= (product_(v in V(G)) alpha_(phi(v))^(sum_(v in tau in cal(T))^() z_(tau)^(*)) )(product_(e in E(G)) w_(phi(v))^(sum_(e in tau in cal(T))^() z_(tau)^(*))) \ &<= t^(alpha(G))
-  $
-
-  Since this holds for all maps $phi$ and there are $N^(abs(V(G)))$ such maps (which is a constant with respect to $tau$):
-
-  $ T_(max, N)^(G)(e, t) <= N^(abs(V(G))) t^(alpha(G)) => T_(max, N)^(G)(e, t) = O(t^(alpha(G))) $
-]
 
 // #theorem[
 //   Let $G$ be a triangle spanning graph where $cal(T)(G) != emptyset$ and let $V = abs(V(G))$, then for all natural numbers $N >= V + 2$
@@ -598,6 +647,7 @@ Let $alpha: cal(G) -> RR_(>0)$ where $ alpha(G) := min{sum_(v in V(G))^() x_(v) 
 = General Graphons with Edge Density in $(0, 1/2]$
 <TriangleSpanningGeneral>
 
+In this section, we will prove the upper bound holds for triangle spanning graphs.
 
 #proposition[
   Let $G$ be a triangle spanning graph. $T_(max)^(G)(e, tau) = O(tau^(alpha(G)))$
@@ -613,7 +663,7 @@ Let $alpha: cal(G) -> RR_(>0)$ where $ alpha(G) := min{sum_(v in V(G))^() x_(v) 
     t(G, W) <= integral_([0, 1]^(V)) product_(T in cal(T)(G))W_(triangle)(x_(T))^(z_(T)^(*)) dif arrow(x)
   $
 
-  For all $T = {i, j, k} in cal(T)(G)$, let $S_(T) = T$, $p_(T) = (z_(T)^(*))^(-1)$, and $f_(T) = W_(triangle)(x_(T))^(z_(T))$. Thus by @FinnerCorollary,
+  For all $T = {i, j, k} in cal(T)(G)$, let $S_(T) = T$, $p_(T) = (z_(T)^(*))^(-1)$, and $f_(T) = W_(triangle)(x_(T))^(z_(T))$. Thus by the #link(<FinnerCorollary>)[Corollary to Finner's Inequality],
 
   $
     t(G, W) & <= integral_([0, 1]^(V)) product_(T in cal(T)(G)) f_(T)(x_(T)) dif arrow(x) \
@@ -640,6 +690,7 @@ Let $alpha: cal(G) -> RR_(>0)$ where $ alpha(G) := min{sum_(v in V(G))^() x_(v) 
 = General Graphs
 <GeneralSquared>
 
+Putting all the results together of the last few sections, we can finally prove that the upper bound holds for all simple graphs.
 
 #proposition[
   Let $G$ be simple graph, where $V = abs(V(G))$, and $(cal(C), B, L)$ is its triangle spanning decomposition. Then $ T_(max)^(G)(epsilon, tau) = O(tau^(alpha(G))) $
