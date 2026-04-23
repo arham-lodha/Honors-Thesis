@@ -27,8 +27,36 @@
 
 #outline()
 
+= Introduction
+Extremal combinatorics fundamentally asks the question about how local constraints affect global behavior. Historically, such questions were asked about graphs, which intuitively are collections of points and lines between them. Work in this area has led to fundamental theorems like Mantel's Theorem, Turán's Theorem, and the Kruskal-Katona Theorem. However, the development of the theory of dense graph limits, specifically the introduction of graphons by Lovász and Szegedy, provided a powerful continuous framework for these discrete problems. Graphons act as limit objects for sequences of dense graphs, allowing us to study subgraph densities using the tools of real analysis, topology, and measure theory.
+
+Philosophically, graphons represent the completion of the space of dense finite graphs, much as the real numbers complete the rationals. In the discrete realm, graphs are notoriously rigid. For example, how do you compare two graphs of different sizes? Does the question asking how similar two finite graphs of different sizes are even make sense? Graphons wash away this discrete noise, capturing the pure "structural essence" of a network. By mapping graphs to symmetric measurable functions, the fundamentally combinatorial act of counting subgraphs is transformed into the analytic act of integration.
+
+This paradigm shift has revolutionized multiple areas of discrete mathematics. Graphons have provided the natural language to unify theories of quasi-randomness, formulate continuous analogues of the Szemerédi Regularity Lemma, and develop robust property testing algorithms for massive networks. Beyond pure mathematics, they serve as foundational models in network science and machine learning, offering a way to study the large-scale behavior of the internet, social networks, and biological systems where individual nodes are ephemeral, but the underlying continuous probability distributions governing their connections remain stable.
+
+A central object of study is the Razborov Triangle $cal(R)$, which characterizes the exact region of simultaneously achievable edge and triangle densities for any graphon. While the exact boundary of $cal(R)$ is known, the behavior of other subgraph densities within this region remains a rich area of inquiry. This thesis focuses on a specific, largely unexplored extremal question: if we fix an edge density $epsilon$ and force the triangle density $tau$ to be infinitesimally small, how much of an arbitrary simple graph $G$ can survive? To make this precise, let $TG(epsilon, tau)$ denote the maximum possible homomorphism density of $G$ over all graphons with edge density $epsilon$  and triangle density at most $tau$.
+
+To build intuition, one can view this problem through the physical lens of statistical mechanics and complex systems. If we consider vertices as individual entities or particles, the edge density ϵ measures the global frequency of simple 2-particle interactions. The triangle density $tau$, meanwhile, measures the fundamental 3-particle interactions. From this perspective, understanding $TG(epsilon, tau)$ as $tau -> 0$ is fundamentally a question about the hierarchical breakdown of complexity: if we fix the global rate of 2-particle interactions but actively suppress the 3-particle interactions, how quickly are more complex, higher-order multi-particle interactions (represented by the arbitrary graph $G$) forced to die out? The graph parameter $alpha(G)$ developed in this thesis quantifies exactly this rate of decay.
+
+The main result of this thesis is that this decay is governed by a clean, power-law scaling, and that the exponent of this scaling is inherently tied to the structural relationship between the graph $G$ and its triangles. capture this, we introduce a novel graph parameter, denoted $alpha(G)$. This parameter is exactly calculated via a linear program whose variables correspond to the vertices and edges of $G$, and whose constraints are dictated by the triangles within $G$.
+
+#theorem(name: [@MainTheorem])[
+  For any graph $G$ containing at least 1 triangle where no edge connects a vertex to itself, and for any fixed edge density $epsilon in (0, (1)/(2)]$, the maximum homomorphism density of $G$ scales asymptotically as $ TG(epsilon, tau) = Theta(tau^(alpha(G))) $  as the triangle density $tau -> 0$.
+]
+
+To establish this result, we utilize a dual approach. The upper bound, $TG(epsilon, tau) = O(tau^(alpha(G)))$, is proven by decomposing arbitrary graphs into a collection of simpler graphs. We then apply Finner's Generalized Hölder inequality in conjunction with Strong Duality in Linear Programming. to tightly bound the homomorphism density. To prove the bound is sharp, yielding the matching lower bound, $TG(epsilon, tau) = Omega(tau^(alpha(G)))$, we explicitly construct a family of graphons. This construction is parametrically guided by the optimal solutions to the linear program, anchoring our graphons tightly to the $tau$ boundary.
+
+The remainder of this thesis is organized as follows. @Prelims collects the necessary preliminaries, defining graphons, cut metrics, homomorphism densities, and the relevant tools from linear programming and measure theory. @TheProblem formally defines the extremal problem. @TriangleSpanningDecomp introduces the Triangle Spanning Decomposition, a structural tool necessary for our upper bounds. @alphaG formally defines the linear program that yields the graph parameter $alpha(G)$ and explores its dual properties. @TriangleSpanningGeneral proves the upper bound for triangle-spanning graphs, which is then generalized to all simple graphs in @GeneralSquared, alongside the matching lower-bound constructions to prove our main theorem. In @Examples, we exhibit example graphs, their associated values of $alpha(G)$, and graphon constructions which produce the desired behavior.   Finally, we conclude in @NextSteps by discussing the implications of these bounds, open questions regarding the implicit constants, and connections to the Szemerédi-Ruzsa Triangle Removal Lemma.
+
+== Acknowledgments
+First and foremost, I want to like to express my deepest gratitude to my advisor, Professor Lorenzo Sadun, for their unwavering support, invaluable guidance, and immense patience throughout the process of learning about and writing about graphons. Without Professor Lorenzo Sadun's encouragement to find a problem which interested me, even if it was a bit out of his area of expertise, I would not have found this problem. Furthermore, our weekly meetings where he offered his mathematical insights and advice on the problem, graphons, and problem solving in general served instrumental in the process of proving the main result of the theorem. His constant encouragement (fix this word) were instrumental in keeping motivation, even while I thought I was getting nowhere.
+
+I would like to also thank other members of my thesis committee, Professor William Beckner and Professor Theresa Martines, for the time they dedicated to reviewing this work. Furthermore, I would like to thank all the professors who have provided me guidance throughout my undergraduate career. I specifically want to thank Professors William Beckner, Michael Starbird, Sean Keel, Lorenzo Sadun, Emmanuel Kowalski, Feng Luo, Timothy Perutz, and David Ben-Zvi for helping me fall in love with mathematics and their invaluable guidance through my undergraduate career. I especially want to highlight Professor William Beckner, whom I took my first math class as an undergraduate student with. Professor Beckner has been a wonderful mentor and someone who has given my invaluable advice throughout my undergraduate career. //Fix this
+
+My time in the University of Texas at Austin Department of Mathematics has been profoundly shaped by the brilliant and supportive community around me. I am deeply thankful to my fellow undergraduates and friends, specifically Xinbo Li, Prajith Velicheti, Luke Lu, Amanda Yin, and Leo Wang, for the countless hours spent at the whiteboard, the late-night study sessions, and the much-needed breaks.
 
 = Preliminaries
+<Prelims>
 == Graphons
 We follow the notation and terminology of Chatterjee's monograph @chatterjee2017large, to which we refer the reader for proofs and further background. This section collects the definitions and facts from graphon theory that we will use throughout. Before discussing the theory, we fix our graph-theoretic terminology.
 
@@ -372,7 +400,7 @@ tilde(cal(W))(N; epsilon, tau) & := tilde(cal(W))(N) inter tilde(cal(W))(epsilon
 
 *Asymptotics*: For functions $f, g: D -> RR_(>0)$ and a limit point $p in D$, we write $f(x) = O(g(x))$ if there exists $C > 0$ such that $f(x) <= C g(x)$ in a punctured neighborhood of $p$. We write $f(x) = Omega(g(x))$ if there exists $c > 0$ such that $f(x) >= c g(x)$ in a punctured neighborhood of $p$. We write $f(x) = Theta(g(x))$ if $f(x) = O(g(x))$ and $f(x) = Omega(g(x))$.
 
-= The Extremal Problem
+= The Extremal Problem<TheProblem>
 Having developed the relavent machinery, we will state the problem this thesis addresses. Fix a simple graph $G$, and a pair of edge and triangle densities in the Razborov triangle $(epsilon, tau) in "int"(cal(R))$. We ask: among all graphons with edge density $epsilon$ and triangle density at most $tau$, what is the tightest upper bound we can get for the homomorphism density of $G$? That is, we study the quantity $ T^(G)_(max)(epsilon, tau) := sup {t(G, W) mid(|) W in tilde(cal(W))(epsilon, tau)} $ and how it behaves near the boundary of the Razborov Triangle. In this thesis, we will seek to understand the asymptotics of $T_(max)^(G)$ for $tau -> 0$ and $epsilon in (0, (1)/(2)]$.
 
 Intuitively, this is an extremal question about how much subgraph structure $G$ can survive in a graphon with a few triangles. The regime $tau -> 0$ forces the graphon toward triangle-free behavior while holding the edge density, and the question is whether (and how quickly) $G$-density must also decay.
@@ -390,7 +418,7 @@ So we can redefine $T_(max)^(G)(epsilon, tau)$ as $ T_(max)^(G)(epsilon, tau) :=
 
 To show $T_(max)^(G)(epsilon, tau) = Theta(g(tau))$ for some function $g$, we have to show both $O(g(tau))$ and $Omega(g(tau))$. $Omega(g(tau))$ is a bit finicky but straight forward, for fixed $epsilon in (0, 0.5]$ we just have to exhibit a continuous function $W: (0, tau_(*)] -> tilde(cal(W))$ for some $tau_(*) > 0$ where $tau -> W_(tau) in tilde(cal(W))(epsilon, tau)$. We show that $t(G, W_(tau)) = g(tau)$ as $tau -> 0$. We do this in @GeneralConstructionLessHalf and @GeneralConstructionHalf for $epsilon in (0, 0.5)$ and $epsilon = 0.5$ respectively. $O(g(tau))$ requires a bit more work, which is why we look for simplifications to give us intuition, and hopefully reductions of the problem.
 
-= Triangle Spanning Decomposition
+= Triangle Spanning Decomposition<TriangleSpanningDecomp>
 To establish the upper bound,we first prove the result for a simpler family of graphs: those where every edge belongs to a triangle (see @generalUpper). In this section, we demonstrate that any arbitrary graph can be decomposed into a set of these triangle-spanning subgraphs, denoted $cal(C)$, alongside a collection of isolated edges and vertices. Subsequently, in @GeneralSquared, we will show that these residual components do not asymptotically affect the homomorphism density, allowing us to cleanly reduce the general upper bound to the triangle-spanning case.
 
 #definition[
@@ -776,7 +804,7 @@ Having established the upper bound, it remains to show that this bound is tight.
 
 #theorem[
   $G$ be a simple graph where $cal(T)(G) != 0$. $ T_(max)^(G)(e, tau) = Theta(tau^(alpha(G))) $ for $.e in (0, 1/2]$ and $tau -> 0$.
-]
+]<MainTheorem>
 #proof[
   By @GeneralConstructionLessHalf and @GeneralConstructionHalf, for $V = abs(V(G))$  $ T^(G)_(max, V + 2)(epsilon, tau) >= c_(1) tau^(alpha(G)). $ Since $ T^(G)_(max, V + 2)(epsilon, tau) <= T_(max)^(G)(epsilon, tau) => c_(1) tau^(alpha(G)) <= T_(max)^(G)(epsilon, tau). $
 
@@ -784,6 +812,7 @@ Having established the upper bound, it remains to show that this bound is tight.
 ]
 
 = Examples
+<Examples>
 
 
 = Conclusion and Future Directions
