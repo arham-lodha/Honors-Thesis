@@ -836,8 +836,11 @@ Having established the upper bound, it remains to show that this bound is tight.
 
   Combining this with @generalUpper, we have $ T_(max)^(G)(epsilon, tau) = Theta(tau^(alpha(G))) $
 ]
+
+We can extend @generalUpper to get a corollary regarding the simple graphs.
+
 #corollary[
-  Let $G$ be a simple graph with at least 1 triangle. Let $H_(n)$ be a graph with $n>= abs(V(G))$ vertices and $T$ triangles. Then $ t(G, H_(n)) <= ((T)/(n^(3)))^(alpha(G)) $
+  Let $G$ be a simple graph. Let $H_(n)$ be a graph with $n>= abs(V(G))$ vertices and $T$ triangles. Then $ t(G, H_(n)) <= ((T)/(n^(3)))^(alpha(G)) $
 ]
 #proof[
   Let $W_(H_(n))$ be the graphon blowup of $H_(n)$. @equalityofgraphonblowup, $t(G, H_(n)) = t(G, W_(H_(n)))$ and $t(K_(3), H_(n)) = t(K_(3), W_(H_(n)))$ . By definition, $t(K_(3), H_(n)) = (T)/(n^(3))$. By @generalUpper we get the following:
