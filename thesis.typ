@@ -2,6 +2,10 @@
 #import "template.typ": *
 #import "figures.typ": *
 
+#let cut = $square.stroked$
+#let TG = $T^(G)_max$
+#let TM = $T^(G)_(min )$
+#let TD = $T^(D)_(min )$
 
 #show: thesis.with(
   title: "Maximum Homomorphism Density of Simple Graphs in Graphons",
@@ -13,7 +17,7 @@
   date: "May 2025",
 
   abstract: [
-    #lorem(120)
+    This thesis investigates the asymptotic behavior of the maximum homomorphism density of an arbitary subgraph $G$, denoted $TG(epsilon, tau)$, within graphons constrained by a fixed edge density $epsilon in (0, (1)/(2)]$ and a vanishing triangle density $tau -> 0$. The main result establishes that this decay is governed by a precise power-law scaling, $TG(epsilon, tau) = Theta(tau^(alpha(G)))$. The exponent $alpha(G)$ is a graph parameter defined as the optimal value of a linear program whose variables correspond to the vertices of $G$ and whose constraints are dictated by the triangles of $G$. The upper bound, $TG(epsilon, tau) = O(tau^(alpha(G)))$, is proven by introducing a Triangle Spanning Decomposition and applying Finner's Generalized Hölder Inequalityin conjunction with Strong Duality in Linear Programming. To establish a matching lower bound, $TG(epsilon, tau) = Omega(tau^(alpha(G)))$, a family of multipodal graphons is explicitly constructed, parameterized directly by the optimal solutions to the linear program to anchor the graphons tightly to the boundary. Ultimately, this parameter quantifies the exact rate at which complex, higher-order multi-particle interactions must decay when fundamental 3-particle interactions are actively suppressed.
   ],
   acknowledgements: [
     First and foremost, I would like to express my deepest gratitude to my advisor, Professor Lorenzo Sadun, for his unwavering support, invaluable guidance, and immense patience throughout the process of learning and writing about graphons. Without Professor Sadun's encouragement to find a problem that truly interested me—even if it fell a bit outside his immediate area of expertise—I would never have discovered this topic. Furthermore, our weekly meetings, where he offered his mathematical insights and broader advice on problem-solving, were instrumental in proving the main theorem of this thesis. His steadfast reassurance and optimism were vital in maintaining my motivation, especially during the times when I felt I was getting nowhere.
@@ -28,10 +32,7 @@
 
 
 
-#let cut = $square.stroked$
-#let TG = $T^(G)_max$
-#let TM = $T^(G)_(min )$
-#let TD = $T^(D)_(min )$
+
 
 
 
@@ -655,23 +656,24 @@ Having established the upper bound, it remains to show that this bound is tight.
   for fixed $epsilon in (0, 0.5)$ and fixed $N >= V + 2$ and $tau ->0$.
 ]<GeneralConstructionLessHalf>
 #proof[
-  Let $epsilon in (0, 0.5)$ be fixed and let $tau >0$ be the parameter in $T_(max, N )^(G)(epsilon, tau)$. Let $gamma = tau \/ 6abs(cal(T)(G))$.
+  Let $epsilon in (0, 0.5)$ be fixed and let $tau >0$ be the parameter in $T_(max, N )^(G)(epsilon, tau)$.
+  Fix any $a_(0) in (sqrt(epsilon \/ 2), 0.5 )$; this interval is nonempty because $epsilon < 0.5$. Choose a constant $c <= (1 - 2a_(0))/(4 abs(V(cal(C))) )$.
+  Let $gamma = tau \/ 6c^(3)abs(cal(T)(G))$.
   Let $n = abs(cal(C))$, thus $cal(C) = {C_(1), #sym.dots.h, C_(n)}$ through a bijection with $[n]$. Let $V_(C) = abs(V(cal(C)))$ and $V_(L) = abs(L)$.
 
   Let $B_(0), B_(1), B_(2)$ be a partition of $B$ where $B_(0)$ is the $L$-to-$L$ edges, $B_(1)$ are the $L"-to-"V(cal(C))$ edges, and $B_(2)$ are the $V(cal(C))"-to-"V(cal(C))$ edges.
 
   Let $x^(*)$ be optimal for $alpha(G)$, with the convention that $x^(*)(L) = {0}$ (optimal, since these variables appear in no triangle constraint).
 
-  Fix any $a_(0) in (sqrt(epsilon \/ 2), 0.5 )$; this interval is nonempty because $epsilon < 0.5$.
 
   Let $nu in (0, nu_(max )]$ where  $ nu_(max) := min((1 - 2 a_(0))/(V_(L)), sqrt((epsilon)/(2 abs(B_(0)) + 1 ))). $
 
-  Let $ sigma(gamma) := sum_(v in V(cal(C)))^() gamma^(x_(i)^(*)). $ Note as $gamma -> 0$, $sigma(gamma) -> 0$.
+  Let $ sigma(gamma) := c sum_(v in V(cal(C)))^() gamma^(x_(i)^(*)). $ Note as $gamma -> 0$, $sigma(gamma) -> 0$.
 
   Let ${S_(i)}_(i = 1)^(N)$ be pairwise disjoint measurable sets in $[0, 1]$ where:
 
   $
-    mu(S_i) = cases(gamma^(x^*_(i)) "if" i in V(cal(C)), nu "if" i in L, a(N) "if" i in {V + 1, V + 2}, b(gamma) "otherwise")
+    mu(S_i) = cases(c gamma^(x^*_(i)) "if" i in V(cal(C)), nu "if" i in L, a(N) "if" i in {V + 1, V + 2}, b(gamma) "otherwise")
   $
 
   where $     a(N) & := cases(a_(0) + (1)/(2)(1 - 2a_(0) - sigma(gamma) - V_(L) nu) "if" N = V + 2, a_(0) "otherwise") \
@@ -683,10 +685,10 @@ Having established the upper bound, it remains to show that this bound is tight.
 
   So ${S_(i)}_(i = 1)^(N)$ is a partition of $[0, 1]$.
 
-  Let $     R(gamma) & := 2 sum_(i j in E(cal(C)))^() gamma^(x_(i)^(*) + x_(j)^(*)), \
+  Let $     R(gamma) & := 2 sum_(i j in E(cal(C)))^() c^(2)gamma^(x_(i)^(*) + x_(j)^(*)), \
          Q_(0) & := 2 sum_(e in B_(0))^() nu^(2) = 2 abs(B_(0)) nu^(2), \
-  Q_(1)(gamma) & := 2 sum_({i, j} in B_(1) \ i in V(cal(C)))^() nu gamma^(x^*_(i)) \
-  Q_(2)(gamma) & := 2 sum_({i, j} in B_(2))^() gamma^(x_(i)^(*) + x_(j)^(*)) \
+  Q_(1)(gamma) & := 2 sum_({i, j} in B_(1) \ i in V(cal(C)))^() c nu gamma^(x^*_(i)) \
+  Q_(2)(gamma) & := 2 sum_({i, j} in B_(2))^() c^(2)gamma^(x_(i)^(*) + x_(j)^(*)) \
    beta(gamma) & = (epsilon - R(gamma) - Q_(0) - Q_(1)(gamma) - Q_(2)(gamma))/(2 mu(S_(V + 1)) mu(S_(V+2))) \ $
 
   Let $w: [N]^(2) -> [0, 1]$ where $ w_(i j) = cases(
@@ -715,15 +717,15 @@ Having established the upper bound, it remains to show that this bound is tight.
 
   $
     t(W_(0)) & = 6 sum_({i, j, k} in cal(T)(G))^() mu(S_(i)) mu(S_(j)) mu(S_(k)) w_(i j) w_(i k) w_(j k) \
-             & = 6 sum_({i, j, k} in cal(T)(G))^() gamma^(x_(i)^(*) + x_(j)^(*) + x_(k)^(*)) \
-             & = 6 sum_(T in cal(T)(G))^() gamma^(sum_(i in V(T))^() x_(i)^( *)) \
-             & = 6 sum_(T in cal(T)(G))^() gamma^(sum_(i in V(T))^() x_(i)^(*)) \
+             & = 6 sum_({i, j, k} in cal(T)(G))^() c^(3)gamma^(x_(i)^(*) + x_(j)^(*) + x_(k)^(*)) \
+             & = 6c^(3) sum_(T in cal(T)(G))^() gamma^(sum_(i in V(T))^() x_(i)^( *)) \
+             & = 6c^(3) sum_(T in cal(T)(G))^() gamma^(sum_(i in V(T))^() x_(i)^(*)) \
   $
 
   By the feasibility constraint on $alpha(G)$, $forall T in cal(T)$ $ sum_(i in V(T))^() x_(i)^(*) >= 1. $ Since $gamma -> 0 => gamma < 1$, that means for all $T in cal(T)$, $ gamma^(sum_(i in V(T))^() x_(i) ) <= gamma^(1) $
 
-  Thus $ t(W_(0)) <= 6 abs(cal(T)(G)) gamma = tau. $
-  Furthermore by @TriangleTightness, there exists a $T_(0) in cal(T)(G)$ such that $ sum_(v in V(T_(0)))^() x_(v) = 1. $ Since all terms in the sum of $t(W)$ are positive, $t(W) >= 6 tau = abs(cal(T)(G))^(-1) tau$. Thus $t(W) = Theta(tau)$.
+  Thus $ t(W_(0)) <= 6 c^(3) abs(cal(T)(G)) gamma = tau. $
+  Furthermore by @TriangleTightness, there exists a $T_(0) in cal(T)(G)$ such that $ sum_(v in V(T_(0)))^() x_(v) = 1. $ Since all terms in the sum of $t(W)$ are positive, $t(W) >= 6 c^(3) tau = abs(cal(T)(G))^(-1) tau$. Thus $t(W) = Theta(tau)$.
 
   Now for $t(G, W)$:
 
@@ -746,18 +748,18 @@ Having established the upper bound, it remains to show that this bound is tight.
 
   $
     Pi_(id) & = (product_(v in V(G)) mu(S_(v))) (product_(e in E(G)) w_(e)) \
-            & = (product_(v in V(G)) gamma^(x^(*)_(v))) \
-            & = gamma^(sum_(v in V(G))^() x^(*)_(v)) = gamma^(alpha(G))
+            & = (product_(v in V(G)) c^(3) gamma^(x^(*)_(v))) \
+            & = c^(3) gamma^(sum_(v in V(G))^() x^(*)_(v)) = c^(3) gamma^(alpha(G))
   $
 
 
-  Since all $Pi_(phi) >= 0$, $ t(G, W) >= Pi_(id) = gamma^(alpha(G)) = ((tau)/(6 abs(cal(T)(G)) ))^(alpha(G)) = (1)/((6abs(cal(T)(G)))^(alpha(G)) ) tau^(alpha(G)) $
+  Since all $Pi_(phi) >= 0$, $ t(G, W) >= Pi_(id) = c^(alpha(G))gamma^(alpha(G)) = c^(alpha(G))((tau)/(6 abs(cal(T)(G)) ))^(alpha(G)) = (c^(alpha(G) - 3))/((6abs(cal(T)(G)))^(alpha(G)) ) tau^(alpha(G)) $
 
 
 
   Since $W$ is a valid $N$-podal graphon with $e(W) = epsilon$ and $t(W) <= tau$, so $W$ is feasible in the definition of $T^(G)_(max, N)(epsilon, tau)$. Therefore,
   $
-    T_(max, N)^(G)(e, tau) >= t(G, W) >= (1)/((6abs(cal(T)(G)))^(alpha(G)) ) tau^(alpha(G)),
+    T_(max, N)^(G)(e, tau) >= t(G, W) >= (c^(alpha(G) - 3))/((6abs(cal(T)(G)))^(alpha(G)) ) tau^(alpha(G)),
   $
 
   giving $T^(G)_(max, N)(epsilon, tau) = Omega(tau^(alpha(G)))$ as $tau -> 0$.
@@ -770,10 +772,14 @@ Having established the upper bound, it remains to show that this bound is tight.
   for $tau ->0$.
 ]<GeneralConstructionHalf>
 #proof[
-  Let $tau >0$ be the parameter in $T_(max, N )^(G)((1)/(2), tau)$. Let $gamma = tau \/ 6abs(cal(T)(G))$.
+  Let $epsilon in (0, 0.5)$ be fixed and let $tau >0$ be the parameter in $T_(max, N )^(G)(epsilon, tau)$.
+  Fix any $a_(0) in (sqrt(epsilon \/ 2), 0.5 )$; this interval is nonempty because $epsilon < 0.5$. Choose a constant $c <= (1 - 2a_(0))/(4 abs(V(cal(C))) )$.
+  Let $gamma = tau \/ 6c^(3)abs(cal(T)(G))$.
   Let $n = abs(cal(C))$, thus $cal(C) = {C_(1), #sym.dots.h, C_(n)}$ through a bijection with $[n]$. Let $V_(C) = abs(V(cal(C)))$ and $V_(L) = abs(L)$.
 
   Let $B_(0), B_(1), B_(2)$ be a partition of $B$ where $B_(0)$ is the $L$-to-$L$ edges, $B_(1)$ are the $L"-to-"V(cal(C))$ edges, and $B_(2)$ are the $V(cal(C))"-to-"V(cal(C))$ edges.
+
+  Let $x^(*)$ be optimal for $alpha(G)$, with the convention that $x^(*)(L) = {0}$ (optimal, since these variables appear in no triangle constraint).
 
   Let $(x^* , y^*)$ be optimal for $alpha(G)$, with the convention that $x^(*)(L) = {0}$ and $y^(*)(B) = {0}$ (optimal, since these variables appear in no triangle constraint).
 
@@ -784,7 +790,7 @@ Having established the upper bound, it remains to show that this bound is tight.
   Let ${S_(i)}_(i = 1)^(N)$ be pairwise disjoint measurable sets in $[0, 1]$ where:
 
   $
-    mu(S_i) = cases(gamma^(x^*_(i)) "if" i in V(cal(C)), nu "if" i in L, a(gamma) "if" i in {V + 1, V + 2})
+    mu(S_i) = cases(c gamma^(x^*_(i)) "if" i in V(cal(C)), nu "if" i in L, a(gamma) "if" i in {V + 1, V + 2})
   $
 
   where $ a(gamma) & := (1)/(2)(1 - V_(L) nu - sigma(gamma)) $
@@ -793,10 +799,10 @@ Having established the upper bound, it remains to show that this bound is tight.
   Furthermore, by construction $ sum_(i = 1)^(N)mu(S_(i)) & = 1 $
 
 
-  So ${S_(i)}_(i = 1)^(N)$ is a partition of $[0, 1]$. Let $     R(gamma) & := 2 sum_(i j in E(cal(C)))^() gamma^(x_(i)^(*) + x_(j)^(*) + y_(i j)^(*)), \
+  So ${S_(i)}_(i = 1)^(N)$ is a partition of $[0, 1]$. Let $     R(gamma) & := 2 sum_(i j in E(cal(C)))^() c^(3)gamma^(x_(i)^(*) + x_(j)^(*) + y_(i j)^(*)), \
          Q_(0) & := 2 sum_(e in B_(0))^() nu^(2) = 2 abs(B_(0)) nu^(2), \
-  Q_(1)(gamma) & := 2 sum_({i, j} in B_(1))^() nu gamma^(x^*_("non"-V_(0))) \
-  Q_(2)(gamma) & := 2sum_({i, j} in B_(2))^() gamma^(x_(i)^(*) + x_(j)^(*)) \
+  Q_(1)(gamma) & := 2 c sum_({i, j} in B_(1) \ i in V(cal(C)))^() nu gamma^(x^*_(i)) \
+  Q_(2)(gamma) & := 2c^(2) sum_({i, j} in B_(2))^() gamma^(x_(i)^(*) + x_(j)^(*)) \
    beta(gamma) & = (0.5 - R(gamma) - Q_(0) - Q_(1)(gamma) - Q_(2)(gamma))/(2 mu(S_(V + 1)) mu(S_(V+2))) \ $
 
   Let $w: [N]^(2) -> [0, 1]$ where $ w_(i j) = cases(
@@ -815,10 +821,10 @@ Having established the upper bound, it remains to show that this bound is tight.
          & = 0.5
   $
 
-  Thus $W$ has the correct edge density. For $t(W) <= tau$ and $ t(G, W) >= (1)/((6 abs(cal(T)(G)) )^(alpha(G))) tau^(alpha(G)), $ the proof follows identically to @GeneralConstructionLessHalf.
+  Thus $W$ has the correct edge density. For $t(W) <= tau$ and $ t(G, W) >= (c^(alpha(G) - 3))/((6 abs(cal(T)(G)) )^(alpha(G))) tau^(alpha(G)), $ the proof follows identically to @GeneralConstructionLessHalf.
   Since $W$ is a valid $(V + 2)$-podal graphon with $e(W) = 0.5$ and $t(W) <= tau$, so $W$ is feasible in the definition of $T^(G)_(max, V + 2)(epsilon, tau)$. Therefore,
   $
-    T_(max, V + 2)^(G)((1)/(2), tau) >= t(G, W) >= (1)/((6abs(cal(T)(G)))^(alpha(G)) ) tau^(alpha(G)),
+    T_(max, V + 2)^(G)((1)/(2), tau) >= t(G, W) >= (c^(alpha(G) - 3))/((6abs(cal(T)(G)))^(alpha(G)) ) tau^(alpha(G)),
   $
 
   giving $T^(G)_(max, V + 2)((1)/(2), tau) = Omega(tau^(alpha(G)))$ as $tau -> 0$.
