@@ -20,6 +20,10 @@
 
 
 #let cut = $square.stroked$
+#let TG = $T^(G)_max$
+#let TM = $T^(G)_(min )$
+#let TD = $T^(D)_(min )$
+
 
 #outline()
 
@@ -29,51 +33,70 @@
 We follow the notation and terminology of Chatterjee's monograph @chatterjee2017large, to which we refer the reader for proofs and further background. This section collects the definitions and facts from graphon theory that we will use throughout. Before discussing the theory, we fix our graph-theoretic terminology.
 
 #definition[
-  A *simple graph* is a pair $G = (V, E)$ where $V$ is finite set, identified with ${1, #sym.dots.h, abs(V)}$, and $E$ is a set of unordered pairs of distinct elements of $V$. We call elements of $V$ vertices and elements of $E$ edges. When we need to refer to the vertex and edge sets of a particular graph $G$, we can write $V(G)$ and $E(G)$. Let the set of simple graphs be $cal(G)$.
+  A *simple graph*, informally, is a collection of points together with lines connecting the points, where no line can connect a point to itself. Formally, we define a simple graph $G$ as a pair $G = (V, E)$ where $V$ is finite set, identified with ${1, #sym.dots.h, abs(V)}$, and $E$ is a set of unordered pairs of distinct elements of $V$. We call elements of $V$ vertices and elements of $E$ edges. When we need to refer to the vertex and edge sets of a particular graph $G$, we can write $V(G)$ and $E(G)$. Let the set of simple graphs be $cal(G)$.
 ]
 
 Graphons were introduced by Lovász and Szegedy @lovasz2006limits as a limit object for sequences of dense simple graphs. Before giving the formal definition, we motivate the choice of object by describing how a graphon parametrizes a natural random graph model — a perspective that will make the equivalence relations in the formal definition feel inevitable rather than arbitrary.
 
-Given a symmetric measurable function $W: [0, 1]^(2) -> [0, 1]$ and an integer $n$, the *$W$-random graph* $G(n, W)$ on a vertex set ${1, #sym.dots.h, n}$ is constructed in two steps. First, independently sample $n$ random variables $U_(1), #sym.dots.h, U_(n)$ uniformly on $[0, 1]$ and assign the label $U_(i)$ to vertex $i$. Secondly, independently on each pair $i < j$, include the edge ${i, j}$ with probability $W(U_(i), U_(j))$. The value $W(x, y)$ is then the connection probability between vertices labeled $x$ and $y$ and the uniform distribution on $[0, 1]$ is the distribution over the labels. This construction recovers the Erdös–Rényi model $G(n, p)$ when $W equiv p$ is constant, and recovers the stochastic block model when $W$ is a step function, which we will call finite podal.
+Given a symmetric measurable function $W: [0, 1]^(2) -> [0, 1]$ and an integer $n$, the *$W$-random graph* $G(n, W)$ on a vertex set ${1, #sym.dots.h, n}$ is constructed in two steps. First, independently sample $n$ random variables $U_(1), #sym.dots.h, U_(n)$ uniformly on $[0, 1]$ and assign the label $U_(i)$ to vertex $i$. Secondly, independently on each pair $i < j$, include the edge ${i, j}$ with probability $W(U_(i), U_(j))$. The value $W(x, y)$ is then the connection probability between vertices labeled $x$ and $y$ and the uniform distribution on $[0, 1]$ is the distribution over the labels. This construction recovers the Erdös–Rényi model $G(n, p)$ when $W equiv p$ is constant, and recovers the stochastic block model when $W$ is a step function, which we will call multipodal.
 
 With this perspective in mind, we define the space of graphons.
 
 
 #definition[The space $cal(W)$ of *graphons* is the set of Borel measurable functions $W: [0, 1]^(2) -> [0, 1]$ satisfying $W(x, y) = W(y, x)$, modulo the equivalence relation identifying functions that agree almost everywhere.]
+#remark[
+  The almost everywhere quotient deserves comment. If $W$ and $W prime$ differ only on a set of Lebesgue measure zero in $[0, 1]^(2)$, then almost surely no sampled pair $(U_(i), U_(j))$ ever lands on the set of disagreement, and so $G(n, W)$ and $G(n, W prime)$ have identical distributions. Two graphons that agree almost everywhere are thus genuinely indistinguishable as random graph models, and the a.e. quotient reflects this equality rather than being a technical convenience (though this is true too).
+]
 
-The simplest types of graphons are finite podal graphons which are defined below.
+The simplest types of graphons are multipodal graphons which are defined below.
 
 #definition[
-  $W$ is a *finite podal graphon* if there exists a natural number $N$, a partition of $[0, 1]$ by measurable sets of positive measure $I_(1), #sym.dots.h, I_(N)$, and weights $w_(i j) in [0, 1]$ with $w_(i j) = w_(j i)$  for $i, j in {1, #sym.dots.h, N}$ such that $ W = sum_(i = 1)^(N) sum_(j = 1)^(N)w_(i j) bb(1)_(I_(i) times I_(j)). $ We call $I_(i)$ the *podes* of $W$ and the values $w_(i j)$ the block weights of $W$. When we wish to specify the number of podes, we call $W$ an *$N$-podal graphon*.
+  $W$ is a *multipodal graphon* if there exists a natural number $N$, a partition of $[0, 1]$ by measurable sets of positive measure $I_(1), #sym.dots.h, I_(N)$, and weights $w_(i j) in [0, 1]$ with $w_(i j) = w_(j i)$  for $i, j in {1, #sym.dots.h, N}$ such that $ W = sum_(i = 1)^(N) sum_(j = 1)^(N)w_(i j) bb(1)_(I_(i) times I_(j)). $ We call $I_(i)$ the *podes* of $W$ and the values $w_(i j)$ the edge weights of $W$. When we wish to specify the number of podes, we call $W$ an *$N$-podal graphon*. Such graphons are also called step function graphons.
 ]
 
-The almost everywhere quotient deserves comment. If $W$ and $W prime$ differ only on a set of Lebesgue measure zero in $[0, 1]^(2)$, then almost surely no sampled pair $(U_(i), U_(j))$ ever lands on the set of disagreement, and so $G(n, W)$ and $G(n, W prime)$ have identical distributions. Two graphons that agree almost everywhere are thus genuinely indistinguishable as random graph models, and the a.e. quotient reflects this equality rather than being a technical convenience (though this is true too).
+Within the family of multipodal graphons lies a particularly important subclass. This subclass demonstrates exactly how graphons serve as a continuous generalization of finite graphs.
 
-The natural topology on $cal(W)$ is induced by the *cut norm*.
-
-#definition(name: "Cut Metric")[
-  For $W_(1), W_(2) in cal(W)$,
-
-  $ d_(cut)(W_(1), W_(2)) = sup_(S, T subset [0, 1]) abs(integral_(S times T) (W_(1)(x, y) - W_(2)(x, y)) dif x dif y) $ where the supremum is taken over measurable sets.
+#definition(name: "Graphon Blowup")[
+  Let $G$ be a simple graph on vertex set ${1, #sym.dots.h, n}$. Partition $[0, 1]$ into intervals $I_(1), #sym.dots.h, I_(n)$ of equal length, and define the graphon $W_(G): [0, 1]^(2) -> {0, 1}$ by $ W_(G)(x, y) = cases(
+    1 "if" (x, y) in I_(i) times I_(j) "and" {i, j} in E(G), 0 "otherwise"
+  ). $ We call $W_(G)$ the *graphon blowup* of $G$. $W_(G)$ is also called the checkerboard graphon of $G$.
 ]
 
-The cut metric captures the idea that two graphons are close if, for every pair of label regions $S$ and $T$, they assign the same edge mass to $S times T$. However, $d_(cut)$ is too fine an equivalence for our purposes: it distinguishes graphons that ought to represent the same object. To see what additional equivalence is needed, consider the analogous issue for finite graphs.
+The graphon $W_(G)$ is symmetric by construction and takes values in ${0, 1}$. It encodes the adjacency matrix of $G$ as a multipodal graphon with $n$ equal-sized parts.
 
+The natural topology on $cal(W)$ is induced by the *cut norm* and the induced *cut distance*.
+
+#definition(name: "Cut Norm and Cut Distance")[
+  $cal(W)$ has a natural norm, called the *cut norm* that it inherits from bounded functions from $[0, 1]^(2)$ to $RR$. Where $W in cal(W)$, $ norm(W)_(cut) = sup_(S, T in cal(L)([0, 1])) abs(integral_(S times T)W(x, y) dif x dif y) $
+  The cut norm induces a natural notion of distance on $cal(W)$, called the *cut distance*. For $W_(1), W_(2) in cal(W)$,
+
+  $ d_(cut)(W_(1), W_(2)) = sup_(S, T subset [0, 1]) abs(integral_(S times T) (W_(1)(x, y) - W_(2)(x, y)) dif x dif y) $ where $cal(L)([0, 1])$ is the set of Lebesgue measurable subsets of $[0, 1]$.
+]
+
+The cut distance captures the idea that two graphons are close if, for every pair of label regions $S$ and $T$, they assign the same edge mass to $S times T$. However, $d_(cut)$ is too fine an equivalence for our purposes: it distinguishes graphons that ought to represent the same object. To see what additional equivalence is needed, consider the analogous issue for finite graphs.
 
 To motivate the next quotient, recall the analogous situation for simple graphs. If $G_1$ and $G_2$ are simple graphs on the same vertex set and $G_(2)$ arises from $G_(1)$ by a permutation of vertices, that is there exists a bijection $sigma: V(G_1) -> V(G_(2))$ with ${u, v} in E(G_1) <=> {sigma(u), sigma(v)} in E(G_2)$, then we say $G_1$ is isomorphic to $G_2$. Any property of a graph that we care about is invariant under vertex relabeling.
 
 
 The analogue for graphons is a *measure preserving bijection* $sigma: [0, 1] -> [0, 1]$, which serves as a permutation of labeling space. Given such a $sigma$ and $W$, define $W^(sigma)(x, y) = W(sigma(x), sigma(y))$. If $sigma(U_(1)), #sym.dots.h, sigma(U_(n))$ are obtained from i.i.d. uniform samples $U_(1), #sym.dots.h, U_(n)$, then they themselves are i.i.d. uniform on $[0, 1]$. So $W^(sigma)$ generates the exact same distribution of random graphs as $W$. Just as isomorphic simple graphs differ only in how their vertices are labeled, $W$ and $W^(sigma)$ differ only in how $[0, 1]$ is labeled.
 
-#definition[
-  For $W_(1), W_(2) in cal(W)$,
+#definition(name: "Cut Metric")[
+  The functional $delta_(cut)$ is called the *cut metric*. For $W_(1), W_(2) in cal(W)$,
 
   $ delta_(cut)(W_(1), W_2) = inf_(sigma) d_(cut)(W_1, W_2) $ where the infimum is taken over the all measure preserving bijections $sigma: [0, 1] -> [0, 1]$.
 ]
 
-The functional $delta_(cut)$ is a pseudometric on $cal(W)$. It descends to a genuine metric on a quotient space:
+One of the motivations for developing the machinery of graphons, along with the cut distance and cut metric, is to establish a unified framework for comparing finite graphs, particularly those with different numbers of vertices. This comparison is achieved by embedding the discrete graphs into the continuous space $cal(W)$  via their graphon blowups. In this continuous setting, the cut distance allows us to compare two graphs up to a fixed vertex labeling, whereas the cut metric inherently compares them up to graph isomorphism.
 
-$ tilde(cal(W)) = cal(W) \/ (W_(1) ~ W_(2) <=> delta_(cut)(W_1, W_2) = 0). $
+The functional $delta_(cut)$ is a pseudometric on $cal(W)$. It descends to a genuine metric on the quotient space defined below.
+
+#definition(name: "Reduced Graphons")[
+  $ tilde(cal(W)) = cal(W) \/ (W_(1) ~ W_(2) <=> delta_(cut)(W_1, W_2) = 0) $ is called the space of *reduced graphons*. The equivalence relation used to define $tilde(cal(W))$ is called *weak equivalence*. $(tilde(cal(W)), delta_(cut))$ is a metric space.
+]
+// Remark sounds weird
+#remark[
+  Beyond weak equivalence, another natural notion of equivalence exists. Two graphons $W_(1), W_(2) in cal(W)$ are considered *group equivalent* if they lie in the same orbit under the action of measure-preserving bijections on $[0, 1]$. However, it is possible for the orbits of two graphons to become arbitrarily close in cut distance—yielding identical structural properties for their sampled graphs—without the graphons being strictly group equivalent. Weak equivalence resolves this issue by effectively acting as the topological closure of group equivalence.
+]
 
 The central topological fact, due to Lovász and Szegedy, is the following.
 
@@ -81,20 +104,22 @@ The central topological fact, due to Lovász and Szegedy, is the following.
   The metric space $(tilde(cal(W)), delta_(cut))$ is compact.
 ]<CompactnessOfGraphons>
 
-Throughout the remainder of the thesis, we will work implicitly in the quotient space $tilde(cal(W))$.
-
-#definition(name: "Graphon Blowup")[
-  Let $G$ be a simple graph on vertex set ${1, #sym.dots.h, n}$. Partition $[0, 1]$ into intervals $I_(1), #sym.dots.h, I_(n)$ of equal length, and define the graphon $W_(G): [0, 1]^(2) -> {0, 1}$ by $ W_(G)(x, y) = cases(
-    1 "if" (x, y) in I_(i) times I_(j) "and" {i, j} in E(G), 0 "otherwise"
-  ). $ We call $W_(G)$ the *graphon blowup* of $G$.
-]
-
-The graphon $W_(G)$ is symmetric by construction and takes values in ${0, 1}$. It encodes the adjacency matrix of $G$ as a finite podal graphon with $n$ equal-sized parts. The terminology "limit object" is justified by the fact that for any graphon $W$, the graphon blowup of $G(n, W)$ converges to $W$ in cut metric almost surely as $n -> oo$ @lovasz2006limits. Thus graphons simultaneously parametrize random graph models and arise as limits of dense graph sequences.
+// check phrasing of last sentence here
+Throughout the remainder of the thesis, we will work implicitly in the quotient space $tilde(cal(W))$.  Furthermore, the term "graphon" will refer to the equivalence class of a reduced graphon.
 
 
+// Is this just hanging here
+To conclude these preliminaries, we return to the terminology of a "limit object." The terminology is justified by the fact that for any graphon $W$, the graphon blowup of $G(n, W)$ converges to $W$ in cut metric almost surely as $n -> oo$ @lovasz2006limits. Thus graphons simultaneously parametrize random graph models and arise as limits of dense graph sequences.
 
 === Homomorphism Densities
-The primary numerical invariants of graphons are homomorphism densities, which generalize subgraph densities of finite graphs.
+The primary numerical invariants of graphons are homomorphism densities, which generalize the idea of homomorphism densities of finite graphs.
+
+// SHOULD THIS GO ABOVE TO THE DEF OF SIMPLE GRAPH
+#definition[
+  Let $G$ and $H$ be simple graphs where $abs(V(G)) <= abs(V(H))$. A homomorphism from $G$ to $H$ is a function $f: V(G) -> V(H)$ where if ${u, v} in E(G)$ then ${f(u), f(v)} in E(H)$. Let $hom(G, H)$ be the set of homomorphisms from $G$ to $H$.   The *homomorphism density* of $G$ into $H$ is $ t(G, H) := (abs(hom(G, H)))/(abs(V(H))^(V(G))) $ is the probability that an arbitrary function $V(G) -> V(H)$ is a homomorphism.
+]
+
+There is a similar notion for graphons.
 
 #definition[
   For a simple graph $G$ with $k$ vertices and a graphon $W$, the *homomorphism density* of $G$ in $W$ is $ t(G, W) := integral_([0, 1]^(k)) product_({i, j} in E(G)) W(x_(i), x_(j)) dif x_(1) #sym.dots.h dif x_(k) $
@@ -107,10 +132,15 @@ $
 $
 and the *triangle density* is
 $
-  t(W) & = t(K_(3), W) = integral_{[0, 1]^(3)} W(x, y) W(y, z) W(x, z) dif x dif y dif z
+  t(W) & = t(K_(3), W) = integral_([0, 1]^(3)) W(x, y) W(y, z) W(x, z) dif x dif y dif z
 $
 
-From the stochastic perspective, $t(G, W)$ has a clean interpretation. It is the limiting probability, as $n -> oo$, that a fixed injection $V(G) arrow.r.hook {1, #sym.dots.h, n}$ is a graph homomorphism from $G$ into $G(n, W)$. In particular, $e(W)$ is the edge probability and $t(W)$ is the triangle probability of the associated random graph model.
+From the stochastic perspective, $t(G, W)$ has a clean interpretation. It is the limiting probability, as $n -> oo$, that a fixed map $V(G) -> V(G(n, W))$ is a graph homomorphism from $G$ into $G(n, W)$. In particular, $e(W)$ is the edge probability and $t(W)$ is the triangle probability of the associated random graph model.
+
+//WRITE SOMETHING ABOVE THIS
+#theorem[Let $G$ and $H$ be simple graphs where $abs(V(G)) <= abs(V(H))$, then
+  $ t(G, H) = t(G, W_(H)) $ where $W_(H)$ is the graphon blowup of $H$.
+]
 
 A foundational property, which motivates the choice of cut topology, is that the homomorphism densities are continuous in $tilde(cal(W))$.
 
@@ -118,16 +148,23 @@ A foundational property, which motivates the choice of cut topology, is that the
   For every simple graph $G$, the map $t(G, dot)$ is continuous on $(tilde(cal(W)), delta_(cut))$.
 ]<ContinuityHomomorphismDensity>
 
-This continuity is what makes graphons the correct limit objects for the problems we study: the quantities of interest, edge density, triangle density, and the homomorphism density $t(G, W)$ whose asymptotics we analyze, all vary continuously in the cut topology, so the extremal questions over $tilde(cal(W))$ are well posed.
+But homomorphism densities aren't just continuous.
+
+#theorem(name: [Homomorphism Density is Injective Embedding @lovasz2006limits])[
+  The map $tilde(cal(W)) -> [0, 1]^(cal(G))$ defined by $ W -> (t(G, W))_(G in cal(G)) $ is an injective embedding.
+]<InjectiveEmbeddingHomomorphism>
+
+//fix this a bit
+Together, these two theorems justify graphons as the proper limit objects for the problems we study. Because homomorphism densities, specifically the edge and triangle densities whose asymptotics we analyze, vary continuously under the cut topology, extremal questions over $tilde(cal(W))$ are mathematically well-posed.
 
 === Approximation by Finite Podal Graphons
-We now return to the subclass of finite podal graphons, which will play a central role in the analysis to follow: they are often used as proxies for the full space of graphons. The following density result is what makes finite podal graphons important.
+We now return to the subclass of multipodal graphons, which will play a central role in the analysis to follow: they are often used as proxies for the full space of graphons. The following density result is what makes multipodal graphons important.
 
 #theorem(name: [@lovasz2006limits])[
-  The set of finite podal graphons is dense in $(tilde(cal(W)), delta_(cut))$.
+  The set of multipodal graphons is dense in $(tilde(cal(W)), delta_(cut))$. Furthermore, the set of checkerboard graphons is dense in $(tilde(cal(W)), delta_(cut))$.
 ]
 
-For finite podal graphons, the homomorphism density reduces to a finite sum of vertex to pode assignments.
+For multipodal graphons, the homomorphism density reduces to a finite sum of vertex to pode assignments.
 
 #lemma(name: "Reduction of Homomorphism Density")[
   Let $W$ be a $N$-podal graphon with podes ${S_(i)}_(i = 1)^(N)$ and edge weights $w_(i j)$. For any simple graph $G$, $ t(G, W) = sum_(phi: V(G) -> {1, #sym.dots.h, N})^()(product_(v in V(G)) mu(S_(phi(v))))(product_({i, j} in E(G)) w_(phi(i) phi(j))) $
@@ -160,12 +197,12 @@ The image of the function $(e, t): tilde(cal(W)) -> [0, 1]^(2)$ where $W -> (e(W
   For a graphon $W$ with edge density $epsilon in [1 - (1)/(k), 1 - (1)/(k + 1)]$ for $k >= 2$  $ t(W) >= (k(k-1))/(k + 1)^(2) (1 + sqrt(1 - epsilon (k + 1)/(k)) )^(2) (1 - 2 sqrt(1 - epsilon (k + 1)/(k)) ) $
 ]<TriangleMin2>
 #remark[
-  Razborov proved this using Flag Algebras, which can be thought of as a dual object to graphons. The map $W -> (t(G, W))_(G in cal(G))$ is a continuous injective embbedding into $product_(G in cal(G)) [0, 1]$, a foundational result of graph limit theory. Flag Algebras seek to understand how the collections of homomorphism densities behave. Furthermore, one can define an algebra over such objects to do interesting computations, which often reduce to semidefinite programming problems. See @razborov2008minimal, @razborov2013flag, @silva2016flag for further reference on this topic.
+  Razborov proved this using Flag Algebras, which can be thought of as a dual object to graphons by @InjectiveEmbeddingHomomorphism. Flag Algebras seek to understand how the collections of homomorphism densities behave. Furthermore, one can define an algebra over such objects to do interesting computations, which often reduce to semidefinite programming problems. See @razborov2008minimal, @razborov2013flag, @silva2016flag for further reference on this topic.
 ]
 
 // TODO VERIFY this.
 #theorem(name: [Minimum Triangle Density III @pikhurko2017asymptotic])[
-  Let $epsilon in [1 - (1)/(k), 1 - (1)/(k + 1)]$. Let $ c = (1 + sqrt(1 - epsilon (k + 1)/(k)) )/(k + 1). $ Partition $[0, 1]$ into $k$ intervals $I_(1), #sym.dots.h, I_(k)$ where $abs(I_(i)) = c$ for $i in {1, #sym.dots.h, k - 1}$ and $abs(I_(k)) = 1 - (k - 1)c$. Define $W$ a graphon as follows. We set $W = 1$ when $I_(i) times I_(j)$ for all $i != j$. For $i < k$, $W = 0$ on $I_(i) times I_(i)$. Finally, on $I_(k) times I_(k)$ the graphon is not constrained, except to have the correct average value, and to not allow any triangles where all three vertices are in $I_(k)$. For such a graphon $t(W)$ achieves the lower bound in @TriangleMin2.
+  Let $epsilon in [1 - (1)/(k), 1 - (1)/(k + 1)]$. Let $ c = (1 + sqrt(1 - epsilon (k + 1)/(k)) )/(k + 1). $ Partition $[0, 1]$ into $k$ intervals $I_(1), #sym.dots.h, I_(k)$ where $abs(I_(i)) = c$ for $i in {1, #sym.dots.h, k - 1}$ and $abs(I_(k)) = 1 - (k - 1)c$. Define a graphon $W$ as follows. We set $W = 1$ when $I_(i) times I_(j)$ for all $i != j$. For $i < k$, $W = 0$ on $I_(i) times I_(i)$. Finally, on $I_(k) times I_(k)$ the graphon is not constrained, except to have the correct average value, and to not allow any triangles where all three vertices are in $I_(k)$. For such a graphon $t(W)$ achieves the lower bound in @TriangleMin2.
 ]<MinTriangle3>
 #remark[
   This strategy, partitioning the graphon such that one localized region exhausts the allowed triangle density while the remainder contributes to the edge density without forming triangles, will be directly reflected in the constructions later in this thesis.
@@ -186,7 +223,7 @@ Lets switch gears a bit, and discuss Linear Programming. We will follow the nota
 A *Linear Program (LP)* is a optimization problem in which a linear function is minimized or maximized subject to finitely many linear inequality or equality constraints. The general minimization form which we will use is $ min & c^(T) x & "subject to" A x >= b, x>= 0, $
 where $A in RR^(m times n)$, $c in RR^(n)$, $b in RR^(m)$ are the *input data* and $x in RR^(n)$ is the vector of *variables*. The linear function is called the *objective function*, and the conditions $A x >= b$ and $x >= 0$ (both interpreted component wise) are the *constraints*.
 
-A vector $x in RR^(n)$ which satisfies all the constraints is a *feasible point*; the set of all feasible points is the *feasible region*, which is a polyhedron. An LP is *feasible* if the feasible region is nonempty, and bounded if $c^(T) x$ is bounded below on the feasible region. The *optimal value* is the infimum *$c^(T) x$* over the feasible region, and a feasible point achieving this value is an *optimal solution*.
+A vector $x in RR^(n)$ which satisfies all the constraints is a *feasible point*; the set of all feasible points is the *feasible region*, which is a polyhedron, an intersection of a collection of half spaces. An LP is *feasible* if the feasible region is nonempty, and bounded if $c^(T) x$ is bounded below on the feasible region. The *optimal value* is the infimum *$c^(T) x$* over the feasible region, and a feasible point achieving this value is an *optimal solution*.
 
 Other standard forms (maximization, $<=$, equality constraints, or free variables) can be converted into the form above by standard transformations, and all results we state below apply equally in those forms.
 
@@ -221,7 +258,7 @@ The second part of the theorem gives the intuition on why the first part holds. 
 The LPs that occur in the thesis are of a particularly nice form. Their feasible regions are nonempty. Every LP we will consider has a feasible point obtained by setting all the variables sufficiently large. Furthermore, their objectives are bounded below by 0, since all the variables are nonnegative and the objective coefficients are nonnegative. Hence every LP we consider has an optimal solution.
 
 === Dual Linear Programs
-For linear programs, there is a natural notion duality, which we will define below. Dual Linear Programs and the theorems relating a LP and its dual, will be a vital tool in this thesis.
+For linear programs, there is a natural notion of duality, which we will define below. Dual Linear Programs and the theorems relating a LP and its dual, will be a vital tool in this thesis.
 // Before defining the dual, we will motivate the definition a bit. Given an LP (which we will call the original LP)
 
 // $ min c^(T) x & "subject to" A x >= b, x>= 0, $
@@ -344,7 +381,7 @@ Before turning to the asymptotics, we note that $T^(G)_(max)(epsilon, tau)$ is a
 
 #proposition[
   For every simple graph $G$, every $(epsilon, tau) in cal(R)$, there exists a graphon $W in tilde(cal(W))(epsilon, tau)$ such that $t(G, W) = T_(max)^(G)(epsilon, tau)$.
-]
+]<MaxAchieved>
 #proof[
   Let $F: tilde(cal(W)) -> cal(R) subset [0, 1]^(2)$ where $F(W) = (e(W), t(W))$. By @ContinuityHomomorphismDensity, $e$ and $t$ are continuous, meaning $F$ is continuous. By definition, $tilde(cal(W))(epsilon, tau) = F^(-1)(epsilon times [0, tau])$. $epsilon times [0, tau]$ is closed, and as the preimage of a closed set $tilde(cal(W))(epsilon, tau)$ is closed. Since $(tilde(cal(W)), delta_(cut))$ is compact and all closed sets of a compact set are compact, $tilde(cal(W))(epsilon, tau)$ is compact. Finally, the map $t(G, dot)$ is continuous by @ContinuityHomomorphismDensity, and a continuous real-valued function on a nonempty compact set attains its supremum. Therefore, $T_(max)^(G)(epsilon, tau)$ is attained by some $W in tilde(cal(W))(epsilon, tau)$.
 ]
@@ -384,7 +421,7 @@ Thus we will prove the desired upper bound for triangle spanning graphs first, t
 
 In this section, we will introduce the graph parameter $alpha(G)$ that will control the asymptotics of $T_(max)^(G)(epsilon, tau)$. Before the formal definition, we will motivate it through a heuristic computation. Suppose, for a moment, that $T_(max)^(G)(epsilon, tau) = Theta(tau^(alpha))$ for some $alpha = alpha(G) >= 0$, possibly depending on $G$.
 
-This assumption is a guess. A priori, $T_(max)^(G)$ could decay faster than any power of $tau$, slower than any power, or may not have any clean scaling. But the guess is motivated by the fact the relavent functionals are all polynomials: on a finite podal graphon with pode measure $alpha_(i)$ and edge weights $w_(i j)$, both $t(W)$ and $t(G, W)$ are polynomial in $alpha_(i)$ and edge weights $w_(i j)$. So a question about one polynomial functional constrained by other has the chance of admitting a clean power-law scaling. Not automatic, but plausible enough to pursue.
+This assumption is a guess. A priori, $T_(max)^(G)$ could decay faster than any power of $tau$, slower than any power, or may not have any clean scaling. But the guess is motivated by the fact the relavent functionals are all polynomials: on a multipodal graphon with pode measure $alpha_(i)$ and edge weights $w_(i j)$, both $t(W)$ and $t(G, W)$ are polynomial in $alpha_(i)$ and edge weights $w_(i j)$. So a question about one polynomial functional constrained by other has the chance of admitting a clean power-law scaling. Not automatic, but plausible enough to pursue.
 
 Taking logarithms and passing to the limit we see the exponent would be $ alpha = lim_(tau -> 0) (log(T^(G)_(max)(epsilon, tau)))/(log(tau)), $ if the limit exists.
 
@@ -392,15 +429,15 @@ Since $T_(max)^(G)$ is the maxiumum of $t(G, W)$ over $tilde(cal(W))(epsilon, ta
 
 *Candidate Construction*: Assume $G$ is a triangle spanning graph and has a triangle. We can technically do this for all $G$, but the triangle spanning case is a lot more illuminating. Our guiding intuition is to avoid "wasted" triangles: any triangle formed in our graphon should ideally correspond to a triangle actually present in $G$. the graphon generates extraneous triangles, it exhausts our tightly constrained $tau$-budget without increasing the density of $G$.
 
-To realize this, consider constructing a finite podal graphon with $V = abs(V(G))$ podes, where each pode cooresponds to a vertex of $G$. We scale the sizes of these podes and the weights of the edges between them as powers of $tau$. Let the measure of the $v$-th pode be $tau^(x_(v))$ for some $x_(v) >= 0$, let the edge weight between pode $u$ and $v$ be roughly $tau^(y_(u v))$ (for non edges in $G$, set the edge weight to 0).
+To realize this, consider constructing a multipodal graphon with $V = abs(V(G))$ podes, where each pode corresponds to a vertex of $G$. We scale the sizes of these podes and the weights of the edges between them as powers of $tau$. Let the measure of the $v$-th pode be $tau^(x_(v))$ for some $x_(v) >= 0$, let the edge weight between pode $u$ and $v$ be roughly $tau^(y_(u v))$ (for non edges in $G$, set the edge weight to 0).
 
-With this construction, the homomorphism density of $G$ generated by mapping each vertex of $G$ to its cooresponding pode is proportional to the product product of the pode measures and edge weights:
+With this construction, the homomorphism density of $G$ generated by mapping each vertex of $G$ to its corresponding pode is proportional to the product product of the pode measures and edge weights:
 
 $
   t(G, W) approx product_(v in V(G)) tau^(x_(v)) product_(e in E(G)) tau^(y_(e)) = tau^(sum_(v in V(G))^() x_(v) + sum_(e in E(G))^() y_(e))
 $
 
-Because $tau$ is small ($tau -> 0$), to _maximize_ this density, we must minimize the exponent $sum_(v in V(G))^() x_(v) + sum_(e in E(G))^() y_(e)$. However, we have a restricted total triangle budget. In this $V$-podal graphon, the triangles formed coorespond exactly to $T in cal(T)(G)$. The density of any specific triangle $T$ in the graphon scales as:
+Because $tau$ is small ($tau -> 0$), to _maximize_ this density, we must minimize the exponent $sum_(v in V(G))^() x_(v) + sum_(e in E(G))^() y_(e)$. However, we have a restricted total triangle budget. In this $V$-podal graphon, the triangles formed correspond exactly to $T in cal(T)(G)$. The density of any specific triangle $T$ in the graphon scales as:
 $ tau^(sum_(v in V(T))^() x_(v)^(*) + sum_(e in E(T))^() y_(e)^(*)). $
 
 To satisfy the constraint that $t(W) <= tau = tau^(1)$, every individual triangle formed in the graphon must have a density of $O(tau)$. Therefore, the exponent for each triangle must be at least 1. While this ansatz is not wholly correct, one can notice that $e(W) -> 0$ as $tau -> 0$. But there is quite an easy fix to this situation, inspired by @MinTriangle3, by adding some podes which soak up the remaining edge density while creating no triangles.
@@ -422,7 +459,7 @@ The heuristic above motivates $alpha(G)$ as the smallest exponent attainable by 
   T in.rev e)^() z_(T) & <= 1 \ $
 ]
 
-With the primal and dual linear programs established, we prove a brief but essential structural property of the optimal primal solution $(x^(*), y^(*))$. In our lower bound, constructions later in the thesis, we will build graphons parameterized exactly by these optimal LP variables. To ensure our constructed graphon utilizes the full triangle budget, meaning it achieves a triangle density of exactly $Theta(tau)$ rather than something asymptotically smaller, we must guarantee that the primal optimal solution doesn't loosely over-satisfy all of its constraints. The following lemma guarantees that at least one triangle constraint is strictly tight, effectively anchoring our construction to the $tau$ boundary.
+With the primal and dual linear programs established, we prove a brief but essential structural property of the optimal primal solution $(x^(*), y^(*))$. In our lower bound, constructions later in the thesis, we will build graphons parameterized exactly by these optimal LP variables. To ensure our constructed graphon utilizes the full triangle budget, meaning it achieves a triangle density of exactly $Theta(tau)$ rather than something asymptotically smaller, we must guarentee that the primal optimal solution doesn't loosely over-satisfy all of its constraints. The following lemma guarentees that at least one triangle constraint is strictly tight, effectively anchoring our construction to the $tau$ boundary.
 
 #lemma[
   Let $G$ be a simple graph where $cal(T)(G) != emptyset$. Let $x^*$ and $y^*$ be the vertex and edge weight functions which are the solutions to $alpha(G)$. There exists a $T in cal(T)(G)$ such that $ sum_(v in V(T))^() x_(v)^(*) + sum_(e in E(T))^() y_(e)^(*) = 1 $
@@ -552,7 +589,7 @@ Putting all the results together of the last few sections, we can finally prove 
   for fixed $epsilon in (0, (1)/(2)]$ and $tau -> 0$.
 ]
 
-Having established the upper bound, it remains to show that this bound is tight. We demonstrate this by explicitly constructing a family of graphons $W_(tau) in tilde(cal(W))(epsilon, tau)$ that saturates the upper bound as $tau -> 0$. We achieve this through a finite podal graphon construction  parameterized by the optimal primal LP solutions. @GeneralConstructionLessHalf does it for $epsilon in (0, (1)/(2))$, while @GeneralConstructionHalf addresses the boundary case $epsilon = (1)/(2)$.
+Having established the upper bound, it remains to show that this bound is tight. We demonstrate this by explicitly constructing a family of graphons $W_(tau) in tilde(cal(W))(epsilon, tau)$ that saturates the upper bound as $tau -> 0$. We achieve this through a multipodal graphon construction  parameterized by the optimal primal LP solutions. @GeneralConstructionLessHalf does it for $epsilon in (0, (1)/(2))$, while @GeneralConstructionHalf addresses the boundary case $epsilon = (1)/(2)$.
 
 #definition[
   $ T_(max, N)^(G) := max{t(G, W) mid(|) W in tilde(cal(W))(N; epsilon, tau)} $
@@ -748,7 +785,49 @@ Having established the upper bound, it remains to show that this bound is tight.
 
 = Examples
 
-= Next Steps
+
+= Conclusion and Future Directions
+<NextSteps>
+This thesis identifies the exponent governing the asymptotic behavior of $T_(max)^(G)(epsilon, tau)$ as $tau -> 0$ for $epsilon in (0, (1)/(2)]$: for every simple graph $G$, $T_(max)^(G)(epsilon, tau) = Theta(tau^(alpha(G)))$, where $alpha(G)$ is the optimal value of an explicit linear program indexed by the triangles of $G$. The upper bound is obtained by combining Finner's generalized Hölder inequality with strong duality applied $alpha(G)$. The lower bound is  obtained by an explicit step-graphon construction guided by the LP optimizer. Several natural questions remain open, and we conclude by describing three directions in which the present work suggests further investigation.
+
+== Sharpening the constants
+The bounds in this thesis determine the constant $alpha(G)$ exactly, but leave a room between the upper and lower implicit constants. The upper bound, obtained by Finner's Inequality, gives $T^(G)_(max)(epsilon, tau) <= tau^(alpha(G))$. The lower bound construction gives $T^(G)_(max)(epsilon, tau) >= (6 abs(cal(T)(G)) )^(-alpha(G)) tau^(alpha(G))$. The $(6 abs(cal(T)(G)) )^(alpha(G))$ is already significant for small graphs and quickly grows as the complexity of the graph grows, so there is a significant gap between the upper and lower bound constants.
+
+The quantity of interest is the true asymptotic constant,
+
+$ C(G, epsilon) := lim_(tau -> 0)(T_(max)^(G)(epsilon, tau))/(tau^(alpha(G))), $ when the limit exists, or the associated lim sup or lim inf otherwise. Identifying $C(G, epsilon)$ (or even showing the limit exists) would involve solving a variational problem to find the extremizing family of graphons as $tau -> 0$, not merely identifying the scaling exponent. Neither bound in this thesis is likely tight:
+- Upper Bound: Finner's Inequality only achieves equality when each factor decomposes into a product of single variable functions, which fails for nontrivial graphons.
+- Lower Bound: The multipodal construction is specific enough that a more refined family of extremizers likely exists.
+One also suspects that $C(G, epsilon)$ has a interesting dependence on the edge density, which the current bounds don't detect.
+
+== Behavior in other regimes of the Razborov triangle.
+The results of this thesis pin down the asymptotic exponent of $T^(G)_max (epsilon, tau)$ only on the lower boundary of the Razborov triangle, namely as $tau -> 0$ and $epsilon in (0, (1)/(2)]$ fixed. Elsewhere in the feasible region, the scaling is less well understood. By @generalUpper, we know that $TG(epsilon, tau) <= tau^(alpha(G))$ for all $(epsilon, tau) in cal(R)$. The matching lower bound, however, is only proven for $epsilon in (0, (1)/(2)]$ as $tau -> 0$. In other regimes of the Razborov triangle, the exponent governing $TG$ is not understood. Furthermore, in some cases, it is almost certainly not $alpha(G)$.
+
+=== Near the Upper Boundary $tau = epsilon^((3)/(2))$
+The extremizer of the triangle density is the unique graphon $W = bb(1)_([0, sqrt(epsilon)]^(2))$ (@TriangleMax), for which $t(G, W) = epsilon^(abs(E(G)))$. Hence $TG(epsilon, epsilon^((3)/(2))) = epsilon^(abs(E(G)) )$, which can be compared to the upper bound $epsilon^(3 alpha(G) \/ 2)$ evaluated at the boundary. For most $G$ the two values differ, and since the upper bound is not tight at this corner, the true scaling $TG(epsilon, tau)$ as $tau -> epsilon^((3)/(2))$ from below is governed by a different exponent than $alpha(G)$. For this purpose the better function to study is $ T_("gap")^(G)(epsilon, eta) = TG(epsilon, epsilon^((3)/(2)) - eta) - epsilon^(abs(E(G))). $
+
+=== Near lower boundary of $cal(R)$ as $epsilon > (1)/(2)$
+Here the triangle free region disappears: for edge density above $(1)/(2)$, every graphon has strictly positive triangle density, with minimum given by @TriangleMin1, achieved by the constructions of @TriangleMin2. The construction resemble blow-ups of complete $k$-partite graphs with one of the parts, which will be called the special part, also having a triangle free internal structure. Starting from such a minimum-triangle graphon, adding an infinitesimal amount of extra triangle density cooresponds to adding edges to the special part to form triangles. This doesn't just cause $G$ to pop out from within the special part, but we may get the lions share of the $G$-density from the interactions of the special part with the rest of the $k - 1$ parts. Thus for every triangle we create we may create many copies of $G$. Again like the case with the upper boundary, the $TG(epsilon, t_(min)(epsilon))$ term will dominate $TG(epsilon, tau)$. Thus the function to study is,
+
+$ T_("gap")^(G)(epsilon, eta) = TG(epsilon, t_(min)(epsilon) + eta) - TG(epsilon, t_(min)(epsilon)). $
+
+== The opposite problem $TM$ and the Triangle Removal Lemma
+
+A natural companion to the problem studied in this thesis is the opposite extremal question:
+$ TM(epsilon, tau) := min{t(G, W) mid(|) W in tilde(cal(W))(epsilon, tau)} $
+This is well-posed by the same compactness argument used for $TG$, and understanding its behavior as $tau -> 0$ is open.
+
+For the case $G = D$ (the diamond graph or $K_(4)$ with one edge removed), $TD$ is of particular interest because of its connection to the Szemerédi-Ruzsa Triangle Removal Lemma. This lemma asserts that any graph with few triangles can be made triangle-free by removing a correspondingly small fraction of edges. In the language of the graphons, this is governed by the function: $ c(tau) = sup_(W: t(W) <= tau)(inf_(U <= W \ t(U) = 0) norm(W - U)_(1) ), $
+intuitively this function quantifies the maximum edge mass we have to remove from a graphon with triangle density at most $tau$ to guarentee triangle-freeness. Historically, proofs relying on Szemerédi's Regularity Lemma yield bounds for $c(tau)$ that decay at an inverse tower-exponential rate as $tau -> 0$ @conlon2013graph.
+
+A simple variational argument based on Cauchy-Schwarz applied to functional derivatives of $t(D, dot)$ and $t(dot)$ on triangle free graphons, connects understanding $c(tau)$ to the problem of understanding $TD$, and we get the following inequality
+
+$ t(D, W) >= t(W)^(2)/(9c(t(W))) "near" tau = 0. $
+
+Thus $ TD(epsilon, tau) >= (tau^(2))/(9c(tau)) => c(tau) >= (tau^(2))/(9TD(epsilon, tau)) $
+
+Thus understanding the order of $TD(epsilon, tau)$ for fixed $epsilon$ and $tau -> 0$, will give us information on the asymptotics of $c(tau)$. Understanding the asymptotics of $c(tau)$ is major a topic of study in extremal combinatorics currently.
+
 
 
 #bibliography("refs.bib", style: { "springer-mathphys" }, title: "References")

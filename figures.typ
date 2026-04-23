@@ -97,8 +97,8 @@
     x-max: 1.05,
     y-min: 0,
     y-max: 1.05,
-    x-label: [Edge density $e$],
-    y-label: [Triangle density $t$],
+    x-label: [Edge density $epsilon$],
+    y-label: [Triangle density $tau$],
     // Add custom fractions matching the scallop intersections
     x-tick-step: none,
     x-ticks: (0, (1 / 2, $1/2$), (2 / 3, $2/3$), (3 / 4, $3/4$), (4 / 5, $4/5$), 1),
