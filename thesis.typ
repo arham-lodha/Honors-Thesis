@@ -69,7 +69,7 @@ This section establishes the foundational machinery of graphon theory that will 
 
 Graphons were introduced by Lovász and Szegedy @lovasz2006limits as a limit object for sequences of dense simple graphs. Before giving the formal definition, we motivate the choice of object by describing how a graphon parametrizes a natural random graph model — a perspective that will make the equivalence relations in the formal definition feel inevitable rather than arbitrary.
 
-Given a symmetric measurable function $W: [0, 1]^(2) -> [0, 1]$ and an integer $n$, the *$W$-random graph* $G(n, W)$ on a vertex set ${1, #sym.dots.h, n}$ is constructed in two steps. First, independently sample $n$ random variables $U_(1), #sym.dots.h, U_(n)$ uniformly on $[0, 1]$ and assign the label $U_(i)$ to vertex $i$. Secondly, independently on each pair $i < j$, include the edge ${i, j}$ with probability $W(U_(i), U_(j))$. The value $W(x, y)$ is then the connection probability between vertices labeled $x$ and $y$ and the uniform distribution on $[0, 1]$ is the distribution over the labels. This construction recovers the Erdös–Rényi model $G(n, p)$ when $W equiv p$ is constant, and recovers the stochastic block model when $W$ is a step function, which we will call multipodal.
+Given a symmetric measurable function $W: [0, 1]^(2) -> [0, 1]$ and an integer $n$, the *$W$-random graph* $G(n, W)$ on a vertex set ${1, #sym.dots.h, n}$ is constructed in two steps. First, independently sample $n$ random variables $U_(1), #sym.dots.h, U_(n)$ uniformly on $[0, 1]$ and assign the label $U_(i)$ to vertex $i$. Secondly, independently on each pair $i < j$, include the edge ${i, j}$ with probability $W(U_(i), U_(j))$. The value $W(x, y)$ is then the connection probability between vertices labeled $x$ and $y$ and the uniform distribution on $[0, 1]$ is the distribution over the labels. This construction recovers the Erdös-Rényi model $G(n, p)$ when $W equiv p$ is constant, and recovers the stochastic block model when $W$ is a step function, which we will call multipodal.
 
 #figure(
   w-random-graph-canvas,
@@ -836,6 +836,100 @@ Having established the upper bound, it remains to show that this bound is tight.
 
 = Examples
 <Examples>
+
+In this section, we compute the graph parameter $alpha(G)$ for several specific graphs to build intuition.
+
+=== 1. The Complete Graph ($K_r$)
+The complete graph provides a natural starting point to understand how $alpha(G)$ scales for dense, generalized families of graphs.
+
+#figure(
+  k5-canvas,
+  caption: [The complete graph $K_5$.],
+)
+
+#proposition[
+  For $r >= 3$, $alpha(K_r) = r \/ 3$.
+]
+#proof[
+  Because $K_r$ is highly symmetric, we assume the optimal primal solution assigns the same weight $x$ to all $r$ vertices. The constraint for any of the $binom(r, 3)$ triangles dictates that the sum of the weights of its 3 vertices must be at least 1.
+  Thus, $3x >= 1 => x >= 1 \/ 3$. The primal objective is to minimize $r x$, which yields $r(1 \/ 3) = r \/ 3$. This gives the upper bound $alpha(K_r) <= r \/ 3$.
+
+  For the dual LP, we assign a symmetric weight $z$ to all $binom(r, 3)$ triangles. Every vertex in $K_r$ is a part of exactly $binom(r - 1, 2)$ triangles. The vertex constraint dictates that the sum of the dual weights of all triangles containing a specific vertex must be at most 1.
+  Thus, $binom(r - 1, 2) z <= 1 => z <= (2)/((r - 1)(r - 2))$.
+  The dual objective is to maximize the sum over all triangles:
+  $
+    binom(r, 3) z = ((r(r - 1)(r - 2))/(6)) ((2)/((r - 1)(r - 2))) = (r)/(3).
+  $
+  Since the primal and dual objectives match, by Strong Duality, $alpha(K_r) = r \/ 3$.
+]
+
+=== 2. The Diamond Graph
+The Diamond graph consists of two triangles sharing a single edge.
+
+#figure(
+  diamond-canvas,
+  caption: [The Diamond graph, consisting of two triangles sharing the edge {2, 3}.],
+)
+
+#proposition[
+  Let $D$ be the Diamond graph. Then $alpha(D) = 1$.
+]
+#proof[
+  Let the shared vertices be $v_2$ and $v_3$. In the primal LP, setting $x_2 = 1$ and $x_v = 0$ for all other vertices perfectly satisfies the constraint for both triangles simultaneously, since $v_2$ is present in both. The primal objective sum is 1, giving $alpha(D) <= 1$.
+
+  For the dual LP, let $z_1$ and $z_2$ be the variables for the two triangles. The dual constraint for the shared vertex $v_2$ is $z_1 + z_2 <= 1$. Therefore, the total dual objective cannot exceed 1, giving $alpha(D) >= 1$.
+
+  Thus, $alpha(D) = 1$.
+]
+This result demonstrates that adding an edge to a triangle to form a second, overlapping triangle incurs no additional asymptotic $O(tau)$ cost.
+
+=== 3. The Bowtie Graph
+Contrasting with the Diamond, the Bowtie graph consists of two triangles that share a single central vertex rather than an edge.
+
+#figure(
+  bowtie-canvas,
+  caption: [The Bowtie graph, consisting of two triangles sharing the central vertex 3.],
+)
+
+#proposition[
+  Let $B$ be the Bowtie graph. Then $alpha(B) = 1$.
+]
+#proof[
+  Let $v_3$ be the shared central vertex. In the primal LP, setting $x_3 = 1$ and $x_v = 0$ for all other vertices covers both triangles. The primal objective sum is 1, yielding $alpha(B) <= 1$.
+
+  In the dual LP, the constraint for the shared central vertex $v_3$ is exactly $z_1 + z_2 <= 1$. The maximum dual objective is 1, yielding $alpha(B) >= 1$.
+
+  Thus, $alpha(B) = 1$.
+]
+The Bowtie highlights how $alpha(G)$ behaves like a bottleneck parameter. If the two triangles were disjoint, we would need to cover them independently, resulting in $alpha = 2$. However, because they share a vertex, the LP identifies this intersection and places the entirety of the necessary mass there, allowing both triangles to survive for the "price" of one.
+
+=== 4. The Triangular Bipyramid
+The Triangular Bipyramid is a dense 3D structure that forces the LP to distribute fractional weights asymmetrically, isolating the graph's structural core.
+
+#figure(
+  bipyramid-canvas,
+  caption: [The Triangular Bipyramid, consisting of an equatorial triangle (1, 2, 3) and two polar vertices (4, 5).],
+)
+
+#proposition[
+  Let $P$ be the Triangular Bipyramid. Then $alpha(P) = 3 \/ 2$.
+]
+#proof[
+  The graph has 5 vertices, 9 edges, and 7 triangles. Vertices 1, 2, and 3 form the "equator" (participating in 5 triangles each), while vertices 4 and 5 form the "poles" (participating in 3 triangles each). The 7 triangles consist of 1 equatorial triangle and 6 polar triangles (connecting a pole to two equatorial vertices).
+
+  For the primal LP, the optimal strategy avoids the poles entirely. We assign $x_4 = x_5 = 0$ and distribute a fractional weight of $1 \/ 2$ across the equator: $x_1 = x_2 = x_3 = 1 \/ 2$.
+  - For any of the 6 polar triangles (e.g., $T = {1, 2, 4}$), the constraint evaluates to exactly the boundary: $x_1 + x_2 + x_4 = 1 \/ 2 + 1 \/ 2 + 0 = 1$.
+  - The single equatorial triangle ($T = {1, 2, 3}$) is over-satisfied: $x_1 + x_2 + x_3 = 3 \/ 2 >= 1$.
+  The total primal objective is $3(1 \/ 2) + 2(0) = 3 \/ 2$. Thus, $alpha(P) <= 3 \/ 2$.
+
+  For the dual LP, we uniquely assign $z_E = 0$ to the equatorial triangle, and a uniform weight of $z_P = 1 \/ 4$ to the 6 polar triangles.
+  - For a polar vertex (e.g., $v_4$), the sum of its 3 incident triangles is $3(1 \/ 4) = 3 \/ 4 <= 1$.
+  - For an equatorial vertex (e.g., $v_1$), it is incident to 4 polar triangles and 1 equatorial triangle. The sum is $4(1 \/ 4) + 0 = 1 <= 1$.
+  All dual constraints are satisfied. The dual objective is $6(1 \/ 4) + 0 = 3 \/ 2$.
+
+  Since the objectives match, $alpha(P) = 3 \/ 2$.
+]
+This mathematically demonstrates that in the continuous graphon limit, the polar vertices act as asymptotic "freeloaders." Because the structural survival of the graph relies so heavily on the equatorial vertices, providing enough mass to embed the equator inherently creates enough localized density to embed the poles at no additional $O(tau)$ cost.
 
 
 = Conclusion and Future Directions

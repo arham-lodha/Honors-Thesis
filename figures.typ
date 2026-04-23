@@ -564,3 +564,149 @@
     content((origin-x + size / 2, -1.8), [Ansatz Graphon with $tau$-scaled weights])
   })
 })
+
+// ==========================================
+// 1. The Complete Graph (K_5)
+// ==========================================
+#let k5-canvas = canvas({
+  import draw: *
+
+  // 5 vertices arranged in a pentagon
+  let r = 2
+  let pts = (
+    (0, r),
+    (r * calc.cos(18deg), r * calc.sin(18deg)),
+    (r * calc.cos(-54deg), r * calc.sin(-54deg)),
+    (-r * calc.cos(-54deg), r * calc.sin(-54deg)),
+    (-r * calc.cos(18deg), r * calc.sin(18deg)),
+  )
+
+  let stroke-style = 1.5pt
+
+  // Draw all K_5 edges
+  for i in range(5) {
+    for j in range(i + 1, 5) {
+      line(pts.at(i), pts.at(j), stroke: stroke-style)
+    }
+  }
+
+  // Draw vertices
+  for i in range(5) {
+    circle(pts.at(i), radius: 0.25, fill: white, stroke: black)
+    content(pts.at(i), str(i + 1))
+  }
+})
+
+// ==========================================
+// 2. The Diamond Graph
+// ==========================================
+#let diamond-canvas = canvas({
+  import draw: *
+
+  let v1 = (0, 1.5)
+  let v2 = (-1.5, 0)
+  let v3 = (1.5, 0)
+  let v4 = (0, -1.5)
+  let stroke-style = 1.5pt
+
+  // Outer cycle
+  line(v1, v2, stroke: stroke-style)
+  line(v1, v3, stroke: stroke-style)
+  line(v2, v4, stroke: stroke-style)
+  line(v3, v4, stroke: stroke-style)
+
+  // The shared diagonal edge
+  line(v2, v3, stroke: stroke-style)
+
+  let draw-node(pos, label) = {
+    circle(pos, radius: 0.25, fill: white, stroke: black)
+    content(pos, label)
+  }
+
+  draw-node(v1, [1])
+  draw-node(v2, [2])
+  draw-node(v3, [3])
+  draw-node(v4, [4])
+})
+
+// ==========================================
+// 3. The Bowtie Graph
+// ==========================================
+#let bowtie-canvas = canvas({
+  import draw: *
+
+  let c = (0, 0)
+  let l1 = (-2, 1.5)
+  let l2 = (-2, -1.5)
+  let r1 = (2, 1.5)
+  let r2 = (2, -1.5)
+  let stroke-style = 1.5pt
+
+  // Left Triangle
+  line(c, l1, stroke: stroke-style)
+  line(c, l2, stroke: stroke-style)
+  line(l1, l2, stroke: stroke-style)
+
+  // Right Triangle
+  line(c, r1, stroke: stroke-style)
+  line(c, r2, stroke: stroke-style)
+  line(r1, r2, stroke: stroke-style)
+
+  let draw-node(pos, label) = {
+    circle(pos, radius: 0.25, fill: white, stroke: black)
+    content(pos, label)
+  }
+
+  draw-node(l1, [1])
+  draw-node(l2, [2])
+  draw-node(c, [3])
+  draw-node(r1, [4])
+  draw-node(r2, [5])
+})
+
+// ==========================================
+// 4. The Triangular Bipyramid
+// ==========================================
+#let bipyramid-canvas = canvas({
+  import draw: *
+
+  // Equatorial Triangle (drawn flat to simulate 3D perspective)
+  let v1 = (-1.8, 0.2) // Left equator
+  let v2 = (1.8, 0.2) // Right equator
+  let v3 = (0, -0.6) // Front equator
+
+  // Poles
+  let v4 = (0, 2.8) // Top pole
+  let v5 = (0, -2.4) // Bottom pole
+
+  let stroke-style = 1.5pt
+  let dashed-style = (paint: black, thickness: 1.5pt, dash: "dashed")
+
+  // Draw Equatorial Triangle
+  // The back edge (1 to 2) is dashed to give a 3D effect
+  line(v1, v2, stroke: dashed-style)
+  line(v1, v3, stroke: stroke-style)
+  line(v2, v3, stroke: stroke-style)
+
+  // Connect Top Pole
+  line(v4, v1, stroke: stroke-style)
+  line(v4, v2, stroke: stroke-style)
+  line(v4, v3, stroke: stroke-style)
+
+  // Connect Bottom Pole
+  line(v5, v1, stroke: stroke-style)
+  line(v5, v2, stroke: stroke-style)
+  line(v5, v3, stroke: stroke-style)
+
+  // Draw Vertices
+  let draw-node(pos, label) = {
+    circle(pos, radius: 0.25, fill: white, stroke: black)
+    content(pos, label)
+  }
+
+  draw-node(v1, [1])
+  draw-node(v2, [2])
+  draw-node(v3, [3])
+  draw-node(v4, [4])
+  draw-node(v5, [5])
+})
