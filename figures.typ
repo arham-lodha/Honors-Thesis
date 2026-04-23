@@ -454,3 +454,113 @@
     content((-0.4, 2 * c + ik_w / 2), $I_k$)
   })
 })
+
+// Defines the Ansatz Construction canvas for a bowtie graph
+#let ansatz-construction-canvas = canvas({
+  import draw: *
+
+  // ==========================================
+  // LEFT SIDE: The Discrete Graph G (Bowtie)
+  // ==========================================
+  group(name: "discrete", {
+    // Vertex coordinates (Bowtie layout)
+    let v1 = (0, 4)
+    let v2 = (0, 1)
+    let v3 = (2, 2.5) // The identified center vertex
+    let v4 = (4, 4)
+    let v5 = (4, 1)
+
+    // Edges
+    let edge-stroke = 1.5pt
+    line(v1, v2, stroke: edge-stroke)
+    line(v2, v3, stroke: edge-stroke)
+    line(v1, v3, stroke: edge-stroke)
+    line(v3, v4, stroke: edge-stroke)
+    line(v4, v5, stroke: edge-stroke)
+    line(v3, v5, stroke: edge-stroke)
+
+    // Vertices
+    let draw-node(pos, label) = {
+      circle(pos, radius: 0.35, fill: white, stroke: black)
+      content(pos, label)
+    }
+    draw-node(v1, [1])
+    draw-node(v2, [2])
+    draw-node(v3, [3])
+    draw-node(v4, [4])
+    draw-node(v5, [5])
+
+    content((2, -0.8), [Graph $G$ (Bowtie)])
+  })
+
+  // ==========================================
+  // MIDDLE: Transformation Arrow
+  // ==========================================
+  line((4.8, 2.5), (6.5, 2.5), mark: (end: ">"), stroke: 1.5pt)
+  content((5.65, 3), [Ansatz])
+  content((5.65, 2), [Mapping])
+
+  // ==========================================
+  // RIGHT SIDE: The Ansatz Graphon W
+  // ==========================================
+  group(name: "graphon", {
+    let origin-x = 7.5
+    let size = 5
+    let n = 5
+    let step = size / n
+
+    // Draw the unit square grid outline
+    rect((origin-x, 0), (origin-x + size, size), stroke: 0.5pt)
+
+    // Helper to fill cells for edges (y-axis grows upward in CeTZ)
+    let fill-cell(i, j, weight) = {
+      rect(
+        (origin-x + i * step, j * step),
+        (origin-x + (i + 1) * step, (j + 1) * step),
+        fill: blue.lighten(60%),
+        stroke: 0.5pt,
+      )
+      // Label the interior with the tau edge weight
+      content(
+        (origin-x + (i + 0.5) * step, (j + 0.5) * step),
+        text(size: 8pt)[$1$],
+      )
+    }
+
+    // The edge list for the bowtie graph (0-indexed for the grid)
+    let edges = (
+      (0, 1, "12"),
+      (1, 0, "12"),
+      (0, 2, "13"),
+      (2, 0, "13"),
+      (1, 2, "23"),
+      (2, 1, "23"),
+      (2, 3, "34"),
+      (3, 2, "34"),
+      (2, 4, "35"),
+      (4, 2, "35"),
+      (3, 4, "45"),
+      (4, 3, "45"),
+    )
+
+    for (i, j, w) in edges {
+      fill-cell(i, j, w)
+    }
+
+    // Grid lines for clarity
+    for i in range(1, n) {
+      line((origin-x + i * step, 0), (origin-x + i * step, size), stroke: (dash: "dotted", paint: gray))
+      line((origin-x, i * step), (origin-x + size, i * step), stroke: (dash: "dotted", paint: gray))
+    }
+
+    // Interval Labels (Widths scale by tau^{x_i})
+    for i in range(0, n) {
+      content((origin-x + (i + 0.5) * step, -0.4), text(size: 9pt)[$|I_#(i + 1)|$])
+      content((origin-x + (i + 0.5) * step, -0.9), text(size: 9pt)[$prop tau^(x_#(i + 1))$])
+
+      content((origin-x - 0.6, (i + 0.5) * step), text(size: 9pt)[$I_#(i + 1)$])
+    }
+
+    content((origin-x + size / 2, -1.8), [Ansatz Graphon with $tau$-scaled weights])
+  })
+})
