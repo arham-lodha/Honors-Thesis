@@ -415,8 +415,8 @@
     // ── Filling the Blocks ──
     // Off-diagonal blocks (W = 1)
     let fill-one(x, y, w, h) = {
-      rect((x, y), (x + w, y + h), fill: blue.darken(30%), stroke: 0.5pt)
-      content((x + w / 2, y + h / 2), [1], fill: white)
+      rect((x, y), (x + w, y + h), fill: black, stroke: 0.5pt)
+      content((x + w / 2, y + h / 2), text(fill: white, weight: "semibold")[1])
     }
 
     // Diagonal blocks for i < k (W = 0)
@@ -439,7 +439,7 @@
 
     // ── The Special Corner I_k x I_k ──
     rect((2 * c, 2 * c), (size, size), fill: gradient.radial(gray.lighten(80%), gray.lighten(50%)), stroke: 0.5pt)
-    content((2 * c + ik_w / 2, 2 * c + ik_w / 2), [$W_(T F)$ ], size: 8pt)
+    content((2 * c + ik_w / 2, 2 * c + ik_w / 2), [$W_(T)$ ], size: 8pt)
 
     // Outer border
     rect((0, 0), (size, size), stroke: 1pt)

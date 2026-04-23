@@ -249,7 +249,7 @@ The image of the function $(e, t): tilde(cal(W)) -> [0, 1]^(2)$ where $W -> (e(W
 
 #figure(
   min-triangle-block-canvas,
-  caption: [Extremizing graphon for $epsilon in [1 - (1)/(3), 1 - (1)/(4)]$ and $tau -> 0$ ],
+  caption: [Extremizing graphon for $epsilon in [1 - (1)/(3), 1 - (1)/(4)]$],
 )
 
 Putting the results of @TriangleMax, @TriangleMin1, @TriangleMin2, and @MinTriangle3 together, we see $cal(R)$ looks like the region below in @RazbTriangleVis.
