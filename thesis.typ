@@ -33,9 +33,6 @@
 
 
 
-
-
-
 = Introduction
 Extremal combinatorics fundamentally asks the question about how local constraints affect global behavior. Historically, such questions were asked about graphs, which intuitively are collections of points and lines between them. Work in this area has led to fundamental theorems like Mantel's Theorem, Turán's Theorem, and the Kruskal-Katona Theorem @bollobas1998modern. However, the development of the theory of dense graph limits, specifically the introduction of graphons by Lovász and Szegedy @lovasz2006limits, provided a powerful continuous framework for these discrete problems. Graphons act as limit objects for sequences of dense graphs, allowing us to study subgraph densities using the tools of real analysis, topology, and measure theory.
 
@@ -180,7 +177,7 @@ From the stochastic perspective, $t(G, W)$ has a clean interpretation. It is the
 //WRITE SOMETHING ABOVE THIS
 #theorem[Let $G$ and $H$ be simple graphs where $abs(V(G)) <= abs(V(H))$, then
   $ t(G, H) = t(G, W_(H)) $ where $W_(H)$ is the graphon blowup of $H$.
-]
+]<equalityofgraphonblowup>
 
 A foundational property, which motivates the choice of cut topology, is that the homomorphism densities are continuous in $tilde(cal(W))$.
 
@@ -838,6 +835,18 @@ Having established the upper bound, it remains to show that this bound is tight.
   By @GeneralConstructionLessHalf and @GeneralConstructionHalf, for $V = abs(V(G))$  $ T^(G)_(max, V + 2)(epsilon, tau) >= c_(1) tau^(alpha(G)). $ Since $ T^(G)_(max, V + 2)(epsilon, tau) <= T_(max)^(G)(epsilon, tau) => c_(1) tau^(alpha(G)) <= T_(max)^(G)(epsilon, tau). $
 
   Combining this with @generalUpper, we have $ T_(max)^(G)(epsilon, tau) = Theta(tau^(alpha(G))) $
+]
+#corollary[
+  Let $G$ be a simple graph with at least 1 triangle. Let $H_(n)$ be a graph with $n>= abs(V(G))$ vertices and $T$ triangles. Then $ t(G, H_(n)) <= ((T)/(n^(3)))^(alpha(G)) $
+]
+#proof[
+  Let $W_(H_(n))$ be the graphon blowup of $H_(n)$. @equalityofgraphonblowup, $t(G, H_(n)) = t(G, W_(H_(n)))$ and $t(K_(3), H_(n)) = t(K_(3), W_(H_(n)))$ . By definition, $t(K_(3), H_(n)) = (T)/(n^(3))$. By @generalUpper we get the following:
+
+  $
+    t(G, W_(H_(n))) <= t(K_(3), W_(H_(n)))^(alpha(G)).
+  $
+
+  Hence $ t(G, H_(n)) <= ((T)/(n^(3)))^(alpha(G)). $
 ]
 
 = Examples
