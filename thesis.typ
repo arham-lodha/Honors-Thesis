@@ -4,16 +4,25 @@
 
 
 #show: thesis.with(
-  title: "Extremal Problems in Combinatorics",
-  author: "Your Name",
-  advisor: "Prof. Advisor Name",
-  institution: "University Name",
+  title: "Maximum Homomorphism Density of Simple Graphs in Graphons",
+  author: "Arham Rajendra Lodha",
+  advisor: "Professor Lorenzo Sadun",
+  institution: "University of Texas at Austin",
   department: "Department of Mathematics",
-  degree: "Doctor of Philosophy",
+  degree: "Bachelors of Science in Mathematics Honors",
   date: "May 2025",
 
   abstract: [
     #lorem(120)
+  ],
+  acknowledgements: [
+    First and foremost, I would like to express my deepest gratitude to my advisor, Professor Lorenzo Sadun, for his unwavering support, invaluable guidance, and immense patience throughout the process of learning and writing about graphons. Without Professor Sadun's encouragement to find a problem that truly interested me—even if it fell a bit outside his immediate area of expertise—I would never have discovered this topic. Furthermore, our weekly meetings, where he offered his mathematical insights and broader advice on problem-solving, were instrumental in proving the main theorem of this thesis. His steadfast reassurance and optimism were vital in maintaining my motivation, especially during the times when I felt I was getting nowhere.
+
+    I would also like to thank the other members of my thesis committee, Professor William Beckner and Professor Theresa Martines, for the time and care they dedicated to reviewing this work. Beyond this thesis, I want to thank the faculty who have guided me throughout my mathematical journey. I am specifically grateful to Professors William Beckner, Michael Starbird, Sean Keel, Lorenzo Sadun, Emmanuel Kowalski, Feng Luo, Timothy Perutz, and David Ben-Zvi for helping me fall in love with mathematics and for their invaluable mentorship. I want to especially highlight Professor Beckner, who taught my very first university-level math class. He has been a wonderful mentor and a continuous source of profound advice from my freshman year all the way to this final project.
+
+    My time in the University of Texas at Austin Department of Mathematics has been profoundly shaped by the brilliant and supportive community around me. I am deeply thankful to my fellow undergraduates and friends—specifically Xinbo Li, Prajith Velicheti, Luke Lu, Amanda Yin, and Leo Wang—for the countless hours spent at the whiteboard, the late-night study sessions, and the much-needed breaks.
+
+    Finally, none of this would have been possible without the unconditional love and support of my family. To my parents, Mr. Rajendra Lodha and Mrs. Smita Lodha, and my sister, Vruddhi Lodha: thank you for believing in me, for your endless encouragement, and for keeping me grounded throughout this entire journey. This thesis is dedicated to you.
   ],
 )
 
@@ -25,16 +34,15 @@
 #let TD = $T^(D)_(min )$
 
 
-#outline()
 
 = Introduction
-Extremal combinatorics fundamentally asks the question about how local constraints affect global behavior. Historically, such questions were asked about graphs, which intuitively are collections of points and lines between them. Work in this area has led to fundamental theorems like Mantel's Theorem, Turán's Theorem, and the Kruskal-Katona Theorem. However, the development of the theory of dense graph limits, specifically the introduction of graphons by Lovász and Szegedy, provided a powerful continuous framework for these discrete problems. Graphons act as limit objects for sequences of dense graphs, allowing us to study subgraph densities using the tools of real analysis, topology, and measure theory.
+Extremal combinatorics fundamentally asks the question about how local constraints affect global behavior. Historically, such questions were asked about graphs, which intuitively are collections of points and lines between them. Work in this area has led to fundamental theorems like Mantel's Theorem, Turán's Theorem, and the Kruskal-Katona Theorem @bollobas1998modern. However, the development of the theory of dense graph limits, specifically the introduction of graphons by Lovász and Szegedy @lovasz2006limits, provided a powerful continuous framework for these discrete problems. Graphons act as limit objects for sequences of dense graphs, allowing us to study subgraph densities using the tools of real analysis, topology, and measure theory.
 
-Philosophically, graphons represent the completion of the space of dense finite graphs, much as the real numbers complete the rationals. In the discrete realm, graphs are notoriously rigid. For example, how do you compare two graphs of different sizes? Does the question asking how similar two finite graphs of different sizes are even make sense? Graphons wash away this discrete noise, capturing the pure "structural essence" of a network. By mapping graphs to symmetric measurable functions, the fundamentally combinatorial act of counting subgraphs is transformed into the analytic act of integration.
+Philosophically, graphons represent the completion of the space of dense finite graphs, much as the real numbers complete the rationals @lovasz2012large. In the discrete realm, graphs are notoriously rigid. For example, how do you compare two graphs of different sizes? Does the question asking how similar two finite graphs of different sizes are even make sense? Graphons wash away this discrete noise, capturing the pure "structural essence" of a network. By mapping graphs to symmetric measurable functions, the fundamentally combinatorial act of counting subgraphs is transformed into the analytic act of integration.
 
-This paradigm shift has revolutionized multiple areas of discrete mathematics. Graphons have provided the natural language to unify theories of quasi-randomness, formulate continuous analogues of the Szemerédi Regularity Lemma, and develop robust property testing algorithms for massive networks. Beyond pure mathematics, they serve as foundational models in network science and machine learning, offering a way to study the large-scale behavior of the internet, social networks, and biological systems where individual nodes are ephemeral, but the underlying continuous probability distributions governing their connections remain stable.
+This paradigm shift has revolutionized multiple areas of discrete mathematics. Graphons have provided the natural language to unify theories of quasi-randomness @lovasz2008generalized, formulate continuous analogues of the Szemerédi Regularity Lemma @lovasz2007szemeredi, and develop robust property testing algorithms for massive networks @borgs2008convergent. Beyond pure mathematics, they serve as foundational models in network science @lovasz2012large and machine learning @orbanz2014bayesian, offering a way to study the large-scale behavior of the internet, social networks, and biological systems where individual nodes are ephemeral, but the underlying continuous probability distributions governing their connections remain stable.
 
-A central object of study is the Razborov Triangle $cal(R)$, which characterizes the exact region of simultaneously achievable edge and triangle densities for any graphon. While the exact boundary of $cal(R)$ is known, the behavior of other subgraph densities within this region remains a rich area of inquiry. This thesis focuses on a specific, largely unexplored extremal question: if we fix an edge density $epsilon$ and force the triangle density $tau$ to be infinitesimally small, how much of an arbitrary simple graph $G$ can survive? To make this precise, let $TG(epsilon, tau)$ denote the maximum possible homomorphism density of $G$ over all graphons with edge density $epsilon$  and triangle density at most $tau$.
+A central object of study is the Razborov Triangle $cal(R)$, which characterizes the exact region of simultaneously achievable edge and triangle densities for any graphon. While the exact boundary of $cal(R)$ is known @razborov2008minimal, the behavior of other subgraph densities within this region remains a rich area of inquiry. This thesis focuses on a specific, largely unexplored extremal question: if we fix an edge density $epsilon$ and force the triangle density $tau$ to be infinitesimally small, how much of an arbitrary simple graph $G$ can survive? To make this precise, let $TG(epsilon, tau)$ denote the maximum possible homomorphism density of $G$ over all graphons with edge density $epsilon$  and triangle density at most $tau$.
 
 To build intuition, one can view this problem through the physical lens of statistical mechanics and complex systems. If we consider vertices as individual entities or particles, the edge density ϵ measures the global frequency of simple 2-particle interactions. The triangle density $tau$, meanwhile, measures the fundamental 3-particle interactions. From this perspective, understanding $TG(epsilon, tau)$ as $tau -> 0$ is fundamentally a question about the hierarchical breakdown of complexity: if we fix the global rate of 2-particle interactions but actively suppress the 3-particle interactions, how quickly are more complex, higher-order multi-particle interactions (represented by the arbitrary graph $G$) forced to die out? The graph parameter $alpha(G)$ developed in this thesis quantifies exactly this rate of decay.
 
@@ -44,21 +52,16 @@ The main result of this thesis is that this decay is governed by a clean, power-
   For any graph $G$ containing at least 1 triangle where no edge connects a vertex to itself, and for any fixed edge density $epsilon in (0, (1)/(2)]$, the maximum homomorphism density of $G$ scales asymptotically as $ TG(epsilon, tau) = Theta(tau^(alpha(G))) $  as the triangle density $tau -> 0$.
 ]
 
-To establish this result, we utilize a dual approach. The upper bound, $TG(epsilon, tau) = O(tau^(alpha(G)))$, is proven by decomposing arbitrary graphs into a collection of simpler graphs. We then apply Finner's Generalized Hölder inequality in conjunction with Strong Duality in Linear Programming. to tightly bound the homomorphism density. To prove the bound is sharp, yielding the matching lower bound, $TG(epsilon, tau) = Omega(tau^(alpha(G)))$, we explicitly construct a family of graphons. This construction is parametrically guided by the optimal solutions to the linear program, anchoring our graphons tightly to the $tau$ boundary.
+To establish this result, we utilize a dual approach. The upper bound, $TG(epsilon, tau) = O(tau^(alpha(G)))$, is proven by decomposing arbitrary graphs into a collection of simpler graphs. We then apply Finner's Generalized Hölder inequality @finner1992generalization in conjunction with Strong Duality in Linear Programming @vanderbei1998linear. to tightly bound the homomorphism density. To prove the bound is sharp, yielding the matching lower bound, $TG(epsilon, tau) = Omega(tau^(alpha(G)))$, we explicitly construct a family of graphons. This construction is parametrically guided by the optimal solutions to the linear program, anchoring our graphons tightly to the $tau$ boundary.
 
 The remainder of this thesis is organized as follows. @Prelims collects the necessary preliminaries, defining graphons, cut metrics, homomorphism densities, and the relevant tools from linear programming and measure theory. @TheProblem formally defines the extremal problem. @TriangleSpanningDecomp introduces the Triangle Spanning Decomposition, a structural tool necessary for our upper bounds. @alphaG formally defines the linear program that yields the graph parameter $alpha(G)$ and explores its dual properties. @TriangleSpanningGeneral proves the upper bound for triangle-spanning graphs, which is then generalized to all simple graphs in @GeneralSquared, alongside the matching lower-bound constructions to prove our main theorem. In @Examples, we exhibit example graphs, their associated values of $alpha(G)$, and graphon constructions which produce the desired behavior.   Finally, we conclude in @NextSteps by discussing the implications of these bounds, open questions regarding the implicit constants, and connections to the Szemerédi-Ruzsa Triangle Removal Lemma.
 
-== Acknowledgments
-First and foremost, I want to like to express my deepest gratitude to my advisor, Professor Lorenzo Sadun, for their unwavering support, invaluable guidance, and immense patience throughout the process of learning about and writing about graphons. Without Professor Lorenzo Sadun's encouragement to find a problem which interested me, even if it was a bit out of his area of expertise, I would not have found this problem. Furthermore, our weekly meetings where he offered his mathematical insights and advice on the problem, graphons, and problem solving in general served instrumental in the process of proving the main result of the theorem. His constant encouragement (fix this word) were instrumental in keeping motivation, even while I thought I was getting nowhere.
-
-I would like to also thank other members of my thesis committee, Professor William Beckner and Professor Theresa Martines, for the time they dedicated to reviewing this work. Furthermore, I would like to thank all the professors who have provided me guidance throughout my undergraduate career. I specifically want to thank Professors William Beckner, Michael Starbird, Sean Keel, Lorenzo Sadun, Emmanuel Kowalski, Feng Luo, Timothy Perutz, and David Ben-Zvi for helping me fall in love with mathematics and their invaluable guidance through my undergraduate career. I especially want to highlight Professor William Beckner, whom I took my first math class as an undergraduate student with. Professor Beckner has been a wonderful mentor and someone who has given my invaluable advice throughout my undergraduate career. //Fix this
-
-My time in the University of Texas at Austin Department of Mathematics has been profoundly shaped by the brilliant and supportive community around me. I am deeply thankful to my fellow undergraduates and friends, specifically Xinbo Li, Prajith Velicheti, Luke Lu, Amanda Yin, and Leo Wang, for the countless hours spent at the whiteboard, the late-night study sessions, and the much-needed breaks.
 
 = Preliminaries
 <Prelims>
-== Graphons
-We follow the notation and terminology of Chatterjee's monograph @chatterjee2017large, to which we refer the reader for proofs and further background. This section collects the definitions and facts from graphon theory that we will use throughout. Before discussing the theory, we fix our graph-theoretic terminology.
+This section goes over the necessary background needed for this thesis.
+== Graphons <GraphonPrelims>
+This section establishes the foundational machinery of graphon theory that will be used throughout our analysis. For comprehensive proofs and a broader historical context, we direct the reader to Chatterjee's monograph @chatterjee2017large and Lovász's textbook @lovasz2012large. However, before passing to these continuous limit objects, we must briefly set our standard graph-theoretic terminology.
 
 #definition[
   A *simple graph*, informally, is a collection of points together with lines connecting the points, where no line can connect a point to itself. Formally, we define a simple graph $G$ as a pair $G = (V, E)$ where $V$ is finite set, identified with ${1, #sym.dots.h, abs(V)}$, and $E$ is a set of unordered pairs of distinct elements of $V$. We call elements of $V$ vertices and elements of $E$ edges. When we need to refer to the vertex and edge sets of a particular graph $G$, we can write $V(G)$ and $E(G)$. Let the set of simple graphs be $cal(G)$.
@@ -67,6 +70,11 @@ We follow the notation and terminology of Chatterjee's monograph @chatterjee2017
 Graphons were introduced by Lovász and Szegedy @lovasz2006limits as a limit object for sequences of dense simple graphs. Before giving the formal definition, we motivate the choice of object by describing how a graphon parametrizes a natural random graph model — a perspective that will make the equivalence relations in the formal definition feel inevitable rather than arbitrary.
 
 Given a symmetric measurable function $W: [0, 1]^(2) -> [0, 1]$ and an integer $n$, the *$W$-random graph* $G(n, W)$ on a vertex set ${1, #sym.dots.h, n}$ is constructed in two steps. First, independently sample $n$ random variables $U_(1), #sym.dots.h, U_(n)$ uniformly on $[0, 1]$ and assign the label $U_(i)$ to vertex $i$. Secondly, independently on each pair $i < j$, include the edge ${i, j}$ with probability $W(U_(i), U_(j))$. The value $W(x, y)$ is then the connection probability between vertices labeled $x$ and $y$ and the uniform distribution on $[0, 1]$ is the distribution over the labels. This construction recovers the Erdös–Rényi model $G(n, p)$ when $W equiv p$ is constant, and recovers the stochastic block model when $W$ is a step function, which we will call multipodal.
+
+#figure(
+  w-random-graph-canvas,
+  caption: [The $W$-random graph sampling process. Vertices are assigned uniform random labels $U_i in [0, 1]$. An edge between vertices $i$ and $j$ is subsequently formed with probability $W(U_i, U_j)$.],
+)
 
 With this perspective in mind, we define the space of graphons.
 
@@ -91,6 +99,8 @@ Within the family of multipodal graphons lies a particularly important subclass.
 ]
 
 The graphon $W_(G)$ is symmetric by construction and takes values in ${0, 1}$. It encodes the adjacency matrix of $G$ as a multipodal graphon with $n$ equal-sized parts.
+
+#figure(graphon-blowup-canvas, caption: [Graph $G$  mapped to its graphon blowup $W_(G)$])
 
 The natural topology on $cal(W)$ is induced by the *cut norm* and the induced *cut distance*.
 
@@ -146,6 +156,7 @@ The primary numerical invariants of graphons are homomorphism densities, which g
 #definition[
   Let $G$ and $H$ be simple graphs where $abs(V(G)) <= abs(V(H))$. A homomorphism from $G$ to $H$ is a function $f: V(G) -> V(H)$ where if ${u, v} in E(G)$ then ${f(u), f(v)} in E(H)$. Let $hom(G, H)$ be the set of homomorphisms from $G$ to $H$.   The *homomorphism density* of $G$ into $H$ is $ t(G, H) := (abs(hom(G, H)))/(abs(V(H))^(V(G))) $ is the probability that an arbitrary function $V(G) -> V(H)$ is a homomorphism.
 ]
+
 
 There is a similar notion for graphons.
 
@@ -235,6 +246,11 @@ The image of the function $(e, t): tilde(cal(W)) -> [0, 1]^(2)$ where $W -> (e(W
 #remark[
   This strategy, partitioning the graphon such that one localized region exhausts the allowed triangle density while the remainder contributes to the edge density without forming triangles, will be directly reflected in the constructions later in this thesis.
 ]
+
+#figure(
+  min-triangle-block-canvas,
+  caption: [Extremizing graphon for $epsilon in [1 - (1)/(3), 1 - (1)/(4)]$ and $tau -> 0$ ],
+)
 
 Putting the results of @TriangleMax, @TriangleMin1, @TriangleMin2, and @MinTriangle3 together, we see $cal(R)$ looks like the region below in @RazbTriangleVis.
 

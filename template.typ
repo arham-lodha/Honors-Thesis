@@ -1,161 +1,193 @@
 // ============================================================
 //  EXTREMAL COMBINATORICS THESIS — TEMPLATE
-//  Import this file from your thesis.typ via:
-//    #import "template.typ": *
-//    #show: thesis.with( …your metadata… )
 // ============================================================
 
 #import "@preview/lemmify:0.1.8": *
 
 // ── 1. THEOREM ENVIRONMENTS ─────────────────────────────────
 
-// Counters reset at every level-1 heading (chapter), numbered as "1.2"
+// Group A: Italicized Body (Theorems, Lemmas, Corollaries, Propositions)
 #let (
   theorem,
   lemma,
   corollary,
   proposition,
-  remark,
-  proof,
-  example,
   rules: thm-rules-a,
 ) = default-theorems(
   "thm-group-a",
   lang: "en",
-  thm-numbering: thm-numbering-heading.with(
-    max-heading-level: 1,
-  ),
-  max-reset-level: 1, // <--- THE FIX: Stops counter reset at subsections
+  thm-numbering: thm-numbering-heading.with(max-heading-level: 1),
+  max-reset-level: 1,
 )
 
+// Group B: Upright Body (Definitions, Remarks, Examples, Proofs)
 #let (
   definition,
+  remark,
+  example,
+  proof,
   rules: thm-rules-b,
 ) = default-theorems(
   "thm-group-b",
   lang: "en",
   thm-numbering: thm-numbering-heading.with(max-heading-level: 1),
-  max-reset-level: 1, // <--- THE FIX: Stops counter reset at subsections
+  max-reset-level: 1,
 )
 
-
-
-// Custom environments — independently numbered
+// Custom environments
 #let (claim, rules: claim-rules) = new-theorems("claim-group", ("claim": "Claim"))
 #let (fact, rules: fact-rules) = new-theorems("fact-group", ("fact": "Fact"))
 #let (observation, rules: obs-rules) = new-theorems("obs-group", ("observation": "Observation"))
 
-// Export every environment so `#import "template.typ": *` brings them in
+// Export all environments
 #let _all-thm-envs = (
   theorem,
   lemma,
   corollary,
   proposition,
   definition,
-  example,
   remark,
+  example,
   proof,
   claim,
   fact,
   observation,
 )
 
+// ── 2. MAIN TEMPLATE FUNCTION ────────────────────────────────
 
-
-
-
-// ── 3. MAIN TEMPLATE FUNCTION ────────────────────────────────
-//
-//  Usage in thesis.typ:
-//
-//    #show: thesis.with(
-//      title:    "My Thesis Title",
-//      subtitle: "An Optional Subtitle",   // omit to hide
-//      author:   "Your Name",
-//      advisor:  "Prof. Advisor",
-//      institution: "University Name",
-//      department:  "Department of Mathematics",
-//      degree:   "Doctor of Philosophy",
-//      date:     "May 2025",
-//      abstract: [Your abstract text here.],
-//      acknowledgements: [Your acknowledgements here.],  // omit to hide
-//    )
 #let thesis(
-  title: "Thesis Title",
+  title: "Extremal Problems in Combinatorics",
   subtitle: none,
   author: "Author Name",
-  advisor: "Advisor Name",
-  institution: "University Name",
+  advisor: "Prof. Lorenzo Sadun",
+  institution: "The University of Texas at Austin",
   department: "Department of Mathematics",
-  degree: "Bachelor of Science with Honors",
-  date: "2025",
+  degree: "Bachelor of Science in Mathematics with Honors",
+  date: "May 2026",
   abstract: [],
+  acknowledgements: none,
   body,
 ) = {
+  // Document Metadata
   set document(title: title, author: author)
 
-  set page(
-    paper: "us-letter",
-    margin: (top: 1.25in, bottom: 1.25in, left: 1.25in, right: 1in),
-    numbering: "1",
-  )
-
+  // Global Page & Text Setup
+  set page(paper: "us-letter", margin: (top: 1.25in, bottom: 1.25in, left: 1.25in, right: 1in))
   set text(font: "New Computer Modern", size: 11pt, lang: "en")
-  set par(justify: true, leading: 0.65em, first-line-indent: 1.2em)
 
+  // Paragraph formatting (No indents, just clean block spacing)
+  set par(justify: true, leading: 0.65em)
+  show par: set block(spacing: 1.2em)
+
+  // Heading Formatting
   set heading(numbering: "1.1.")
+
   show heading.where(level: 1): it => {
-    v(1.8em, weak: true)
-    text(size: 14pt, weight: "bold", it)
+    // REMOVED: pagebreak(weak: true)
+    v(2em, weak: true)
+    text(size: 16pt, weight: "bold", it)
+    v(1.2em, weak: true)
+  }
+
+  show heading.where(level: 2): it => {
+    v(1.5em, weak: true)
+    text(size: 13pt, weight: "bold", it)
     v(0.8em, weak: true)
   }
-  show heading.where(level: 2): it => {
+
+  show heading.where(level: 3): it => {
     v(1.2em, weak: true)
-    text(size: 12pt, weight: "bold", it)
+    text(size: 11pt, weight: "bold", it)
     v(0.6em, weak: true)
   }
-  show heading.where(level: 3): it => {
-    v(1em, weak: true)
-    text(size: 11pt, weight: "bold", style: "italic", it)
-    v(0.4em, weak: true)
-  }
 
+  // Equation Formatting
   set math.equation(numbering: "(1)", supplement: "Equation")
   show math.equation.where(block: true): it => {
     set align(center)
+    v(0.5em)
     it
+    v(0.5em)
   }
 
+  // Activate Theorem Rules
   show: thm-rules-a
   show: thm-rules-b
   show: claim-rules
   show: fact-rules
   show: obs-rules
 
-  // ── Title block (page 1, no page break) ──
+  // Fix Italics in Definitions and Remarks
+  show figure.where(kind: "thm-group-b"): set text(style: "normal")
+
+
+  // ==========================================
+  // FRONT MATTER (Roman Numeral Pages)
+  // ==========================================
+  set page(numbering: "i")
+  counter(page).update(1)
+
+  // ── 1. Title Page ──
   align(center)[
-    #v(1cm)
-    #text(size: 18pt, weight: "bold")[#title]
+    #v(1fr)
+    #text(size: 20pt, weight: "bold")[#title]
+
     #if subtitle != none {
-      v(0.3cm)
-      text(size: 13pt, style: "italic")[#subtitle]
+      v(1.5em)
+      text(size: 14pt, style: "italic")[#subtitle]
     }
-    #v(0.25cm)
-    #text(size: 12pt)[#author]
-    #v(0.2cm)
-    // #text(size: 11pt, style: "italic")[#advisor · #institution · #date]
-    // #v(0.6cm)
+
+    #v(2fr)
+    #text(size: 12pt)[
+      Submitted to the Faculty of the \
+      #department \
+      #institution \
+      in Partial Fulfillment of the Requirements \
+      for Graduation with Honors in Mathematics
+    ]
+
+    #v(2fr)
+    #text(size: 14pt)[By] \
+    #v(0.5em)
+    #text(size: 14pt, weight: "bold")[#author]
+
+    #v(2fr)
+    #text(size: 12pt)[
+      Supervising Professor: #advisor
+    ]
+
+    #v(1fr)
+    #text(size: 12pt)[#date]
   ]
 
-  // ── Abstract (same page) ──
-  pad(left: 1cm, right: 1cm)[
-    *Abstract.* #abstract
-  ]
+  // ── 2. Abstract ──
+  if abstract != [] {
+    pagebreak(weak: true)
+    align(center)[#heading(level: 1, numbering: none)[Abstract]]
+    abstract
+  }
 
-  v(0.8cm)
+  // ── 3. Acknowledgments ──
+  if acknowledgements != none {
+    pagebreak(weak: true)
+    align(center)[#heading(level: 1, numbering: none)[Acknowledgments]]
+    acknowledgements
+  }
 
-  // ── Body follows immediately ──
+  // ── 4. Table of Contents ──
+  pagebreak(weak: true)
+  align(center)[#heading(level: 1, numbering: none)[Table of Contents]]
+  outline(title: none, indent: auto)
+
+
+  // ==========================================
+  // MAIN BODY (Arabic Numeral Pages)
+  // ==========================================
+
+  pagebreak(weak: true) // Ensures the Introduction starts on a fresh page
+  set page(numbering: "1")
+  counter(page).update(1)
+
   body
 }
-
-
