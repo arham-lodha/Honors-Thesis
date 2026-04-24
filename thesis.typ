@@ -14,7 +14,7 @@
   institution: "University of Texas at Austin",
   department: "Department of Mathematics",
   degree: "Bachelors of Science in Mathematics Honors",
-  date: "May 2025",
+  date: "May 2026",
 
   abstract: [
     This thesis investigates the asymptotic behavior of the maximum homomorphism density of an arbitary subgraph $G$, denoted $TG(epsilon, tau)$, within graphons constrained by a fixed edge density $epsilon in (0, (1)/(2)]$ and a vanishing triangle density $tau -> 0$. The main result establishes that this decay is governed by a precise power-law scaling, $TG(epsilon, tau) = Theta(tau^(alpha(G)))$. The exponent $alpha(G)$ is a graph parameter defined as the optimal value of a linear program whose variables correspond to the vertices of $G$ and whose constraints are dictated by the triangles of $G$. The upper bound, $TG(epsilon, tau) = O(tau^(alpha(G)))$, is proven by introducing a Triangle Spanning Decomposition and applying Finner's Generalized Hölder Inequality in conjunction with Strong Duality in Linear Programming. To establish a matching lower bound, $TG(epsilon, tau) = Omega(tau^(alpha(G)))$, a family of multipodal graphons is explicitly constructed, parameterized directly by the optimal solutions to the linear program to anchor the graphons tightly to the boundary. Ultimately, this parameter quantifies the exact rate at which complex, higher-order multi-particle interactions must decay when fundamental 3-particle interactions are actively suppressed.
