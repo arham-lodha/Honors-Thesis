@@ -17,10 +17,10 @@
   date: "May 2025",
 
   abstract: [
-    This thesis investigates the asymptotic behavior of the maximum homomorphism density of an arbitary subgraph $G$, denoted $TG(epsilon, tau)$, within graphons constrained by a fixed edge density $epsilon in (0, (1)/(2)]$ and a vanishing triangle density $tau -> 0$. The main result establishes that this decay is governed by a precise power-law scaling, $TG(epsilon, tau) = Theta(tau^(alpha(G)))$. The exponent $alpha(G)$ is a graph parameter defined as the optimal value of a linear program whose variables correspond to the vertices of $G$ and whose constraints are dictated by the triangles of $G$. The upper bound, $TG(epsilon, tau) = O(tau^(alpha(G)))$, is proven by introducing a Triangle Spanning Decomposition and applying Finner's Generalized Hölder Inequalityin conjunction with Strong Duality in Linear Programming. To establish a matching lower bound, $TG(epsilon, tau) = Omega(tau^(alpha(G)))$, a family of multipodal graphons is explicitly constructed, parameterized directly by the optimal solutions to the linear program to anchor the graphons tightly to the boundary. Ultimately, this parameter quantifies the exact rate at which complex, higher-order multi-particle interactions must decay when fundamental 3-particle interactions are actively suppressed.
+    This thesis investigates the asymptotic behavior of the maximum homomorphism density of an arbitary subgraph $G$, denoted $TG(epsilon, tau)$, within graphons constrained by a fixed edge density $epsilon in (0, (1)/(2)]$ and a vanishing triangle density $tau -> 0$. The main result establishes that this decay is governed by a precise power-law scaling, $TG(epsilon, tau) = Theta(tau^(alpha(G)))$. The exponent $alpha(G)$ is a graph parameter defined as the optimal value of a linear program whose variables correspond to the vertices of $G$ and whose constraints are dictated by the triangles of $G$. The upper bound, $TG(epsilon, tau) = O(tau^(alpha(G)))$, is proven by introducing a Triangle Spanning Decomposition and applying Finner's Generalized Hölder Inequality in conjunction with Strong Duality in Linear Programming. To establish a matching lower bound, $TG(epsilon, tau) = Omega(tau^(alpha(G)))$, a family of multipodal graphons is explicitly constructed, parameterized directly by the optimal solutions to the linear program to anchor the graphons tightly to the boundary. Ultimately, this parameter quantifies the exact rate at which complex, higher-order multi-particle interactions must decay when fundamental 3-particle interactions are actively suppressed.
   ],
   acknowledgements: [
-    First and foremost, I would like to express my deepest gratitude to my advisor, Professor Lorenzo Sadun, for his unwavering support, invaluable guidance, and immense patience throughout the process of learning and writing about graphons. Without Professor Sadun's encouragement to find a problem that truly interested me—even if it fell a bit outside his immediate area of expertise—I would never have discovered this topic. Furthermore, our weekly meetings, where he offered his mathematical insights and broader advice on problem-solving, were instrumental in proving the main theorem of this thesis. His steadfast reassurance and optimism were vital in maintaining my motivation, especially during the times when I felt I was getting nowhere.
+    First and foremost, I would like to express my deepest gratitude to my advisor, Professor Lorenzo Sadun, for his unwavering support, invaluable guidance, and immense patience throughout the process of learning and writing about graphons. Without Professor Sadun's encouragement to find a problem that truly interested me, even if it fell a bit outside his immediate area of expertise, I would never have discovered this topic. Furthermore, our weekly meetings, where he offered his mathematical insights and broader advice on problem-solving, were instrumental in proving the main theorem of this thesis. His steadfast reassurance and optimism were vital in maintaining my motivation, especially during the times when I felt I was getting nowhere.
 
     I would also like to thank the other members of my thesis committee, Professor William Beckner and Professor Theresa Martines, for the time and care they dedicated to reviewing this work. Beyond this thesis, I want to thank the faculty who have guided me throughout my mathematical journey. I am specifically grateful to Professors William Beckner, Michael Starbird, Sean Keel, Lorenzo Sadun, Emmanuel Kowalski, Feng Luo, Timothy Perutz, and David Ben-Zvi for helping me fall in love with mathematics and for their invaluable mentorship. I want to especially highlight Professor Beckner, who taught my very first university-level math class. He has been a wonderful mentor and a continuous source of profound advice from my freshman year all the way to this final project.
 
@@ -40,7 +40,7 @@ Philosophically, graphons represent the completion of the space of dense finite 
 
 This paradigm shift has revolutionized multiple areas of discrete mathematics. Graphons have provided the natural language to unify theories of quasi-randomness @lovasz2008generalized, formulate continuous analogues of the Szemerédi Regularity Lemma @lovasz2007szemeredi, and develop robust property testing algorithms for massive networks @borgs2008convergent. Beyond pure mathematics, they serve as foundational models in network science @lovasz2012large and machine learning @orbanz2014bayesian, offering a way to study the large-scale behavior of the internet, social networks, and biological systems where individual nodes are ephemeral, but the underlying continuous probability distributions governing their connections remain stable.
 
-A central object of study is the Razborov Triangle $cal(R)$, which characterizes the exact region of simultaneously achievable edge and triangle densities for any graphon. While the exact boundary of $cal(R)$ is known @razborov2008minimal, the behavior of other subgraph densities within this region remains a rich area of inquiry. This thesis focuses on a specific, largely unexplored extremal question: if we fix an edge density $epsilon$ and force the triangle density $tau$ to be infinitesimally small, how much of an arbitrary simple graph $G$ can survive? To make this precise, let $TG(epsilon, tau)$ denote the maximum possible homomorphism density of $G$ over all graphons with edge density $epsilon$  and triangle density at most $tau$.
+A central object of study is the Razborov Triangle $cal(R)$ (see @RazbTriangleVis), which characterizes the exact region of simultaneously achievable edge and triangle densities for any graphon. While the exact boundary of $cal(R)$ is known @razborov2008minimal, the behavior of other subgraph densities within this region remains a rich area of inquiry. This thesis focuses on a specific, largely unexplored extremal question: if we fix an edge density $epsilon$ and force the triangle density $tau$ to be infinitesimally small, how much of an arbitrary simple graph $G$ can survive? To make this precise, let $TG(epsilon, tau)$ denote the maximum possible homomorphism density of $G$ over all graphons with edge density $epsilon$  and triangle density at most $tau$.
 
 To build intuition, one can view this problem through the physical lens of statistical mechanics and complex systems. If we consider vertices as individual entities or particles, the edge density ϵ measures the global frequency of simple 2-particle interactions. The triangle density $tau$, meanwhile, measures the fundamental 3-particle interactions. From this perspective, understanding $TG(epsilon, tau)$ as $tau -> 0$ is fundamentally a question about the hierarchical breakdown of complexity: if we fix the global rate of 2-particle interactions but actively suppress the 3-particle interactions, how quickly are more complex, higher-order multi-particle interactions (represented by the arbitrary graph $G$) forced to die out? The graph parameter $alpha(G)$ developed in this thesis quantifies exactly this rate of decay.
 
@@ -100,7 +100,7 @@ The graphon $W_(G)$ is symmetric by construction and takes values in ${0, 1}$. I
 
 #figure(graphon-blowup-canvas, caption: [Graph $G$  mapped to its graphon blowup $W_(G)$])
 
-The natural topology on $cal(W)$ is induced by the *cut norm* and the induced *cut distance*.
+With regards to the topology on $cal(W)$, the natural topology on $cal(W)$ is induced by the *cut norm* and the induced *cut distance*.
 
 #definition(name: "Cut Norm and Cut Distance")[
   $cal(W)$ has a natural norm, called the *cut norm* that it inherits from bounded functions from $[0, 1]^(2)$ to $RR$. Where $W in cal(W)$, $ norm(W)_(cut) = sup_(S, T in cal(L)([0, 1])) abs(integral_(S times T)W(x, y) dif x dif y) $
@@ -109,9 +109,9 @@ The natural topology on $cal(W)$ is induced by the *cut norm* and the induced *c
   $ d_(cut)(W_(1), W_(2)) = sup_(S, T subset [0, 1]) abs(integral_(S times T) (W_(1)(x, y) - W_(2)(x, y)) dif x dif y) $ where $cal(L)([0, 1])$ is the set of Lebesgue measurable subsets of $[0, 1]$.
 ]
 
-The cut distance captures the idea that two graphons are close if, for every pair of label regions $S$ and $T$, they assign the same edge mass to $S times T$. However, $d_(cut)$ is too fine an equivalence for our purposes: it distinguishes graphons that ought to represent the same object. To see what additional equivalence is needed, consider the analogous issue for finite graphs.
+The cut distance captures the idea that two graphons are close if, for every pair of label regions $S$ and $T$, they assign the same edge mass to $S times T$. However, $d_(cut)$ is too fine for our purposes: it distinguishes graphons that ought to represent the same object. To see what additional notion of equivalence is needed, consider the analogous issue for finite graphs.
 
-To motivate the next quotient, recall the analogous situation for simple graphs. If $G_1$ and $G_2$ are simple graphs on the same vertex set and $G_(2)$ arises from $G_(1)$ by a permutation of vertices, that is there exists a bijection $sigma: V(G_1) -> V(G_(2))$ with ${u, v} in E(G_1) <=> {sigma(u), sigma(v)} in E(G_2)$, then we say $G_1$ is isomorphic to $G_2$. Any property of a graph that we care about is invariant under vertex relabeling.
+If $G_1$ and $G_2$ are simple graphs on the same vertex set and $G_(2)$ arises from $G_(1)$ by a permutation of vertices, that is there exists a bijection $sigma: V(G_1) -> V(G_(2))$ with ${u, v} in E(G_1) <=> {sigma(u), sigma(v)} in E(G_2)$, then we say $G_1$ is isomorphic to $G_2$. Any property of a graph that we care about is invariant under vertex relabeling.
 
 
 The analogue for graphons is a *measure preserving bijection* $sigma: [0, 1] -> [0, 1]$, which serves as a permutation of labeling space. Given such a $sigma$ and $W$, define $W^(sigma)(x, y) = W(sigma(x), sigma(y))$. If $sigma(U_(1)), #sym.dots.h, sigma(U_(n))$ are obtained from i.i.d. uniform samples $U_(1), #sym.dots.h, U_(n)$, then they themselves are i.i.d. uniform on $[0, 1]$. So $W^(sigma)$ generates the exact same distribution of random graphs as $W$. Just as isomorphic simple graphs differ only in how their vertices are labeled, $W$ and $W^(sigma)$ differ only in how $[0, 1]$ is labeled.
@@ -131,7 +131,7 @@ The functional $delta_(cut)$ is a pseudometric on $cal(W)$. It descends to a gen
 ]
 // Remark sounds weird
 #remark[
-  Beyond weak equivalence, another natural notion of equivalence exists. Two graphons $W_(1), W_(2) in cal(W)$ are considered *group equivalent* if they lie in the same orbit under the action of measure-preserving bijections on $[0, 1]$. However, it is possible for the orbits of two graphons to become arbitrarily close in cut distance—yielding identical structural properties for their sampled graphs—without the graphons being strictly group equivalent. Weak equivalence resolves this issue by effectively acting as the topological closure of group equivalence.
+  Beyond weak equivalence, another natural notion of equivalence exists. Two graphons $W_(1), W_(2) in cal(W)$ are considered *group equivalent* if they lie in the same orbit under the action of measure-preserving bijections on $[0, 1]$. However, it is possible for the orbits of two graphons to become arbitrarily close in cut distance, yielding identical structural properties for their sampled graphs, without the graphons being strictly group equivalent. Weak equivalence resolves this issue by effectively acting as the topological closure of group equivalence.
 ]
 
 The central topological fact, due to Lovász and Szegedy, is the following.
@@ -152,7 +152,7 @@ The primary numerical invariants of graphons are homomorphism densities, which g
 
 // SHOULD THIS GO ABOVE TO THE DEF OF SIMPLE GRAPH
 #definition[
-  Let $G$ and $H$ be simple graphs where $abs(V(G)) <= abs(V(H))$. A homomorphism from $G$ to $H$ is a function $f: V(G) -> V(H)$ where if ${u, v} in E(G)$ then ${f(u), f(v)} in E(H)$. Let $hom(G, H)$ be the set of homomorphisms from $G$ to $H$.   The *homomorphism density* of $G$ into $H$ is $ t(G, H) := (abs(hom(G, H)))/(abs(V(H))^(V(G))) $ is the probability that an arbitrary function $V(G) -> V(H)$ is a homomorphism.
+  Let $G$ and $H$ be simple graphs where $abs(V(G)) <= abs(V(H))$. A graph homomorphism from $G$ to $H$ is a function $f: V(G) -> V(H)$ where if ${u, v} in E(G)$ then ${f(u), f(v)} in E(H)$. Let $hom(G, H)$ be the set of homomorphisms from $G$ to $H$.   The *homomorphism density* of $G$ into $H$ is $ t(G, H) := (abs(hom(G, H)))/(abs(V(H))^(V(G))) $ is the probability that an arbitrary function $V(G) -> V(H)$ is a graph homomorphism.
 ]
 
 
@@ -182,7 +182,7 @@ From the stochastic perspective, $t(G, W)$ has a clean interpretation. It is the
 A foundational property, which motivates the choice of cut topology, is that the homomorphism densities are continuous in $tilde(cal(W))$.
 
 #theorem(name: [Continuity of Homomorphism Density @lovasz2006limits])[
-  For every simple graph $G$, the map $t(G, dot)$ is continuous on $(tilde(cal(W)), delta_(cut))$.
+  For every simple graph $G$, the map $t(G, dot): tilde(cal(W)) -> [0, 1]$ is continuous.
 ]<ContinuityHomomorphismDensity>
 
 But homomorphism densities aren't just continuous.
@@ -239,7 +239,7 @@ The image of the function $(e, t): tilde(cal(W)) -> [0, 1]^(2)$ where $W -> (e(W
 
 // TODO VERIFY this.
 #theorem(name: [Minimum Triangle Density III @pikhurko2017asymptotic])[
-  Let $epsilon in [1 - (1)/(k), 1 - (1)/(k + 1)]$. Let $ c = (1 + sqrt(1 - epsilon (k + 1)/(k)) )/(k + 1). $ Partition $[0, 1]$ into $k$ intervals $I_(1), #sym.dots.h, I_(k)$ where $abs(I_(i)) = c$ for $i in {1, #sym.dots.h, k - 1}$ and $abs(I_(k)) = 1 - (k - 1)c$. Define a graphon $W$ as follows. We set $W = 1$ when $I_(i) times I_(j)$ for all $i != j$. For $i < k$, $W = 0$ on $I_(i) times I_(i)$. Finally, on $I_(k) times I_(k)$ the graphon is not constrained, except to have the correct average value, and to not allow any triangles where all three vertices are in $I_(k)$. For such a graphon $t(W)$ achieves the lower bound in @TriangleMin2.
+  Let $epsilon in [1 - (1)/(k), 1 - (1)/(k + 1)]$. Let $ c = (1 + sqrt(1 - epsilon (k + 1)/(k)) )/(k + 1). $ Partition $[0, 1]$ into $k + 1$ intervals $I_(1), #sym.dots.h, I_(k + 1)$ where $abs(I_(i)) = c$ for $i in {1, #sym.dots.h, k}$ and $abs(I_(k + 1)) = 1 - k c$. Define a graphon $W$ as follows. We set $W = 1$ when $I_(i) times I_(j)$ for all $i != j$. For $i <= k$, $W = 0$ on $I_(i) times I_(i)$. Finally, on $I_(k + 1) times I_(k + 1)$ the graphon is not constrained, except to have the correct average value, and to not allow any triangles where all three vertices are in $I_(k + 1)$. For such a graphon $W$, $t(W)$ achieves the lower bound in @TriangleMin2.
 ]<MinTriangle3>
 #remark[
   This strategy, partitioning the graphon such that one localized region exhausts the allowed triangle density while the remainder contributes to the edge density without forming triangles, will be directly reflected in the constructions later in this thesis.
@@ -247,7 +247,7 @@ The image of the function $(e, t): tilde(cal(W)) -> [0, 1]^(2)$ where $W -> (e(W
 
 #figure(
   min-triangle-block-canvas,
-  caption: [Extremizing graphon for $epsilon in [1 - (1)/(3), 1 - (1)/(4)]$],
+  caption: [Extremizing graphon for $epsilon in [(1)/(2), (2)/(3)]$],
 )
 
 Putting the results of @TriangleMax, @TriangleMin1, @TriangleMin2, and @MinTriangle3 together, we see $cal(R)$ looks like the region below in @RazbTriangleVis.

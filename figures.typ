@@ -150,7 +150,7 @@
         domain: domain,
         samples: 200,
         style: (stroke: (paint: blue, thickness: 1.5pt)),
-        label: [Upper bound $t = e^{3/2}$],
+        label: [Upper bound $t = e^(3/2)$],
       )
       plot.add(
         er-curve,
