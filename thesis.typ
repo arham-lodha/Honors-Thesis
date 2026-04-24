@@ -993,5 +993,5 @@ Thus $ TD(epsilon, tau) >= (tau^(2))/(9c(tau)) => c(tau) >= (tau^(2))/(9TD(epsil
 Thus understanding the order of $TD(epsilon, tau)$ for fixed $epsilon$ and $tau -> 0$, will give us information on the asymptotics of $c(tau)$. Understanding the asymptotics of $c(tau)$ is major a topic of study in extremal combinatorics currently.
 
 
-
+#pagebreak()
 #bibliography("refs.bib", style: { "springer-mathphys" }, title: "References")
