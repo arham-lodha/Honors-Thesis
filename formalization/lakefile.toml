@@ -1,0 +1,11 @@
+name = "GraphonFormalization"
+version = "0.1.0"
+defaultTargets = ["GraphonFormalization"]
+
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"
+rev = "master"
+
+[[lean_lib]]
+name = "GraphonFormalization"
